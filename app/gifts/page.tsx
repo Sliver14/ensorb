@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
-import { registryGifts, GiftItem } from '@/lib/data'
+import { registryGifts, GiftItem, bankDetails } from '@/lib/data'
 
 export default function GiftsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -203,20 +203,20 @@ export default function GiftsPage() {
           <div className="cash-banner-card">
             <div className="bank-info-item">
               <span className="bank-info-label">Bank Name</span>
-              <strong className="bank-info-val">Guaranty Trust Bank (GTB)</strong>
+              <strong className="bank-info-val">{bankDetails.bankName}</strong>
             </div>
             <div className="bank-info-item">
               <span className="bank-info-label">Account Name</span>
-              <strong className="bank-info-val">Ngozi &amp; Sorbari Wedding</strong>
+              <strong className="bank-info-val">{bankDetails.accountName}</strong>
             </div>
             <div className="bank-info-item">
               <span className="bank-info-label">Account Number</span>
-              <strong className="bank-info-val font-mono">0123456789</strong>
+              <strong className="bank-info-val font-mono">{bankDetails.accountNumber}</strong>
             </div>
             <button
               type="button"
               className="copy-account-btn"
-              onClick={() => handleCopyAccount('0123456789')}
+              onClick={() => handleCopyAccount(bankDetails.accountNumber)}
             >
               {copiedBank ? '✓ Account Number Copied!' : 'Copy Account Number'}
             </button>
@@ -271,13 +271,13 @@ export default function GiftsPage() {
                   </p>
                   <div className="modal-bank-box">
                     <div className="bank-line">
-                      <span>Bank:</span> <strong>Guaranty Trust Bank (GTB)</strong>
+                      <span>Bank:</span> <strong>{bankDetails.bankName}</strong>
                     </div>
                     <div className="bank-line">
-                      <span>Account Name:</span> <strong>Ngozi &amp; Sorbari Wedding</strong>
+                      <span>Account Name:</span> <strong>{bankDetails.accountName}</strong>
                     </div>
                     <div className="bank-line">
-                      <span>Account Number:</span> <strong>0123456789</strong>
+                      <span>Account Number:</span> <strong>{bankDetails.accountNumber}</strong>
                     </div>
                     <div className="bank-line">
                       <span>Item Value:</span> <strong>{selectedGift.price}</strong>
@@ -285,7 +285,7 @@ export default function GiftsPage() {
                     <button
                       type="button"
                       className="modal-copy-btn"
-                      onClick={() => handleCopyAccount('0123456789')}
+                      onClick={() => handleCopyAccount(bankDetails.accountNumber)}
                     >
                       {copiedBank ? '✓ Account Copied!' : 'Copy Account Number'}
                     </button>

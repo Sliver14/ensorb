@@ -1081,7 +1081,8 @@ article p {
 .bank-info-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 12px;
   font-size: 13px;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(189, 186, 179, 0.4);
@@ -1092,11 +1093,15 @@ article p {
   text-transform: uppercase;
   font-size: 10px;
   letter-spacing: .1em;
+  flex-shrink: 0;
+  padding-top: 2px;
 }
 
 .bank-info-val {
   color: #222;
   font-weight: 600;
+  text-align: right;
+  word-break: break-word;
 }
 
 .copy-account-btn {
@@ -1244,12 +1249,20 @@ article p {
 .bank-line {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
   font-size: 11px;
   color: #444;
 }
 
+.bank-line span {
+  flex-shrink: 0;
+}
+
 .bank-line strong {
   color: #111;
+  text-align: right;
+  word-break: break-word;
 }
 
 .modal-copy-btn {

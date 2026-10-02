@@ -312,3 +312,9 @@ export const faqData: FAQItem[] = [
     answer: 'While we love little ones dearly, the ceremony and grand reception will be an adults-only celebration.',
   },
 ]
+
+export const bankDetails = {
+  bankName: 'Parallex Bank',
+  accountName: 'SORBARI GODWIN UEBARI AND NGOZI EMELE KALU',
+  accountNumber: '2003361527',
+}
