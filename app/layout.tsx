@@ -2,7 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.wedding'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
       'Join Ngozi and Sorbari for their wedding celebration at Christ Embassy Ogba 1, Lagos, Nigeria. Explore event schedule, dress code palette, gift registry & RSVP for your digital pass.',
     images: [
       {
-        url: 'https://framerusercontent.com/images/daqW7PY9WXmILN7A9MO8bt0TPk.png?width=3280&height=2304',
+        url: '/logo-fav.jpeg',
         width: 1200,
         height: 630,
         alt: 'Ngozi & Sorbari Wedding Celebration — October 31, 2026',
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     title: 'Ngozi & Sorbari — Our Wedding Celebration | October 31, 2026',
     description:
       'Join Ngozi and Sorbari for their wedding celebration on Saturday, October 31, 2026 at Christ Embassy Ogba 1, Lagos, Nigeria.',
-    images: ['https://framerusercontent.com/images/daqW7PY9WXmILN7A9MO8bt0TPk.png?width=3280&height=2304'],
+    images: ['/logo-fav.jpeg'],
     creator: '@ensorb_wedding',
   },
   robots: {
@@ -136,9 +136,7 @@ export default function RootLayout({
         longitude: '3.3411',
       },
     },
-    image: [
-      'https://framerusercontent.com/images/daqW7PY9WXmILN7A9MO8bt0TPk.png?width=3280&height=2304',
-    ],
+    image: [`${siteUrl}/logo-fav.jpeg`],
     organizer: {
       '@type': 'Person',
       name: 'Ngozi & Sorbari',

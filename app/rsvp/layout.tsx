@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: '/rsvp',
     images: [
       {
-        url: 'https://framerusercontent.com/images/daqW7PY9WXmILN7A9MO8bt0TPk.png?width=3280&height=2304',
+        url: '/logo-fav.jpeg',
         width: 1200,
         height: 630,
         alt: 'Ngozi & Sorbari Wedding RSVP & Pass',
