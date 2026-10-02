@@ -29,8 +29,9 @@ export function Navbar() {
   return (
     <>
       <header className="site-header">
-        <Link className="monogram" href="/" aria-label="Back to home">
-          ENSORB
+        <Link className="site-logo-wrap" href="/" aria-label="Back to home">
+          <img src="/logo.png" alt="ENSORB Logo" className="site-logo-img" />
+          <span className="site-logo-text">ENSORB</span>
         </Link>
         <nav className="desktop-nav" aria-label="Main navigation">
           {navLinks.map((link) => {
@@ -74,7 +75,10 @@ export function Navbar() {
         aria-label="Mobile navigation"
       >
         <div className="mobile-drawer-header">
-          <span className="mobile-drawer-brand">ENSORB</span>
+          <Link href="/" className="mobile-drawer-brand" onClick={() => setIsMobileMenuOpen(false)}>
+            <img src="/logo.png" alt="ENSORB Logo" className="mobile-drawer-logo-img" />
+            <span>ENSORB</span>
+          </Link>
           <button
             type="button"
             className="mobile-drawer-close"

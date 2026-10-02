@@ -213,6 +213,40 @@
   transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.site-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #252525;
+}
+
+.site-logo-img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+  transition: transform 0.25s ease;
+}
+
+.site-logo-wrap:hover .site-logo-img {
+  transform: scale(1.08);
+}
+
+.site-logo-text {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #252525;
+  transition: color 0.2s ease;
+}
+
+.site-logo-wrap:hover .site-logo-text {
+  color: #6B1D2F;
+}
+
 .monogram {
   color: #252525;
   text-decoration: none;
@@ -368,11 +402,22 @@
 }
 
 .mobile-drawer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: Georgia, serif;
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: .16em;
   color: #222;
   text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.mobile-drawer-logo-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
 }
 
 .mobile-drawer-close {
@@ -520,30 +565,28 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: min(100%, 310px);
   justify-self: center;
 }
 
-.story-art img {
-  width: 100%;
+.story-logo-rounded {
+  width: min(100%, 260px);
   height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: 9999px;
+  object-fit: cover;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.16);
+  border: 4px solid rgba(255, 255, 255, 0.95);
   display: block;
-  opacity: .75;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.story-logo-rounded:hover {
+  transform: scale(1.04);
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.22);
 }
 
 .story-logo-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(20px, 2.6vw, 30px);
-  font-weight: 400;
-  letter-spacing: .2em;
-  text-indent: .2em;
-  color: #6B1D2F;
-  text-transform: uppercase;
-  pointer-events: none;
+  display: none;
 }
 
 .story-copy {
@@ -1346,157 +1389,159 @@ article p {
   margin: 0;
 }
 
-/* Dress Color Code Section */
+/* Dress Color Code Section (Simple Rounded) */
 .dress-code-section {
   border-top: 1px solid #bdbab3;
-  padding-top: 110px;
-  padding-bottom: 110px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 }
 
 .dress-code-header {
   text-align: center;
   max-width: 680px;
-  margin: 0 auto 52px;
+  margin: 0 auto 48px;
 }
 
 .dress-code-desc {
-  font-size: 16px;
-  line-height: 1.75;
+  font-size: 15.5px;
+  line-height: 1.7;
   color: #565451;
   margin: 0;
 }
 
-.dress-code-grid {
+.simple-color-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 44px;
 }
 
-.color-card {
+.simple-color-card {
   background: #fdfcf9;
-  border: 1px solid #d4d0c8;
+  border: 1px solid #dcd8d0;
+  border-radius: 24px;
+  padding: 32px 22px 28px;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  align-items: center;
+  text-align: center;
   cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   position: relative;
-  overflow: hidden;
-  text-align: left;
 }
 
-.color-card:hover {
+.simple-color-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
   border-color: #191919;
 }
 
-.color-swatch-box {
-  height: 180px;
-  width: 100%;
+.simple-swatch-circle-wrap {
   position: relative;
-  padding: 16px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.12);
+  margin-bottom: 20px;
 }
 
-.color-tag-badge {
-  align-self: flex-start;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: .14em;
-  padding: 4px 9px;
-  background: rgba(0, 0, 0, 0.32);
-  backdrop-filter: blur(4px);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  font-weight: 500;
-}
-
-.color-hex-badge {
-  align-self: flex-end;
-  font-family: monospace;
-  font-size: 11px;
-  letter-spacing: .08em;
-  padding: 4px 10px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #111;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: all 0.2s ease;
-}
-
-.color-card:hover .color-hex-badge {
-  background: #111;
-  color: #fff;
-}
-
-.color-card-body {
-  padding: 24px 20px 22px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  background: #fdfcf9;
-}
-
-.color-card-title-row {
+.simple-swatch-circle {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.25s ease;
 }
 
-.color-name {
+.simple-color-card:hover .simple-swatch-circle {
+  transform: scale(1.06);
+}
+
+.simple-copy-toast {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #fff;
+  padding: 5px 11px;
+  border-radius: 9999px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.simple-color-card:hover .simple-copy-toast {
+  opacity: 1;
+}
+
+.simple-color-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.simple-color-tag {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: #8c8983;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.simple-color-name {
   font: 400 24px Georgia, serif;
-  margin: 0;
+  margin: 0 0 10px;
   color: #191919;
   letter-spacing: -.02em;
 }
 
-.color-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+.simple-hex-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  background: #f0ede6;
+  color: #222;
+  border: 1px solid #d4d0c8;
+  border-radius: 9999px;
+  padding: 6px 16px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.color-desc {
-  font-size: 13.5px;
-  line-height: 1.6;
+.simple-hex-pill:hover {
+  background: #191919;
+  color: #fff;
+  border-color: #191919;
+}
+
+.simple-hex-pill.copied {
+  background: #1b4332;
+  color: #fff;
+  border-color: #1b4332;
+}
+
+.simple-color-desc {
+  font-size: 13px;
+  line-height: 1.55;
   color: #565451;
-  margin: 0 0 18px;
-  flex: 1;
-}
-
-.color-styling-tip {
-  border-top: 1px solid #e5e2da;
-  padding-top: 14px;
-  margin-top: auto;
-}
-
-.styling-label {
-  display: block;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-  color: #8c8983;
-  margin-bottom: 4px;
-  font-weight: 600;
-}
-
-.styling-text {
-  font-size: 12.5px;
-  line-height: 1.5;
-  color: #333;
   margin: 0;
 }
 
-.dress-code-guide-card {
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid #bdbab3;
+/* Simple Rounded Guidelines Card */
+.simple-guide-card {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid #d4d0c8;
+  border-radius: 18px;
   padding: 24px 28px;
   display: flex;
   align-items: center;
@@ -1505,21 +1550,21 @@ article p {
   margin: 0 auto;
 }
 
-.guide-icon {
+.simple-guide-icon {
   font-size: 26px;
   flex-shrink: 0;
 }
 
-.guide-content h4 {
+.simple-guide-text h4 {
   font: 400 18px Georgia, serif;
   margin: 0 0 6px;
   color: #191919;
 }
 
-.guide-content p {
+.simple-guide-text p {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.65;
+  font-size: 13.5px;
+  line-height: 1.6;
   color: #565451;
 }
 
@@ -2282,16 +2327,28 @@ article p {
 .footer-brand {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
   padding: 6px 14px;
   border: 1px solid rgba(243, 240, 233, 0.4);
   color: #f3f0e9;
+  text-decoration: none;
   font-family: Georgia, serif;
-  font-size: 11px;
+  font-size: 11.5px;
   letter-spacing: .2em;
-  text-indent: .2em;
   text-transform: uppercase;
   margin-bottom: 22px;
+  transition: all 0.2s ease;
+}
+
+.footer-brand:hover {
+  border-color: rgba(243, 240, 233, 0.75);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.footer-logo-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .footer-title {
@@ -2406,7 +2463,7 @@ article p {
     gap: 40px;
   }
 
-  .dress-code-grid {
+  .simple-color-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
@@ -2503,15 +2560,11 @@ article p {
   .story-art {
     display: flex;
     margin: 0 auto 30px;
-    width: min(100%, 190px);
+    width: min(100%, 200px);
   }
 
-  .story-art img {
-    width: 100%;
-  }
-
-  .story-logo-text {
-    font-size: 19px;
+  .story-logo-rounded {
+    width: min(100%, 200px);
   }
 
   .story-copy p:last-child,
@@ -2554,32 +2607,40 @@ article p {
   }
 
   .dress-code-header {
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
 
   .dress-code-desc {
     font-size: 14px;
+    margin-bottom: 24px;
   }
 
-  .dress-code-grid {
+  .simple-color-grid {
     grid-template-columns: 1fr;
     gap: 18px;
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
 
-  .color-swatch-box {
-    height: 150px;
+  .simple-color-card {
+    padding: 24px 18px 22px;
+    border-radius: 20px;
   }
 
-  .color-name {
+  .simple-swatch-circle {
+    width: 96px;
+    height: 96px;
+  }
+
+  .simple-color-name {
     font-size: 22px;
   }
 
-  .dress-code-guide-card {
+  .simple-guide-card {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
     padding: 20px 18px;
+    border-radius: 16px;
   }
 
   .registry-section {
@@ -3192,25 +3253,32 @@ article p {
 .story-crest-banner {
   text-align: center;
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   margin-bottom: 48px;
 }
 
-.story-crest-img {
-  width: 140px;
-  height: 140px;
-  object-fit: contain;
+.story-crest-rounded {
+  width: 130px;
+  height: 130px;
+  aspect-ratio: 1 / 1;
+  border-radius: 9999px;
+  object-fit: cover;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.story-crest-rounded:hover {
+  transform: scale(1.06);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
 }
 
 .story-crest-logo {
-  position: absolute;
-  font: 400 20px Georgia, serif;
-  letter-spacing: .25em;
-  color: #222;
-  text-indent: .25em;
+  display: none;
 }
 
 .timeline-container {

@@ -1,22 +1,12 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
-import { dressColors, weddingSchedule } from '@/lib/data'
+import { ColorCodeSection } from '@/components/ColorCodeSection'
+import { weddingSchedule } from '@/lib/data'
 
 export default function DetailsPage() {
-  const [copiedColor, setCopiedColor] = useState<string | null>(null)
-
-  const handleCopyColor = (hex: string) => {
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(hex)
-      setCopiedColor(hex)
-      setTimeout(() => setCopiedColor(null), 2000)
-    }
-  }
-
   return (
     <main className="wedding-site">
       <Navbar />
@@ -43,7 +33,7 @@ export default function DetailsPage() {
         </div>
 
         <div className="schedule-timeline">
-          {weddingSchedule.map((item, idx) => (
+          {weddingSchedule.map((item) => (
             <article key={item.title} className="schedule-card">
               <div className="schedule-time-box">
                 <span className="schedule-icon">{item.icon}</span>
@@ -60,63 +50,7 @@ export default function DetailsPage() {
       </section>
 
       {/* Dress Color Code Section */}
-      <section className="dress-code-section section-shell" id="dress-code" aria-labelledby="dress-code-heading">
-        <div className="dress-code-header">
-          <p className="eyebrow">Attire &amp; Palette</p>
-          <h2 id="dress-code-heading">Dress Color Code</h2>
-          <p className="dress-code-desc">
-            We warmly invite our guests to celebrate in style! Our official color palette features four exquisite shades. Click any swatch below to copy its HEX color code for your tailoring and styling.
-          </p>
-        </div>
-
-        <div className="dress-code-grid">
-          {dressColors.map((color) => (
-            <article
-              key={color.name}
-              className="color-card"
-              onClick={() => handleCopyColor(color.hex)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') handleCopyColor(color.hex)
-              }}
-              title="Click to copy HEX code"
-            >
-              <div
-                className="color-swatch-box"
-                style={{ backgroundColor: color.hex, color: color.textColor }}
-              >
-                <span className="color-tag-badge">{color.tag}</span>
-                <span className="color-hex-badge">
-                  {copiedColor === color.hex ? '✓ Copied!' : color.hex}
-                </span>
-              </div>
-              <div className="color-card-body">
-                <div className="color-card-title-row">
-                  <h3 className="color-name">{color.name}</h3>
-                  <span className="color-dot" style={{ backgroundColor: color.hex }} />
-                </div>
-                <p className="color-desc">{color.description}</p>
-                <div className="color-styling-tip">
-                  <span className="styling-label">Style Inspiration</span>
-                  <p className="styling-text">{color.styling}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="dress-code-guide-card">
-          <div className="guide-icon">✨</div>
-          <div className="guide-content">
-            <h4>Attire Guidelines &amp; Palette Notes</h4>
-            <p>
-              <strong>Dress Code:</strong> Black Tie / Formal Traditional &amp; Contemporary Elegance.
-              Guests are welcome to style in any of our four official shades (Burgundy, Blush, Mint Green, or Olive Green), or pair them gracefully with classic neutrals (black, ivory, gold, or champagne).
-            </p>
-          </div>
-        </div>
-      </section>
+      <ColorCodeSection />
 
       {/* Venue & Logistics Section */}
       <section className="venue-logistics-section section-shell">

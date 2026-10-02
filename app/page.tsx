@@ -4,7 +4,8 @@ import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
-import { registryGifts, dressColors, galleryPhotos, faqData, GiftItem } from '@/lib/data'
+import { ColorCodeSection } from '@/components/ColorCodeSection'
+import { registryGifts, galleryPhotos, faqData, GiftItem } from '@/lib/data'
 
 function Countdown() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -100,10 +101,10 @@ export default function Page() {
       <section id="about" className="story section-shell">
         <div className="story-art">
           <img
-            src="/frame.png"
-            alt="Illustrated leafy wreath with ENSORB logo"
+            src="/logo-fav.jpeg"
+            alt="ENSORB Wedding Emblem"
+            className="story-logo-rounded"
           />
-          <span className="story-logo-text">ENSORB</span>
         </div>
         <div className="story-copy">
           <p className="eyebrow">Our story</p>
@@ -156,63 +157,7 @@ export default function Page() {
       </section>
 
       {/* Dress Color Code Section */}
-      <section id="dress-code" className="dress-code-section section-shell" aria-labelledby="dress-code-title">
-        <div className="dress-code-header">
-          <p className="eyebrow">Attire &amp; Palette</p>
-          <h2 id="dress-code-title">Dress Color Code</h2>
-          <p className="dress-code-desc">
-            We invite you to celebrate in style! Our official color palette brings together rich romantic tones and fresh botanical hues. Guests are warmly encouraged to incorporate any of these four curated shades into their wedding attire.
-          </p>
-        </div>
-
-        <div className="dress-code-grid">
-          {dressColors.map((color) => (
-            <article
-              key={color.name}
-              className="color-card"
-              onClick={() => handleCopyColor(color.hex)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') handleCopyColor(color.hex)
-              }}
-              title="Click to copy HEX code"
-            >
-              <div
-                className="color-swatch-box"
-                style={{ backgroundColor: color.hex, color: color.textColor }}
-              >
-                <span className="color-tag-badge">{color.tag}</span>
-                <span className="color-hex-badge">
-                  {copiedColor === color.hex ? '✓ Copied!' : color.hex}
-                </span>
-              </div>
-              <div className="color-card-body">
-                <div className="color-card-title-row">
-                  <h3 className="color-name">{color.name}</h3>
-                  <span className="color-dot" style={{ backgroundColor: color.hex }} />
-                </div>
-                <p className="color-desc">{color.description}</p>
-                <div className="color-styling-tip">
-                  <span className="styling-label">Style Inspiration</span>
-                  <p className="styling-text">{color.styling}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="dress-code-guide-card">
-          <div className="guide-icon">✨</div>
-          <div className="guide-content">
-            <h4>Attire Guidelines &amp; Palette Notes</h4>
-            <p>
-              <strong>Dress Code:</strong> Formal / Black Tie Elegance &amp; Modern Traditional Glamour.
-              Guests are welcome to style in any of our four official shades (Burgundy, Blush, Mint Green, or Olive Green), or pair them gracefully with classic neutrals (black, ivory, gold, or champagne).
-            </p>
-          </div>
-        </div>
-      </section>
+      <ColorCodeSection />
 
       {/* Horizontal Scrolling Gifts Registry Section */}
       <section id="gifts" className="registry-section section-shell" aria-labelledby="gifts-title">

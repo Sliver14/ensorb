@@ -11,12 +11,24 @@ export interface GiftItem {
 }
 
 export interface DressColor {
+  id: string
   name: string
+  subtitle: string
   hex: string
+  rgb: string
+  hsl: string
+  pantone: string
   textColor: string
   tag: string
   description: string
+  symbolism: string
+  fabrics: string[]
+  mensStyling: string
+  womensStyling: string
   styling: string
+  pairWith: string[]
+  gradient: string
+  accentColor: string
 }
 
 export interface ScheduleEvent {
@@ -43,36 +55,84 @@ export const navLinks = [
 
 export const dressColors: DressColor[] = [
   {
+    id: 'burgundy',
     name: 'Burgundy',
+    subtitle: 'Deep Velvet Wine',
     hex: '#6B1D2F',
+    rgb: 'rgb(107, 29, 47)',
+    hsl: 'hsl(346, 57%, 27%)',
+    pantone: 'Pantone 7428 C',
     textColor: '#ffffff',
     tag: 'Rich & Regal',
     description: 'A deep velvet wine shade radiating warmth, timeless celebration, and regal sophistication.',
+    symbolism: 'Devotion, royalty, strength, and lasting passion',
+    fabrics: ['Silk Velvet', 'Mikado Silk', 'Heavy Duchess Satin', 'Aso-Oke', 'Wool Crepe'],
+    mensStyling: 'Velvet dinner jackets, bespoke agbada, satin lapel tuxedos, pocket squares & bowties',
+    womensStyling: 'Corseted evening gowns, tiered lace dresses, rich gele headwraps & statement clutch',
     styling: 'Velvet blazers, agbada, satin evening gowns, pocket squares & ties',
+    pairWith: ['Champagne Gold', 'Warm Ivory', 'Black Onyx', 'Rose Gold'],
+    gradient: 'linear-gradient(135deg, #7A1F36 0%, #6B1D2F 55%, #4A121F 100%)',
+    accentColor: '#D4AF37',
   },
   {
+    id: 'blush',
     name: 'Blush',
+    subtitle: 'Soft Rose Petal',
     hex: '#E8A598',
+    rgb: 'rgb(232, 165, 152)',
+    hsl: 'hsl(10, 62%, 75%)',
+    pantone: 'Pantone 706 C',
     textColor: '#191919',
     tag: 'Soft & Romantic',
     description: 'A gentle pastel rose tone embodying tenderness, delicate grace, and romantic charm.',
+    symbolism: 'Grace, tenderness, joy, and gentle romance',
+    fabrics: ['Flowing Chiffon', 'French Tulle', 'Embroidered Cord Lace', 'Organza', 'Raw Silk'],
+    mensStyling: 'Blush linen shirts, pastel ties & pocket silks, lightweight blazer accents',
+    womensStyling: 'Chiffon tiered gowns, delicate lace midi dresses, floral appliqués, pearl jewelry',
     styling: 'Flowing chiffon dresses, pastel lace, silk shirts, delicate floral accessories',
+    pairWith: ['Warm Burgundy', 'Rose Gold', 'Pearl White', 'Champagne'],
+    gradient: 'linear-gradient(135deg, #F5D0C5 0%, #E8A598 55%, #D48B7E 100%)',
+    accentColor: '#6B1D2F',
   },
   {
+    id: 'mint-green',
     name: 'Mint Green',
+    subtitle: 'Luminous Botanical',
     hex: '#88C4A6',
+    rgb: 'rgb(136, 196, 166)',
+    hsl: 'hsl(150, 36%, 65%)',
+    pantone: 'Pantone 565 C',
     textColor: '#191919',
     tag: 'Fresh & Luminous',
     description: 'A fresh botanical pastel bringing subtle vitality, floral balance, and modern radiance.',
+    symbolism: 'Growth, serenity, freshness, and new beginnings',
+    fabrics: ['Crisp Linen', 'Lightweight Crepe', 'Damask', 'Lustrous Brocade', 'Organza'],
+    mensStyling: 'Bespoke pastel caftans, mint ties/accessories, tailored linen two-piece suits',
+    womensStyling: 'Pleated midi gowns, beaded lace dresses, modern traditional wraps, jade or gold accents',
     styling: 'Modern traditional attire, linen suits, summer gowns, statement jewelry',
+    pairWith: ['Olive Green', 'Classic Ivory', 'Burnished Gold', 'Soft Blush'],
+    gradient: 'linear-gradient(135deg, #A8DEC1 0%, #88C4A6 55%, #67A887 100%)',
+    accentColor: '#5B6B38',
   },
   {
+    id: 'olive-green',
     name: 'Olive Green',
+    subtitle: 'Earthy Botanical Luxe',
     hex: '#5B6B38',
+    rgb: 'rgb(91, 107, 56)',
+    hsl: 'hsl(79, 31%, 32%)',
+    pantone: 'Pantone 5753 C',
     textColor: '#ffffff',
     tag: 'Earthy & Chic',
     description: 'An earthy, distinguished olive green grounding our palette in organic luxury and poise.',
+    symbolism: 'Harmony, peace, endurance, and organic prosperity',
+    fabrics: ['Rich Brocade', 'Italian Wool', 'Structured Jacquard', 'Aso-Oke', 'Shantung Silk'],
+    mensStyling: 'Deep olive three-piece suits, tailored senator wear, embroidered agbada with gold accents',
+    womensStyling: 'Structured jacquard gowns, sleek column dresses, emerald & antique gold accessories',
     styling: 'Tailored suits, rich brocade, structured dresses, emerald & olive accents',
+    pairWith: ['Mint Green', 'Antique Gold', 'Black Velvet', 'Warm Ivory'],
+    gradient: 'linear-gradient(135deg, #6E8045 0%, #5B6B38 55%, #44512A 100%)',
+    accentColor: '#D4AF37',
   },
 ]
 

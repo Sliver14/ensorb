@@ -54,11 +54,10 @@ export default function StoryPage() {
       <section className="story-timeline-section section-shell">
         <div className="story-crest-banner">
           <img
-            src="/frame.png"
-            alt="Illustrated leafy wreath with ENSORB monogram"
-            className="story-crest-img"
+            src="/logo-fav.jpeg"
+            alt="ENSORB Wedding Emblem"
+            className="story-crest-rounded"
           />
-          <span className="story-crest-logo">ENSORB</span>
         </div>
 
         <div className="timeline-container">
