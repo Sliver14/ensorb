@@ -54,7 +54,7 @@ export default function StoryPage() {
       <section className="story-timeline-section section-shell">
         <div className="story-crest-banner">
           <img
-            src="https://framerusercontent.com/images/zeXOnZSDldcYdJLXTGEdVYZei4I.png?width=1000&height=1000"
+            src="/frame.png"
             alt="Illustrated leafy wreath with ENSORB monogram"
             className="story-crest-img"
           />

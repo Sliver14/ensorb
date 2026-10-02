@@ -100,7 +100,7 @@ export default function Page() {
       <section id="about" className="story section-shell">
         <div className="story-art">
           <img
-            src="https://framerusercontent.com/images/zeXOnZSDldcYdJLXTGEdVYZei4I.png?width=1000&height=1000"
+            src="/frame.png"
             alt="Illustrated leafy wreath with ENSORB logo"
           />
           <span className="story-logo-text">ENSORB</span>
