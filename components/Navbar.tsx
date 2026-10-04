@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { navLinks } from '@/lib/data'
@@ -8,7 +8,38 @@ import { MonogramLogo } from '@/components/WeddingIcons'
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
+  const lastScrollYRef = useRef(0)
   const pathname = usePathname()
+
+  // Smart sticky header: detect scroll direction & elevation
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      const lastScrollY = lastScrollYRef.current
+      const deltaY = currentScrollY - lastScrollY
+
+      // Elevation styling when scrolled beyond top
+      setIsScrolled(currentScrollY > 20)
+
+      // Always show when near top or if mobile menu is open
+      if (currentScrollY <= 60 || isMobileMenuOpen) {
+        setIsVisible(true)
+      } else if (deltaY > 6 && currentScrollY > 100) {
+        // Scrolling down -> hide smoothly
+        setIsVisible(false)
+      } else if (deltaY < -6) {
+        // Scrolling up -> show immediately
+        setIsVisible(true)
+      }
+
+      lastScrollYRef.current = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [isMobileMenuOpen])
 
   // Auto-close mobile menu on desktop window resize and handle Escape key
   useEffect(() => {
@@ -50,10 +81,18 @@ export function Navbar() {
 
   return (
     <>
-      <header className="burgundy-site-header">
+      <header
+        className={`burgundy-site-header ${isScrolled ? 'is-scrolled' : ''} ${
+          isVisible ? 'is-visible' : 'is-hidden'
+        }`}
+      >
         <div className="header-inner">
           {/* Left: Botanical Monogram N & S */}
-          <Link className="header-monogram-link" href="/" aria-label="Ngozi & Sorbari Wedding Home">
+          <Link
+            className="header-monogram-link"
+            href="/"
+            aria-label="Ngozi & Sorbari Wedding Home"
+          >
             <MonogramLogo size={42} />
           </Link>
 
@@ -131,3 +170,4 @@ export function Navbar() {
     </>
   )
 }
+
