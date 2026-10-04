@@ -1,17 +1,25 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
-import { ColorCodeSection } from '@/components/ColorCodeSection'
-import { registryGifts, galleryPhotos, faqData, GiftItem, bankDetails } from '@/lib/data'
+import {
+  MonogramLogo,
+  BotanicalSprig,
+  HeroCornerFlower,
+  ChurchIcon,
+  ChampagneIcon,
+  CalendarEventIcon,
+  HeroBottomTornWithWash,
+  TornBannerEdge,
+} from '@/components/WeddingIcons'
 
-function Countdown() {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+function CountdownTimer() {
+  const [timeLeft, setTimeLeft] = useState({ days: 186, hours: 16, minutes: 42, seconds: 18 })
 
   useEffect(() => {
-    const weddingDate = new Date('2026-10-31T14:00:00+01:00').getTime()
+    const weddingDate = new Date('2026-10-31T11:00:00+01:00').getTime()
     const updateCountdown = () => {
       const difference = Math.max(0, weddingDate - Date.now())
       setTimeLeft({
@@ -27,375 +35,371 @@ function Countdown() {
   }, [])
 
   return (
-    <div className="countdown" aria-label="Countdown to the wedding">
-      {Object.entries(timeLeft).map(([unit, value]) => (
-        <div className="countdown-unit" key={unit}>
-          <strong>{String(value).padStart(2, '0')}</strong>
-          <span>{unit}</span>
-        </div>
-      ))}
+    <div className="layout-countdown-grid" aria-label="Countdown to wedding">
+      <div className="countdown-col">
+        <strong className="count-num">{timeLeft.days}</strong>
+        <span className="count-label">DAYS</span>
+      </div>
+      <span className="count-divider" />
+      <div className="countdown-col">
+        <strong className="count-num">{String(timeLeft.hours).padStart(2, '0')}</strong>
+        <span className="count-label">HOURS</span>
+      </div>
+      <span className="count-divider" />
+      <div className="countdown-col">
+        <strong className="count-num">{String(timeLeft.minutes).padStart(2, '0')}</strong>
+        <span className="count-label">MINUTES</span>
+      </div>
+      <span className="count-divider" />
+      <div className="countdown-col">
+        <strong className="count-num">{String(timeLeft.seconds).padStart(2, '0')}</strong>
+        <span className="count-label">SECONDS</span>
+      </div>
     </div>
   )
 }
 
-export default function Page() {
-  const [selectedGift, setSelectedGift] = useState<GiftItem | null>(null)
-  const [copiedBank, setCopiedBank] = useState(false)
+export default function HomePage() {
   const [copiedColor, setCopiedColor] = useState<string | null>(null)
-  const giftScrollRef = useRef<HTMLDivElement>(null)
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0)
 
-  const scrollGifts = (direction: 'left' | 'right') => {
-    if (giftScrollRef.current) {
-      const scrollAmount = direction === 'left' ? -340 : 340
-      giftScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' })
-    }
-  }
-
-  const handleCopyAccount = (text: string) => {
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(text)
-      setCopiedBank(true)
-      setTimeout(() => setCopiedBank(false), 2500)
-    }
-  }
-
-  const handleCopyColor = (hex: string) => {
+  const handleCopyColor = (colorName: string, hex: string) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       navigator.clipboard.writeText(hex)
-      setCopiedColor(hex)
+      setCopiedColor(colorName)
       setTimeout(() => setCopiedColor(null), 2000)
     }
   }
 
+  const faqItems = [
+    {
+      question: 'How do I RSVP?',
+      answer:
+        'Simply click the RSVP tab or button, enter your unique invitation code, and your digital wedding pass will generate instantly for easy download and gate verification.',
+    },
+    {
+      question: 'Can I bring a plus-one?',
+      answer:
+        'Your personalized digital wedding pass reflects the number of reserved seats allocated to your invitation. Please check your pass details or contact us directly if you have inquiries.',
+    },
+    {
+      question: 'What is the dress code?',
+      answer:
+        'Our official wedding colors are Burgundy, Blush, Mint Green, and Olive Green. We warmly invite you to dress in formal, traditional, or black-tie elegant attire reflecting this palette!',
+    },
+    {
+      question: 'How does the wedding wishlist and cash contributions work?',
+      answer:
+        'You can browse our curated home wishlist on the Wishlist page to gift an entire item or make a partial contribution of any amount. You may also transfer monetary blessings directly using our designated Parallex Bank details.',
+    },
+    {
+      question: 'When will the reception details be available?',
+      answer:
+        'The reception will commence at 5:00 PM immediately following the church ceremony at Emerald Celebration Hall. Ushers will be on-site to guide all guests smoothly to the reception hall.',
+    },
+  ]
+
+  const paletteColors = [
+    { name: 'Burgundy', hex: '#5C1D2E', colorClass: 'swatch-burgundy' },
+    { name: 'Blush', hex: '#E5A1A8', colorClass: 'swatch-blush' },
+    { name: 'Mint Green', hex: '#8FAFA0', colorClass: 'swatch-mint' },
+    { name: 'Olive Green', hex: '#5E6140', colorClass: 'swatch-olive' },
+  ]
+
   return (
-    <main className="wedding-site">
+    <main className="elegant-burgundy-theme">
+      {/* Top Header */}
       <Navbar />
 
-      <section id="top" className="hero" aria-labelledby="hero-title">
-        <div className="hero-copy">
-          <h1 id="hero-title">NGOZI <span>&amp;</span> SORBARI</h1>
-          <div className="event-meta">
-            <span>Christ Embassy Ogba 1</span>
-            <i />
-            <span>October 31, 2026</span>
-            <i />
-            <span>Lagos, Nigeria</span>
-          </div>
-          <Countdown />
-          {/* <div className="hero-actions">
-            <Link href="/rsvp" className="hero-rsvp-cta">
-              RSVP &amp; Get Guest Pass ↗
-            </Link>
-            <Link href="/gifts" className="hero-gifts-cta">
-              Wedding Gifts Registry 🎁
-            </Link>
-          </div> */}
-        </div>
-        <img
-          className="hero-image"
-          src="https://framerusercontent.com/images/daqW7PY9WXmILN7A9MO8bt0TPk.png?width=3280&height=2304"
-          alt="A couple holding hands at golden hour"
-        />
-      </section>
-
-      <section id="about" className="story section-shell">
-        <div className="story-art">
+      {/* ====================================================================
+          SECTION 1: HERO (SPLIT TORN PAPER LAYOUT)
+         ==================================================================== */}
+      <section className="hero-split-section">
+        {/* Left: Romantic Couple Portrait */}
+        <div className="hero-photo-wrap">
           <img
-            src="/logo-fav.jpeg"
-            alt="ENSORB Wedding Emblem"
-            className="story-logo-rounded"
+            src="/couple/hero-portrait.png"
+            alt="Ngozi & Sorbari Wedding Portrait"
+            className="hero-couple-img"
           />
+          <div className="hero-photo-vignette" />
         </div>
-        <div className="story-copy">
-          <p className="eyebrow">Our story</p>
-          <h2>A coffee date that became forever.</h2>
-          <p>
-            Ngozi and Sorbari first met over a simple coffee date which ended up being the start of their forever. Now, they are stepping into their next chapter, hand in hand, with hearts full of gratitude.
-          </p>
-          <Link href="/story" className="section-explore-link">
-            Read Our Full Story &amp; Timeline <span>↗</span>
-          </Link>
-        </div>
-      </section>
 
-      <section className="gallery section-shell" aria-label="Engagement photographs">
-        {galleryPhotos.map((photo, index) => (
-          <img
-            key={photo.src}
-            className={index === 3 ? 'wide-photo' : ''}
-            src={photo.src}
-            alt={photo.alt}
-          />
-        ))}
-      </section>
+        {/* Right: Torn Paper Deckled Card */}
+        <div className="hero-deckled-card">
+          {/* Vertical Torn Edge Overlap */}
+          <div className="hero-vertical-torn-edge" aria-hidden="true" />
 
-      <section id="accommodation" className="details section-shell">
-        <div>
-          <p className="eyebrow">The celebration</p>
-          <h2>Come celebrate with us.</h2>
-        </div>
-        <div className="detail-grid">
-          <article>
-            <span>01</span>
-            <h3>The Program</h3>
-            <p>Join us for the solemn exchange of vows at 2:00 PM, followed by cocktails, royal reception banquet, and after-party.</p>
-            <Link href="/details" className="article-sub-link">View Full Program &amp; Schedule ↗</Link>
-          </article>
-          <article id="program">
-            <span>02</span>
-            <h3>Dress Color Code</h3>
-            <p>Our official palette features Burgundy, Blush, Mint Green, and Olive Green for formal and traditional elegance.</p>
-            <Link href="/details#dress-code" className="article-sub-link">Explore Palette &amp; HEX Codes ↗</Link>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Gifts &amp; Registry</h3>
-            <p>Explore our curated wishlist of home essentials or bless us with a monetary cash gift towards our new beginning.</p>
-            <Link href="/gifts" className="article-sub-link">Browse Gift Registry ↗</Link>
-          </article>
-        </div>
-      </section>
+          {/* Large Corner Flower draped over top right */}
+          <HeroCornerFlower className="hero-corner-flower floating-flower-sway" />
 
-      {/* Dress Color Code Section */}
-      <ColorCodeSection />
+          <div className="hero-card-inner">
+            <span className="eyebrow-spaced">THE WEDDING OF</span>
+            
+            <h1 className="hero-couple-title">
+              Ngozi <span className="script-amp">&amp;</span>
+              <br />
+              Sorbari
+            </h1>
 
-      {/* Horizontal Scrolling Gifts Registry Section */}
-      <section id="gifts" className="registry-section section-shell" aria-labelledby="gifts-title">
-        <div className="registry-horizontal-header">
-          <div className="registry-horizontal-title-wrap">
-            <p className="eyebrow">A little something</p>
-            <h2 id="gifts-title">Wedding Gifts</h2>
-            <p className="registry-desc">
-              We are so grateful to celebrate with you. For loved ones who have asked how to bless our new beginning, here is a preview of our curated wishlist.
-            </p>
-          </div>
-          <div className="registry-horizontal-actions">
-            <div className="carousel-nav-buttons">
-              <button
-                type="button"
-                className="carousel-arrow-btn"
-                onClick={() => scrollGifts('left')}
-                aria-label="Scroll gifts left"
-              >
-                ←
-              </button>
-              <button
-                type="button"
-                className="carousel-arrow-btn"
-                onClick={() => scrollGifts('right')}
-                aria-label="Scroll gifts right"
-              >
-                →
-              </button>
+            <div className="hero-date-box">
+              <span className="hero-date-text font-serif">31 OCTOBER 2026</span>
+              <span className="hero-time-text">11:00 AM</span>
             </div>
-            <Link href="/gifts" className="see-full-registry-link">
-              View All {registryGifts.length} Gifts <span>↗</span>
-            </Link>
-          </div>
-        </div>
 
-        {/* Horizontal Scroll Track */}
-        <div className="gifts-horizontal-scroller" ref={giftScrollRef}>
-          {registryGifts.map((gift) => (
-            <article key={gift.id} className="gift-horizontal-card">
-              <div className="gift-image-wrap" onClick={() => setSelectedGift(gift)}>
-                <img src={gift.image} alt={gift.title} loading="lazy" />
-                <span className="gift-category-tag">{gift.categoryLabel}</span>
-              </div>
-              <div className="gift-card-body">
-                <div className="gift-card-main">
-                  <h3>{gift.title}</h3>
-                  <div className="gift-price-tag">{gift.price}</div>
-                  <p>{gift.description}</p>
-                </div>
-                <div className="gift-card-footer">
-                  <button
-                    type="button"
-                    className="gift-btn"
-                    onClick={() => setSelectedGift(gift)}
-                  >
-                    Gift This Item <span>↗</span>
-                  </button>
-                </div>
-              </div>
-            </article>
-          ))}
-
-          {/* View More End Card */}
-          <Link href="/gifts" className="gift-view-more-card" aria-label="View all items in gift registry">
-            <div className="view-more-inner">
-              <span className="view-more-icon">🎁</span>
-              <span className="view-more-badge">Full Registry</span>
-              <h3>Explore All {registryGifts.length} Gifts</h3>
-              <p>Filter by categories, search items, and view gifting guidelines.</p>
-              <span className="view-more-btn">
-                View Full Registry <span>↗</span>
-              </span>
-            </div>
-          </Link>
-        </div>
-
-        <div className="cash-blessings-banner">
-          <div className="cash-banner-copy">
-            <span className="eyebrow">Monetary Gifts</span>
-            <h3>Prefer to send cash blessings?</h3>
-            <p>
-              If you wish to honor us with a cash gift towards our new home, you may transfer directly using our wedding account details:
-            </p>
-          </div>
-          <div className="cash-banner-card">
-            <div className="bank-info-item">
-              <span className="bank-info-label">Bank</span>
-              <strong className="bank-info-val">{bankDetails.bankName}</strong>
-            </div>
-            <div className="bank-info-item">
-              <span className="bank-info-label">Account Name</span>
-              <strong className="bank-info-val">{bankDetails.accountName}</strong>
-            </div>
-            <div className="bank-info-item">
-              <span className="bank-info-label">Account Number</span>
-              <strong className="bank-info-val font-mono">{bankDetails.accountNumber}</strong>
-            </div>
-            <button
-              type="button"
-              className="copy-account-btn"
-              onClick={() => handleCopyAccount(bankDetails.accountNumber)}
-            >
-              {copiedBank ? '✓ Account Number Copied!' : 'Copy Account Number'}
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Gift Modal */}
-      {selectedGift && (
-        <div className="gift-modal-backdrop" onClick={() => setSelectedGift(null)}>
-          <div className="gift-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
-            <button className="modal-close-btn" onClick={() => setSelectedGift(null)} aria-label="Close dialog">✕</button>
-            <div className="modal-grid">
-              <div className="modal-photo">
-                <img src={selectedGift.image} alt={selectedGift.title} />
-              </div>
-              <div className="modal-info">
-                <span className="modal-tag">{selectedGift.categoryLabel}</span>
-                <h2>{selectedGift.title}</h2>
-                <div className="modal-price-tag">{selectedGift.price}</div>
-                <p className="modal-summary">{selectedGift.description}</p>
-
-                <div className="modal-gifting-guide">
-                  <h4>How to Gift This:</h4>
-                  <p>
-                    You may purchase this item directly or transfer the value (<strong>{selectedGift.price}</strong>) with the reference <strong>&quot;{selectedGift.title}&quot;</strong>.
-                  </p>
-                  <div className="modal-bank-box">
-                    <div className="bank-line"><span>Bank:</span> <strong>{bankDetails.bankName}</strong></div>
-                    <div className="bank-line"><span>Account Name:</span> <strong>{bankDetails.accountName}</strong></div>
-                    <div className="bank-line"><span>Account Number:</span> <strong>{bankDetails.accountNumber}</strong></div>
-                    <div className="bank-line"><span>Item Value:</span> <strong>{selectedGift.price}</strong></div>
-                    <button
-                      type="button"
-                      className="modal-copy-btn"
-                      onClick={() => handleCopyAccount(bankDetails.accountNumber)}
-                    >
-                      {copiedBank ? '✓ Account Copied!' : 'Copy Account Number'}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="modal-actions">
-                  <a
-                    className="modal-email-btn"
-                    href={`mailto:hello@example.com?subject=Wedding%20Gift%20-%20${encodeURIComponent(selectedGift.title)}%20(${encodeURIComponent(selectedGift.price)})&body=Hello%20Ngozi%20%26%20Sorbari,%0A%0AI%20would%20like%20to%20bless%20you%20with%20the%20${encodeURIComponent(selectedGift.title)}%20(${encodeURIComponent(selectedGift.price)})!`}
-                  >
-                    Notify Couple via Email <span>↗</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* RSVP Call to Action Banner Section */}
-      <section id="rsvp" className="rsvp-section section-shell" aria-labelledby="rsvp-title">
-        <div className="home-rsvp-card">
-          <div className="home-rsvp-content">
-            <span className="rsvp-pill-badge">Celebration Attendance</span>
-            <h2 id="rsvp-title">Will you celebrate with us?</h2>
-            <p className="home-rsvp-desc">
-              We would be deeply honored by your presence as we exchange our vows and celebrate our love. Register your attendance in advance to instantly receive your personalized digital wedding pass and reserved table seating.
+            <p className="hero-script-tagline">
+              Two hearts, one beautiful journey.
             </p>
 
-            <div className="home-rsvp-perks">
-              <div className="rsvp-perk-item">
-                <span className="perk-icon">🎟️</span>
-                <div>
-                  <strong>Instant Digital Pass</strong>
-                  <p>VIP guest pass with entry QR &amp; barcode</p>
-                </div>
-              </div>
-              <div className="rsvp-perk-item">
-                <span className="perk-icon">✨</span>
-                <div>
-                  <strong>Reserved Seating</strong>
-                  <p>Guaranteed seating &amp; banquet service</p>
-                </div>
-              </div>
-            </div>
+            {/* Countdown Grid */}
+            <CountdownTimer />
 
-            <div className="home-rsvp-actions">
-              <Link href="/rsvp" className="home-rsvp-cta-btn">
-                Confirm RSVP &amp; Get Guest Pass ↗
+            {/* CTA Buttons */}
+            <div className="hero-buttons-row">
+              <Link href="/rsvp" className="btn-burgundy-pill">
+                RSVP <span className="btn-arrow">→</span>
+              </Link>
+              <Link href="/wishlist" className="btn-cream-outline-pill">
+                <span className="btn-icon">🎁</span> Gift Registry
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Dual-layer Bottom Torn Paper Edge with Soft Blush Watercolor Wash */}
+        <HeroBottomTornWithWash className="hero-bottom-wash-edge" />
+      </section>
+
+      {/* ====================================================================
+          SECTION 2: OUR STORY (TWO HEARTS, ONE JOURNEY & POLAROID)
+         ==================================================================== */}
+      <section className="our-story-section">
+        <div className="story-content-grid">
+          {/* Left Text */}
+          <div className="story-copy-col reveal-fade-left">
+            <span className="eyebrow-spaced">OUR STORY</span>
+            <h2 className="story-title">
+              Two Hearts,
+              <span className="script-title-block">One Journey</span>
+            </h2>
+            <p className="story-paragraph">
+              What started as a simple connection has grown into a beautiful love story. Through every season, we&apos;ve chosen each other — and now, we&apos;re stepping into forever.
+            </p>
+            <div className="story-learn-more-wrap">
+              <span className="story-hairline" />
+              <Link href="/story" className="story-learn-more-link">
+                Learn More <span>→</span>
               </Link>
             </div>
           </div>
 
-          <div className="home-rsvp-ticket-preview">
-            <div className="sample-ticket-card">
-              <div className="sample-ticket-header">
-                <span className="sample-monogram">ENSORB</span>
-                <span className="sample-badge">VIP GUEST PASS</span>
+          {/* Right Polaroid Photo */}
+          <div className="story-polaroid-col reveal-fade-right">
+            <div className="washi-polaroid-frame floating-polaroid-motion">
+              {/* Washi Masking Tape on Top */}
+              <div className="washi-tape-strip" />
+
+              <div className="polaroid-photo-inner">
+                <img
+                  src="/couple/story-polaroid.png"
+                  alt="Ngozi & Sorbari smiling studio portrait"
+                  className="polaroid-img"
+                />
               </div>
-              <div className="sample-ticket-body">
-                <div className="sample-guest-row">
-                  <div className="sample-avatar">NS</div>
-                  <div>
-                    <span className="sample-label">VIP Guest Pass</span>
-                    <h4>Honored Guest</h4>
-                    <span className="sample-meta">Table 07 • Oct 31, 2026</span>
-                  </div>
-                </div>
-                <div className="sample-divider" />
-                <div className="sample-venue-line">
-                  <strong>Christ Embassy Ogba 1</strong>
-                  <span>2:00 PM Prompt • Lagos</span>
-                </div>
-                <div className="sample-barcode-box">
-                  <div className="sample-barcode" />
-                  <span className="sample-code">PASS-NS-2026</span>
-                </div>
-              </div>
+
+              {/* Botanical Leaf sprig under Polaroid */}
+              <BotanicalSprig className="polaroid-botanical-corner floating-botanical-sway" />
             </div>
           </div>
         </div>
       </section>
 
-      <section id="faq" className="faq section-shell" aria-labelledby="faq-title">
-        <div className="faq-intro">
-          <p className="eyebrow">Good to know</p>
-          <h2 id="faq-title">A few helpful answers.</h2>
-          <p>If there is anything else you would like to know, please get in touch with us.</p>
+      {/* ====================================================================
+          SECTION 3: WEDDING DETAILS (THE BIG DAY - 3 COLUMNS)
+         ==================================================================== */}
+      <section className="wedding-details-section">
+        <div className="details-header-center reveal-fade-up">
+          <span className="eyebrow-spaced">WEDDING DETAILS</span>
+          <h2 className="section-serif-title">The Big Day</h2>
         </div>
-        <div className="faq-list">
-          {faqData.map((faq, idx) => (
-            <details key={faq.question} open={idx === 0}>
-              <summary>{faq.question}</summary>
-              <p>{faq.answer}</p>
-            </details>
+
+        <div className="details-three-col-grid reveal-stagger">
+          {/* 1. CEREMONY */}
+          <div className="detail-col-card">
+            <div className="detail-icon-wrap">
+              <ChurchIcon />
+            </div>
+            <span className="detail-col-eyebrow">CEREMONY</span>
+            <h3 className="detail-col-title">Christ Embassy Ogba 1</h3>
+            <p className="detail-col-address">
+              Plot 12/14 Acme Road, Ogba Industrial Estate, Ikeja, Lagos
+            </p>
+            <span className="detail-col-time">11:00 AM</span>
+            <a
+              href="https://maps.google.com/?q=Christ+Embassy+Ogba+1+Lagos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-detail-pill"
+            >
+              <span className="pin-icon">📍</span> Get Directions
+            </a>
+          </div>
+
+          <div className="detail-vertical-divider" />
+
+          {/* 2. RECEPTION */}
+          <div className="detail-col-card">
+            <div className="detail-icon-wrap">
+              <ChampagneIcon />
+            </div>
+            <span className="detail-col-eyebrow">RECEPTION</span>
+            <h3 className="detail-col-title">Emerald Celebration Hall</h3>
+            <p className="detail-col-address">
+              Join us immediately after the church ceremony for the royal grand reception and banquet.
+            </p>
+            <span className="detail-col-time">5:00 PM</span>
+            <span className="reception-note">Reception Banquet &amp; After-Party</span>
+          </div>
+
+          <div className="detail-vertical-divider" />
+
+          {/* 3. DATE */}
+          <div className="detail-col-card">
+            <div className="detail-icon-wrap">
+              <CalendarEventIcon />
+            </div>
+            <span className="detail-col-eyebrow">DATE</span>
+            <h3 className="detail-col-title">31 October 2026</h3>
+            <p className="detail-col-address">Saturday</p>
+            <span className="detail-col-time">11:00 AM Prompt</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          SECTION 4: OUR WEDDING COLOURS
+         ==================================================================== */}
+      <section className="wedding-colors-section">
+        <BotanicalSprig className="colors-sprig-left floating-botanical-sway" />
+        <BotanicalSprig className="colors-sprig-right floating-botanical-sway" />
+
+        <div className="colors-header-center reveal-fade-up">
+          <span className="eyebrow-spaced">OUR WEDDING COLOURS</span>
+          <p className="colors-subtitle">A combination of love, elegance and nature</p>
+        </div>
+
+        <div className="palette-swatches-row reveal-stagger">
+          {paletteColors.map((color) => (
+            <div
+              key={color.name}
+              className="swatch-item-wrap reveal-zoom-in"
+              onClick={() => handleCopyColor(color.name, color.hex)}
+              title={`Click to copy ${color.hex}`}
+            >
+              <div
+                className={`swatch-circle ${color.colorClass}`}
+                style={{ backgroundColor: color.hex }}
+              />
+              <span className="swatch-label">{color.name}</span>
+              {copiedColor === color.name && (
+                <span className="copied-tag">Copied!</span>
+              )}
+            </div>
           ))}
         </div>
       </section>
 
+      {/* ====================================================================
+          SECTION 5: FULL-WIDTH TORN-EDGE QUOTE BANNER
+         ==================================================================== */}
+      <section className="quote-banner-section-wrapper">
+        <TornBannerEdge position="top" color="#FAF7F2" />
+
+        <div className="quote-banner-split reveal-fade-up">
+          {/* Left: Romantic Portrait Photo */}
+          <div className="quote-photo-col">
+            <img
+              src="/couple/quote-portrait.jpg"
+              alt="Ngozi & Sorbari intimate embrace"
+              className="quote-couple-img"
+            />
+          </div>
+
+          {/* Right: Velvet Burgundy Torn Card */}
+          <div className="quote-burgundy-card">
+            {/* Vertical Torn Edge that organically tears across the couple's photo */}
+            <div className="quote-vertical-torn-edge" aria-hidden="true" />
+
+            <div className="quote-burgundy-inner">
+              <blockquote className="romantic-script-quote">
+                Together
+                <br />
+                <span>is our favourite</span>
+                <br />
+                place to be.
+              </blockquote>
+
+              <span className="quote-burgundy-hairline" />
+
+              <cite className="quote-author-tag">NGOZI &amp; SORBARI</cite>
+            </div>
+          </div>
+        </div>
+
+        <TornBannerEdge position="bottom" color="#FAF7F2" flip />
+      </section>
+
+      {/* ====================================================================
+          SECTION 6: CONTACT & FAQ
+         ==================================================================== */}
+      <section className="contact-faq-section">
+        <div className="faq-content-grid reveal-fade-up">
+          {/* Left Column: Get in touch */}
+          <div className="faq-contact-col reveal-fade-left">
+            <span className="eyebrow-spaced">GET IN TOUCH</span>
+            <h2 className="faq-main-title">Contact &amp; FAQ</h2>
+            <p className="faq-contact-desc">
+              Have a question? We&apos;d love to hear from you.
+            </p>
+            <a
+              href="mailto:hello@ensorb.com?subject=Wedding%20Inquiry%20-%20Ngozi%20%26%20Sorbari"
+              className="btn-send-message-pill"
+            >
+              <span className="mail-icon">✉</span> Send a Message
+            </a>
+          </div>
+
+          {/* Right Column: Accordion FAQ */}
+          <div className="faq-accordion-col reveal-stagger">
+            {faqItems.map((item, index) => {
+              const isOpen = openFaqIndex === index
+              return (
+                <div
+                  key={item.question}
+                  className={`faq-accordion-item ${isOpen ? 'is-open' : ''}`}
+                >
+                  <button
+                    type="button"
+                    className="faq-question-btn"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                    aria-expanded={isOpen}
+                  >
+                    <span>{item.question}</span>
+                    <span className="faq-toggle-icon">{isOpen ? '−' : '+'}</span>
+                  </button>
+                  {isOpen && (
+                    <div className="faq-answer-pane">
+                      <p>{item.answer}</p>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
       <Footer />
     </main>
   )

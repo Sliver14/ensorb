@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: '/gifts',
     images: [
       {
-        url: '/logo-fav.jpeg',
+        url: '/logo.png',
         width: 1200,
         height: 630,
         alt: 'Ngozi & Sorbari Wedding Gift Registry',

@@ -4,330 +4,409 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import {
+  BotanicalSprig,
+  CardCornerBotanical,
+  HeroBottomTornWithWash,
+  PinLocationIcon,
+  CalendarEventIcon,
+  PaperPlaneIcon,
+  MonogramLogo,
+} from '@/components/WeddingIcons'
 
 export default function RsvpPage() {
-  const [rsvpData, setRsvpData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    attendance: 'attending',
-    guestCount: '1',
-    note: '',
-    photo: '',
-  })
-  const [isSubmittingRsvp, setIsSubmittingRsvp] = useState(false)
-  const [ticketPass, setTicketPass] = useState<{
-    id: string
-    name: string
-    email: string
-    phone: string
-    attendance: string
-    guestCount: string
-    photo: string
-    date: string
-  } | null>(null)
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [attending, setAttending] = useState<'yes' | 'no'>('yes')
+  const [guestCount, setGuestCount] = useState<string>('1')
+  const [message, setMessage] = useState('')
+  const [inviteCode, setInviteCode] = useState('')
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setRsvpData((prev) => ({ ...prev, photo: reader.result as string }))
+  // Submission State
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submittedData, setSubmittedData] = useState<any | null>(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSubmitError(null)
+
+    if (!fullName.trim()) {
+      setSubmitError('Please enter your full name.')
+      return
+    }
+
+    if (!email.trim()) {
+      setSubmitError('Please enter your email address.')
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      const res = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: fullName.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          attending: attending === 'yes' ? 'attending' : 'declined',
+          guestCount: attending === 'yes' ? Number(guestCount) || 1 : 0,
+          message: message.trim(),
+          inviteCode: inviteCode.trim() || undefined,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (res.ok && data.success && data.invite) {
+        setSubmittedData(data.invite)
+      } else {
+        setSubmitError(data.error || 'Failed to submit your RSVP. Please try again.')
       }
-      reader.readAsDataURL(file)
+    } catch {
+      setSubmitError('Network error while processing RSVP. Please check your connection.')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
-  const handleRsvpSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!rsvpData.fullName || !rsvpData.email) return
-
-    setIsSubmittingRsvp(true)
-    setTimeout(() => {
-      const passId = `PASS-NS-${Math.floor(1000 + Math.random() * 9000)}`
-      setTicketPass({
-        id: passId,
-        name: rsvpData.fullName,
-        email: rsvpData.email,
-        phone: rsvpData.phone || '+234 800 000 0000',
-        attendance: rsvpData.attendance,
-        guestCount: rsvpData.guestCount,
-        photo: rsvpData.photo || '',
-        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
-      })
-      setIsSubmittingRsvp(false)
-    }, 600)
-  }
-
-  const resetRsvp = () => {
-    setTicketPass(null)
-    setRsvpData({
-      fullName: '',
-      email: '',
-      phone: '',
-      attendance: 'attending',
-      guestCount: '1',
-      note: '',
-      photo: '',
-    })
-  }
-
   return (
-    <main className="wedding-site">
+    <main className="elegant-burgundy-theme rsvp-page-layout">
       <Navbar />
 
-      <section className="subpage-hero section-shell">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link>
-          <span>/</span>
-          <strong>RSVP &amp; Tickets</strong>
+      {/* ====================================================================
+          SECTION 1: HERO (WE CAN'T WAIT TO CELEBRATE WITH YOU)
+         ==================================================================== */}
+      <section className="rsvp-hero-split-section">
+        <div className="rsvp-hero-split-container">
+          {/* Left Column: Couple Photo with Torn Edge */}
+          <div className="rsvp-hero-photo-col reveal-fade-left">
+            <img
+              src="/couple/hero-portrait.png"
+              alt="Ngozi & Sorbari loving couple portrait"
+              className="rsvp-hero-couple-img"
+            />
+            {/* Torn Paper Deckled Edge */}
+            <div className="rsvp-hero-torn-divider" aria-hidden="true">
+              <svg viewBox="0 0 40 800" preserveAspectRatio="none" className="torn-edge-svg">
+                <path
+                  d="M40,0 L0,0 C15,60 5,120 20,180 C32,240 10,300 24,360 C35,420 8,480 22,540 C34,600 12,660 26,720 C35,760 18,785 40,800 Z"
+                  fill="#FAF7F2"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Right Column: Hero Typography Card */}
+          <div className="rsvp-hero-copy-col reveal-fade-right">
+            {/* Top-Right Corner Botanical Sprig */}
+            <BotanicalSprig className="rsvp-hero-corner-botanical floating-botanical-sway" />
+
+            <div className="rsvp-hero-copy-inner">
+              <span className="eyebrow-spaced">— RSVP —</span>
+
+              <h1 className="rsvp-hero-headline">
+                We Can&apos;t Wait
+                <br />
+                <span>to Celebrate With You</span>
+              </h1>
+
+              <p className="rsvp-hero-script-desc">
+                Kindly let us know if you&apos;ll be joining us
+                <br />
+                on our special day.
+              </p>
+
+              {/* Heart Divider */}
+              <div className="rsvp-heart-divider">
+                <span className="divider-line" />
+                <span className="divider-heart">♡</span>
+                <span className="divider-line" />
+              </div>
+            </div>
+          </div>
         </div>
-        <p className="eyebrow">We Hope You Can Join Us</p>
-        <h1>Guest Registration &amp; Tickets</h1>
-        <p className="subpage-hero-desc">
-          We would be honored by your presence as we exchange our vows and celebrate our love. Please register your attendance below to generate your personalized digital wedding pass.
-        </p>
+
+        {/* Soft Watercolor Torn Wash Bottom Transition */}
+        <HeroBottomTornWithWash />
       </section>
 
-      <section className="rsvp-main-section section-shell">
-        {!ticketPass ? (
-          <div className="rsvp-form-container">
-            <div className="rsvp-form-header">
-              <h2>Confirm Your Attendance</h2>
-              <p>Please provide your details so we can reserve your seat and prepare your welcome pass.</p>
-            </div>
+      {/* ====================================================================
+          SECTION 2: MAIN CONTENT (RSVP FORM + EVENT DETAILS / POLAROID)
+         ==================================================================== */}
+      <section className="rsvp-content-section" id="rsvp-form-section">
+        <div className="rsvp-content-grid">
+          {/* LEFT COLUMN: RSVP FORM CARD */}
+          <div className="rsvp-form-column reveal-fade-left">
+            <div className="rsvp-form-card">
+              <h2 className="rsvp-form-title">RSVP FORM</h2>
+              <p className="rsvp-form-instruction">
+                Please fill in the form below to confirm your attendance and let us know if you&apos;ll be joining us for our wedding celebration.
+              </p>
 
-            <form onSubmit={handleRsvpSubmit} className="rsvp-form">
-              <div className="form-grid">
-                <div className="form-group">
-                  <label htmlFor="fullName">Full Name <span>*</span></label>
-                  <input
-                    id="fullName"
-                    type="text"
-                    required
-                    placeholder="e.g. Samuel Adeleke"
-                    value={rsvpData.fullName}
-                    onChange={(e) => setRsvpData({ ...rsvpData, fullName: e.target.value })}
-                  />
+              {submitError && (
+                <div className="rsvp-alert-box error">
+                  <span className="alert-icon">⚠️</span>
+                  <span>{submitError}</span>
                 </div>
+              )}
 
-                <div className="form-group">
-                  <label htmlFor="email">Email Address <span>*</span></label>
-                  <input
-                    id="email"
-                    type="email"
-                    required
-                    placeholder="e.g. samuel@example.com"
-                    value={rsvpData.email}
-                    onChange={(e) => setRsvpData({ ...rsvpData, email: e.target.value })}
-                  />
+              {submittedData ? (
+                /* Success Confirmation State */
+                <div className="rsvp-success-box">
+                  <div className="success-badge-icon">✓</div>
+                  <h3 className="success-heading">
+                    {submittedData.attendance === 'declined'
+                      ? 'Thank You for Letting Us Know'
+                      : 'RSVP Confirmed! 🎉'}
+                  </h3>
+                  <p className="success-desc">
+                    {submittedData.attendance === 'declined'
+                      ? `Dear ${submittedData.guestName}, thank you for your warm wishes. You will be dearly missed on our special day!`
+                      : `Dear ${submittedData.guestName}, we are overjoyed that you will be celebrating with us on October 31, 2026!`}
+                  </p>
+
+                  {submittedData.attendance !== 'declined' && (
+                    <div className="rsvp-pass-summary-card">
+                      <div className="summary-row">
+                        <span className="lbl">Digital Pass ID:</span>
+                        <strong className="font-mono">{submittedData.passId || 'PASS-NS-2026'}</strong>
+                      </div>
+                      <div className="summary-row">
+                        <span className="lbl">Assigned Table:</span>
+                        <strong className="text-burgundy">{submittedData.tableNumber}</strong>
+                      </div>
+                      <div className="summary-row">
+                        <span className="lbl">Guests Confirmed:</span>
+                        <strong>{submittedData.actualGuestCount} Guest(s)</strong>
+                      </div>
+                      <div className="summary-row">
+                        <span className="lbl">Email Notification:</span>
+                        <span>{submittedData.guestEmail}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="success-actions">
+                    <Link href={`/invite/${submittedData.code}`} className="btn-view-pass">
+                      View Digital Pass <span>→</span>
+                    </Link>
+                    <button
+                      type="button"
+                      className="btn-reset-form"
+                      onClick={() => {
+                        setSubmittedData(null)
+                        setFullName('')
+                        setEmail('')
+                        setPhone('')
+                        setMessage('')
+                      }}
+                    >
+                      Submit Another RSVP
+                    </button>
+                  </div>
                 </div>
-
-                <div className="form-group">
-                  <label htmlFor="phone">Phone / WhatsApp <span>*</span></label>
-                  <input
-                    id="phone"
-                    type="tel"
-                    required
-                    placeholder="e.g. +234 801 234 5678"
-                    value={rsvpData.phone}
-                    onChange={(e) => setRsvpData({ ...rsvpData, phone: e.target.value })}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="guestCount">Number of Reserved Seats</label>
-                  <select
-                    id="guestCount"
-                    value={rsvpData.guestCount}
-                    onChange={(e) => setRsvpData({ ...rsvpData, guestCount: e.target.value })}
-                  >
-                    <option value="1">1 Guest (Solo)</option>
-                    <option value="2">2 Guests (With Plus One)</option>
-                    <option value="3">3 Guests (Family)</option>
-                    <option value="4">4 Guests (Family)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="form-group attendance-group">
-                <label>Will you be attending? <span>*</span></label>
-                <div className="attendance-options">
-                  <label className={`attendance-option ${rsvpData.attendance === 'attending' ? 'active' : ''}`}>
+              ) : (
+                /* Active RSVP Form */
+                <form onSubmit={handleSubmit} className="rsvp-actual-form">
+                  {/* FULL NAME */}
+                  <div className="form-group">
+                    <label htmlFor="fullName">
+                      FULL NAME <span className="req">*</span>
+                    </label>
                     <input
-                      type="radio"
-                      name="attendance"
-                      value="attending"
-                      checked={rsvpData.attendance === 'attending'}
-                      onChange={() => setRsvpData({ ...rsvpData, attendance: 'attending' })}
+                      id="fullName"
+                      type="text"
+                      required
+                      placeholder="Enter your full name"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="form-control"
                     />
-                    <span>✓ Joyfully Attending</span>
-                  </label>
-                  <label className={`attendance-option ${rsvpData.attendance === 'declined' ? 'active' : ''}`}>
-                    <input
-                      type="radio"
-                      name="attendance"
-                      value="declined"
-                      checked={rsvpData.attendance === 'declined'}
-                      onChange={() => setRsvpData({ ...rsvpData, attendance: 'declined' })}
-                    />
-                    <span>✕ Regretfully Declining</span>
-                  </label>
-                </div>
-              </div>
+                  </div>
 
-              <div className="form-group photo-upload-group">
-                <label>Guest Photo / Avatar (for your digital ticket)</label>
-                <div className="photo-upload-container">
-                  {rsvpData.photo ? (
-                    <div className="photo-preview-wrap">
-                      <img src={rsvpData.photo} alt="Guest preview" className="photo-preview-img" />
+                  {/* EMAIL ADDRESS */}
+                  <div className="form-group">
+                    <label htmlFor="email">
+                      EMAIL ADDRESS <span className="req">*</span>
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      required
+                      placeholder="Enter your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="form-control"
+                    />
+                  </div>
+
+                  {/* PHONE NUMBER */}
+                  <div className="form-group">
+                    <label htmlFor="phone">
+                      PHONE NUMBER <span className="req">*</span>
+                    </label>
+                    <input
+                      id="phone"
+                      type="tel"
+                      required
+                      placeholder="Enter your phone number"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="form-control"
+                    />
+                  </div>
+
+                  {/* WILL YOU BE ATTENDING? */}
+                  <div className="form-group">
+                    <label className="attending-label">
+                      WILL YOU BE ATTENDING? <span className="req">*</span>
+                    </label>
+                    <div className="attending-toggle-row">
                       <button
                         type="button"
-                        className="photo-remove-btn"
-                        onClick={() => setRsvpData({ ...rsvpData, photo: '' })}
+                        className={`attending-pill-btn ${attending === 'yes' ? 'selected' : ''}`}
+                        onClick={() => setAttending('yes')}
                       >
-                        Change Photo ✕
+                        Yes, I&apos;ll be there
+                      </button>
+                      <button
+                        type="button"
+                        className={`attending-pill-btn ${attending === 'no' ? 'selected' : ''}`}
+                        onClick={() => setAttending('no')}
+                      >
+                        No, I can&apos;t make it
                       </button>
                     </div>
-                  ) : (
-                    <label className="photo-dropzone">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handlePhotoUpload}
-                        className="photo-file-input"
-                      />
-                      <span className="photo-dropzone-icon">📷</span>
-                      <span className="photo-dropzone-text">Click or drag an image to upload</span>
-                      <span className="photo-dropzone-hint">PNG, JPG, WEBP up to 5MB</span>
-                    </label>
-                  )}
-                </div>
-              </div>
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="note">Wishes for the Couple / Dietary Preferences (Optional)</label>
-                <textarea
-                  id="note"
-                  rows={3}
-                  placeholder="Share a warm congratulatory note or any special requests..."
-                  value={rsvpData.note}
-                  onChange={(e) => setRsvpData({ ...rsvpData, note: e.target.value })}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="rsvp-submit-button"
-                disabled={isSubmittingRsvp}
-              >
-                {isSubmittingRsvp ? 'Generating Ticket Pass...' : 'Register & Generate Wedding Pass ↗'}
-              </button>
-            </form>
-          </div>
-        ) : (
-          <div className="ticket-result-container">
-            <div className="ticket-success-message">
-              <span className="success-icon">✓</span>
-              <h2>Registration Confirmed!</h2>
-              <p>Your digital wedding pass has been generated. Please save or present this pass at the reception.</p>
-            </div>
-
-            <div className="digital-ticket-pass" id="digital-wedding-pass">
-              <div className="ticket-pass-header">
-                <div className="ticket-monogram">ENSORB</div>
-                <span className="ticket-badge">VIP GUEST PASS</span>
-              </div>
-
-              <div className="ticket-pass-body">
-                <div className="ticket-guest-profile">
-                  {ticketPass.photo ? (
-                    <img src={ticketPass.photo} alt={ticketPass.name} className="ticket-avatar" />
-                  ) : (
-                    <div className="ticket-avatar-placeholder">
-                      {ticketPass.name.charAt(0).toUpperCase()}
+                  {/* NUMBER OF GUESTS */}
+                  {attending === 'yes' && (
+                    <div className="form-group">
+                      <label htmlFor="guestCount">
+                        NUMBER OF GUESTS (INCL. YOU) <span className="req">*</span>
+                      </label>
+                      <div className="select-wrap">
+                        <select
+                          id="guestCount"
+                          value={guestCount}
+                          onChange={(e) => setGuestCount(e.target.value)}
+                          className="form-control select-control"
+                        >
+                          <option value="1">1 Guest</option>
+                          <option value="2">2 Guests</option>
+                          <option value="3">3 Guests</option>
+                          <option value="4">4 Guests</option>
+                        </select>
+                      </div>
                     </div>
                   )}
-                  <div className="ticket-guest-info">
-                    <span className="ticket-label">Guest Name</span>
-                    <h3 className="ticket-guest-name">{ticketPass.name}</h3>
-                    <span className="ticket-guest-details">{ticketPass.email} • {ticketPass.phone}</span>
-                  </div>
-                </div>
 
-                <div className="ticket-divider-notch" />
+                  {/* SPECIAL MESSAGE */}
+                  <div className="form-group">
+                    <label htmlFor="message">SPECIAL MESSAGE (OPTIONAL)</label>
+                    <textarea
+                      id="message"
+                      rows={3}
+                      placeholder="Leave us a message..."
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      className="form-control textarea-control"
+                    />
+                  </div>
 
-                <div className="ticket-event-grid">
-                  <div className="ticket-meta-box">
-                    <span className="ticket-meta-label">Event</span>
-                    <strong className="ticket-meta-val">Ngozi &amp; Sorbari Wedding</strong>
-                  </div>
-                  <div className="ticket-meta-box">
-                    <span className="ticket-meta-label">Date &amp; Time</span>
-                    <strong className="ticket-meta-val">Saturday, Oct 31, 2026 • 2:00 PM</strong>
-                  </div>
-                  <div className="ticket-meta-box">
-                    <span className="ticket-meta-label">Venue</span>
-                    <strong className="ticket-meta-val">Christ Embassy Ogba 1, Lagos</strong>
-                  </div>
-                  <div className="ticket-meta-box">
-                    <span className="ticket-meta-label">Seats Reserved</span>
-                    <strong className="ticket-meta-val">{ticketPass.guestCount} {ticketPass.guestCount === '1' ? 'Seat' : 'Seats'} (Table 07)</strong>
-                  </div>
-                </div>
+                  {/* SUBMIT BUTTON */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="btn-rsvp-submit"
+                  >
+                    <PaperPlaneIcon size={16} />
+                    <span>{isSubmitting ? 'Submitting...' : 'Submit RSVP'}</span>
+                    <span className="btn-arrow">→</span>
+                  </button>
 
-                <div className="ticket-pass-footer">
-                  <div className="ticket-barcode-wrap">
-                    <div className="ticket-barcode-lines" />
-                    <span className="ticket-pass-id">{ticketPass.id}</span>
+                  {/* Bottom Heart Divider */}
+                  <div className="form-bottom-divider">
+                    <span className="line" />
+                    <span className="heart">♡</span>
+                    <span className="line" />
                   </div>
-                  <div className="ticket-qr-box">
-                    <div className="ticket-qr-sim">QR</div>
-                    <span className="ticket-qr-label">SCAN AT ENTRANCE</span>
-                  </div>
+                </form>
+              )}
+            </div>
+
+            {/* Botanical Foliage on bottom left */}
+            <CardCornerBotanical className="rsvp-bottom-left-botanical floating-botanical-sway" />
+          </div>
+
+          {/* RIGHT COLUMN: POLAROID + EVENT DETAILS + GENTLE REMINDER */}
+          <div className="rsvp-details-column reveal-fade-right">
+            {/* 1. Tilted Centerpiece Polaroid */}
+            <div className="rsvp-polaroid-wrapper">
+              <div className="washi-polaroid-frame rsvp-table-polaroid floating-polaroid-motion">
+                <div className="washi-tape-strip" />
+                <div className="polaroid-photo-inner">
+                  <img
+                    src="/couple/table-centerpiece.jpg"
+                    alt="Romantic wedding dining centerpiece with candle lantern"
+                    className="polaroid-img"
+                  />
                 </div>
+                <BotanicalSprig className="polaroid-botanical-corner floating-botanical-sway" />
               </div>
             </div>
 
-            <div className="ticket-actions">
-              <button
-                type="button"
-                className="ticket-print-btn"
-                onClick={() => window.print()}
-              >
-                Print / Save Wedding Pass 🖨
-              </button>
-              <button
-                type="button"
-                className="ticket-new-btn"
-                onClick={resetRsvp}
-              >
-                Register Another Guest ↺
-              </button>
-            </div>
-          </div>
-        )}
+            {/* 2. EVENT DETAILS */}
+            <div className="rsvp-event-details-block reveal-fade-up">
+              <span className="eyebrow-spaced">EVENT DETAILS</span>
 
-        <div className="rsvp-info-cards-grid">
-          <div className="rsvp-info-card">
-            <span className="info-icon">📍</span>
-            <h4>Ceremony &amp; Venue</h4>
-            <p>Christ Embassy Ogba 1, Lagos. Complimentary parking and security are available on site.</p>
-          </div>
-          <div className="rsvp-info-card">
-            <span className="info-icon">🎨</span>
-            <h4>Dress Color Code</h4>
-            <p>Burgundy, Blush, Mint Green, or Olive Green. Black-tie formal or contemporary traditional.</p>
-          </div>
-          <div className="rsvp-info-card">
-            <span className="info-icon">⏰</span>
-            <h4>Punctuality</h4>
-            <p>Kindly arrive and be seated by 1:30 PM for the prelude and bridal entrance at 2:00 PM prompt.</p>
+              <div className="event-detail-item">
+                <div className="event-icon-circle">
+                  <CalendarEventIcon className="icon-svg" />
+                </div>
+                <div className="event-item-text">
+                  <span className="detail-tag">Date</span>
+                  <strong className="detail-val">31 October 2026</strong>
+                  <span className="detail-sub">Time: 11:00 AM</span>
+                </div>
+              </div>
+
+              <div className="event-detail-item">
+                <div className="event-icon-circle">
+                  <PinLocationIcon size={22} className="icon-svg" />
+                </div>
+                <div className="event-item-text">
+                  <span className="detail-tag">Venue</span>
+                  <strong className="detail-val">Christ Embassy Ogba 1</strong>
+                  <span className="detail-sub">
+                    3 Ogunnusi Rd, Aguda, Ojodu / 101233, Lagos
+                  </span>
+                </div>
+              </div>
+
+              <div className="event-details-divider-line" />
+            </div>
+
+            {/* 3. A GENTLE REMINDER CARD */}
+            <div className="rsvp-gentle-reminder-card">
+              <div className="reminder-heart-top">♥</div>
+              <h3 className="reminder-cursive-title">A Gentle Reminder</h3>
+              <p className="reminder-body-text">
+                Your response helps us plan and make this day even more special. We sincerely hope you can join us!
+              </p>
+              <div className="reminder-signature">Thank you</div>
+              <div className="reminder-names-stamp">— N &amp; S —</div>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* ====================================================================
+          SECTION 3: FOOTER
+         ==================================================================== */}
       <Footer />
     </main>
   )

@@ -34,7 +34,7 @@ export default function StoryPage() {
   ]
 
   return (
-    <main className="wedding-site">
+    <main className="elegant-burgundy-theme story-page-wrapper">
       <Navbar />
 
       <section className="subpage-hero section-shell">
@@ -54,7 +54,7 @@ export default function StoryPage() {
       <section className="story-timeline-section section-shell">
         <div className="story-crest-banner">
           <img
-            src="/logo-fav.jpeg"
+            src="/logo.png"
             alt="ENSORB Wedding Emblem"
             className="story-crest-rounded"
           />
@@ -108,8 +108,8 @@ export default function StoryPage() {
           <Link href="/rsvp" className="story-rsvp-cta">
             Join Our Celebration — RSVP Now ↗
           </Link>
-          <Link href="/gifts" className="story-gifts-cta">
-            View Gift Registry 🎁
+          <Link href="/wishlist" className="story-gifts-cta">
+            View Wedding Wishlist 🎁
           </Link>
         </div>
       </section>

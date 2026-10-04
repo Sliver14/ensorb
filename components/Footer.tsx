@@ -1,38 +1,53 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { navLinks } from '@/lib/data'
+import { MonogramLogo, BotanicalSprig } from '@/components/WeddingIcons'
 
 export function Footer() {
+  const pathname = usePathname()
+
+  // Hide on admin
+  if (pathname && pathname.startsWith('/admin')) {
+    return null
+  }
+
   return (
-    <footer className="site-footer">
-      <div className="footer-top">
-        <div className="footer-brand-wrap">
-          <Link href="/" className="footer-brand" aria-label="Back to home">
-            <img src="/logo.png" alt="ENSORB Logo" className="footer-logo-img" />
-            <span>ENSORB</span>
+    <footer className="burgundy-site-footer">
+      <div className="footer-watercolor-wash" />
+      
+      <BotanicalSprig className="footer-botanical-left" />
+      <BotanicalSprig className="footer-botanical-right" />
+
+      <div className="footer-inner">
+        <div className="footer-monogram-wrap">
+          <Link href="/" aria-label="Ngozi & Sorbari Wedding">
+            <MonogramLogo size={52} />
           </Link>
-          <h3 className="footer-title">Ngozi &amp; Sorbari</h3>
-          <p className="footer-text">
-            We are so excited to celebrate our love with you! Now, we’re stepping into our next chapter, hand in hand, with hearts full of gratitude for the love that surrounds us.
-          </p>
         </div>
-        <nav className="footer-nav" aria-label="Footer navigation">
-          <span className="footer-nav-title">Navigation</span>
-          <div className="footer-nav-links">
-            {navLinks.map((link) => (
-              <Link key={link.label} href={link.href}>
-                {link.label}
-              </Link>
-            ))}
-          </div>
+
+        <p className="footer-appreciation-text">
+          Thank you for being a part of our journey.
+        </p>
+
+        <div className="footer-heart-divider">
+          <span className="divider-line" />
+          <span className="heart-icon">♡</span>
+          <span className="divider-line" />
+        </div>
+
+        <nav className="footer-simple-nav" aria-label="Footer Links">
+          {navLinks.map((link) => (
+            <Link key={link.label} href={link.href}>
+              {link.label}
+            </Link>
+          ))}
         </nav>
-      </div>
-      <div className="footer-bottom">
-        <p>© 2026 Ngozi &amp; Sorbari. All rights reserved.</p>
-        <a href="#top" className="back-to-top">
-          Back to top ↑
-        </a>
+
+        <p className="footer-copyright">
+          © 2026 Ngozi &amp; Sorbari. All rights reserved. • October 31, 2026 • Lagos, Nigeria
+        </p>
       </div>
     </footer>
   )

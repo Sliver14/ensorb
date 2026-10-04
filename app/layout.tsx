@@ -1,6 +1,31 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Cormorant_Garamond, Great_Vibes, Montserrat } from 'next/font/google'
+import { WelcomeGate } from '@/components/WelcomeGate'
+import { ScrollAnimationProvider } from '@/components/ScrollAnimationProvider'
+import { AmbientAtmosphere } from '@/components/AmbientAtmosphere'
 import './globals.css'
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-cormorant',
+  display: 'swap',
+})
+
+const greatVibes = Great_Vibes({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-script',
+  display: 'swap',
+})
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+})
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.com'
 
@@ -49,7 +74,7 @@ export const metadata: Metadata = {
       'Join Ngozi and Sorbari for their wedding celebration at Christ Embassy Ogba 1, Lagos, Nigeria. Explore event schedule, dress code palette, gift registry & RSVP for your digital pass.',
     images: [
       {
-        url: '/logo-fav.jpeg',
+        url: '/couple/hero-portrait.png',
         width: 1200,
         height: 630,
         alt: 'Ngozi & Sorbari Wedding Celebration — October 31, 2026',
@@ -61,7 +86,7 @@ export const metadata: Metadata = {
     title: 'Ngozi & Sorbari — Our Wedding Celebration | October 31, 2026',
     description:
       'Join Ngozi and Sorbari for their wedding celebration on Saturday, October 31, 2026 at Christ Embassy Ogba 1, Lagos, Nigeria.',
-    images: ['/logo-fav.jpeg'],
+    images: ['/couple/hero-portrait.png'],
     creator: '@ensorb_wedding',
   },
   robots: {
@@ -78,16 +103,16 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/logo-fav.jpeg',
-        type: 'image/jpeg',
+        url: '/logo.png',
+        type: 'image/png',
       },
       {
-        url: '/logo-fav.jpeg',
+        url: '/logo.png',
         sizes: 'any',
       },
     ],
-    shortcut: '/logo-fav.jpeg',
-    apple: '/logo-fav.jpeg',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
   },
   category: 'Event',
 }
@@ -136,7 +161,7 @@ export default function RootLayout({
         longitude: '3.3411',
       },
     },
-    image: [`${siteUrl}/logo-fav.jpeg`],
+    image: [`${siteUrl}/logo.png`],
     organizer: {
       '@type': 'Person',
       name: 'Ngozi & Sorbari',
@@ -153,7 +178,7 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${cormorant.variable} ${greatVibes.variable} ${montserrat.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -161,9 +186,12 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        {children}
+        <WelcomeGate />
+        <AmbientAtmosphere />
+        <ScrollAnimationProvider>{children}</ScrollAnimationProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
 }
+

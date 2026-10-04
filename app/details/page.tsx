@@ -8,7 +8,7 @@ import { weddingSchedule } from '@/lib/data'
 
 export default function DetailsPage() {
   return (
-    <main className="wedding-site">
+    <main className="elegant-burgundy-theme details-page-wrapper">
       <Navbar />
 
       <section className="subpage-hero section-shell">
