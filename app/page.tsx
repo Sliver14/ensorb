@@ -96,7 +96,7 @@ export default function HomePage() {
     {
       question: 'When will the reception details be available?',
       answer:
-        'The church ceremony begins at 11:00 AM at Christ Embassy Ogba 1, Lagos, followed by the grand reception feast and banquet at 1:00 PM. Ushers will be on-site to guide all guests smoothly.',
+        'The church ceremony begins at 11:00 AM at Christ Embassy Ogba 1 (25 Odusanmi Street, Ogba), followed by the grand reception at 1:00 PM at CELVZ Youth Church (24 Sanyaolu Street, Oregun, Ikeja). For RSVP inquiries, contact Bright (09066157126) or Faith (08079071291).',
     },
   ]
 
@@ -239,11 +239,11 @@ export default function HomePage() {
             <span className="detail-col-eyebrow">CEREMONY</span>
             <h3 className="detail-col-title">Christ Embassy Ogba 1</h3>
             <p className="detail-col-address">
-              3 Ogunnusi Rd, Aguda, Ojodu 101233, Lagos
+              25 Odusanmi Street, Ogba, Lagos (Landmark: AY Hotel)
             </p>
-            <span className="detail-col-time">11:00 AM</span>
+            <span className="detail-col-time">11:00 AM Prompt</span>
             <a
-              href="https://maps.google.com/?q=Christ+Embassy+Ogba+1+Lagos"
+              href="https://maps.google.com/?q=25+Odusanmi+Street+Ogba+Lagos"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-detail-pill"
@@ -260,12 +260,19 @@ export default function HomePage() {
               <ChampagneIcon />
             </div>
             <span className="detail-col-eyebrow">RECEPTION</span>
-            <h3 className="detail-col-title">Reception Hall &amp; Banquet</h3>
+            <h3 className="detail-col-title">CELVZ Youth Church</h3>
             <p className="detail-col-address">
-              Join us immediately following the church ceremony for the grand wedding celebration and reception banquet.
+              24 Sanyaolu Street, Oregun, Ikeja, Lagos
             </p>
-            <span className="detail-col-time">1:00 PM</span>
-            <span className="reception-note">Reception Banquet &amp; Celebration</span>
+            <span className="detail-col-time">1:00 PM Prompt</span>
+            <a
+              href="https://maps.google.com/?q=24+Sanyaolu+Street+Oregun+Ikeja+Lagos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-detail-pill"
+            >
+              <span className="pin-icon">📍</span> Get Directions
+            </a>
           </div>
 
           <div className="detail-vertical-divider" />

@@ -183,7 +183,7 @@ export default function UniqueInvitePage({ params }: PageProps) {
         <p className="eyebrow">The Holy Matrimony Of</p>
         <h1>Ngozi &amp; Sorbari</h1>
         <p className="subpage-hero-desc">
-          Saturday, November 21, 2026 • 11:00 AM (Church) | 1:00 PM (Reception) • Christ Embassy Ogba 1, Lagos, Nigeria
+          Saturday, November 21, 2026 • 11:00 AM (Church: Christ Embassy Ogba 1) | 1:00 PM (Reception: CELVZ Youth Church, Oregun)
         </p>
       </section>
 

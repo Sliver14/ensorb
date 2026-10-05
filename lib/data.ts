@@ -313,35 +313,35 @@ export const weddingSchedule: ScheduleEvent[] = [
   {
     time: '10:30 AM',
     title: 'Guest Arrival & Prelude',
-    location: 'Main Sanctuary & Reception Foyer',
+    location: 'Christ Embassy Ogba 1 Sanctuary',
     description: 'Welcome music, ushering of guests to designated seats, and gathering for the sacred celebration.',
     icon: '🎻',
   },
   {
     time: '11:00 AM',
     title: 'Holy Matrimony & Church Ceremony',
-    location: 'Christ Embassy Ogba 1 Sanctuary',
+    location: 'Christ Embassy Ogba 1 • 25 Odusanmi St, Ogba',
     description: 'Procession of the bridal train, worship, exchange of holy matrimonial vows, and pastoral blessings.',
     icon: '💍',
   },
   {
     time: '12:30 PM',
     title: 'Photographs & Celebrations',
-    location: 'Church Courtyard & Grand Lawn',
+    location: 'Church Courtyard & Grounds',
     description: 'Formal family portraits, celebratory drinks, and congratulations with the newlyweds.',
     icon: '🥂',
   },
   {
     time: '01:00 PM',
     title: 'Grand Reception & Feast',
-    location: 'Emerald Celebration Hall',
+    location: 'CELVZ Youth Church • 24 Sanyaolu St, Oregun',
     description: 'Grand entrance of the newlyweds, culinary banquet, toast, cake cutting, and couple’s first dance.',
     icon: '✨',
   },
   {
     time: '04:30 PM',
     title: 'Celebration & Dancing',
-    location: 'Grand Ballroom Floor',
+    location: 'CELVZ Youth Church Celebration Hall',
     description: 'High-energy music, joyous dancing, dessert buffet, and celebrating with Ngozi & Sorbari!',
     icon: '💃',
   },
@@ -350,7 +350,7 @@ export const weddingSchedule: ScheduleEvent[] = [
 export const faqData: FAQItem[] = [
   {
     question: 'What should I wear?',
-    answer: 'Our official wedding color palette includes Burgundy, Blush, Mint Green, and Olive Green. We warmly invite you to dress in formal, traditional, or chic garden elegance incorporating any of these palette tones!',
+    answer: 'Our official wedding color palette includes Burgundy, Blush, Mint Green, and Olive Green (with accents of Cream). We warmly invite you to dress in formal, traditional, or chic garden elegance incorporating any of these palette tones!',
   },
   {
     question: 'How do I RSVP and get my ticket pass?',
@@ -358,7 +358,7 @@ export const faqData: FAQItem[] = [
   },
   {
     question: 'Where will the wedding take place?',
-    answer: 'The wedding ceremony and celebration will be held at Christ Embassy Ogba 1, 3 Ogunnusi Rd, Aguda, Ojodu, Lagos, Nigeria on Saturday, November 21, 2026 starting at 11:00 AM (Church) and 1:00 PM (Reception).',
+    answer: 'The church ceremony will take place at Christ Embassy Ogba 1, 25 Odusanmi Street, Ogba, Lagos (Landmark: AY Hotel) on Saturday, November 21, 2026 starting at 11:00 AM. The grand reception follows at 1:00 PM at CELVZ Youth Church, 24 Sanyaolu Street, Oregun, Ikeja, Lagos. RSVP contacts: Bright (09066157126) & Faith (08079071291).',
   },
   {
     question: 'How does the wedding wishlist and cash contributions work?',

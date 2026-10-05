@@ -10,6 +10,7 @@ import {
   HeroBottomTornWithWash,
   PinLocationIcon,
   CalendarEventIcon,
+  ChampagneIcon,
   PaperPlaneIcon,
   MonogramLogo,
 } from '@/components/WeddingIcons'
@@ -402,10 +403,23 @@ export default function RsvpPage() {
                   <PinLocationIcon size={22} className="icon-svg" />
                 </div>
                 <div className="event-item-text">
-                  <span className="detail-tag">Venue</span>
+                  <span className="detail-tag">Ceremony (11:00 AM)</span>
                   <strong className="detail-val">Christ Embassy Ogba 1</strong>
                   <span className="detail-sub">
-                    3 Ogunnusi Rd, Aguda, Ojodu 101233, Lagos
+                    25 Odusanmi St, Ogba, Lagos (Landmark: AY Hotel)
+                  </span>
+                </div>
+              </div>
+
+              <div className="event-detail-item">
+                <div className="event-icon-circle">
+                  <ChampagneIcon className="icon-svg" />
+                </div>
+                <div className="event-item-text">
+                  <span className="detail-tag">Reception (1:00 PM)</span>
+                  <strong className="detail-val">CELVZ Youth Church</strong>
+                  <span className="detail-sub">
+                    24 Sanyaolu St, Oregun, Ikeja, Lagos
                   </span>
                 </div>
               </div>

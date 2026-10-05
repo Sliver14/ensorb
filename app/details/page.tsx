@@ -55,42 +55,79 @@ export default function DetailsPage() {
       {/* Venue & Logistics Section */}
       <section className="venue-logistics-section section-shell">
         <div className="venue-grid">
+          {/* 1. Church Venue Card */}
           <div className="venue-card">
-            <span className="venue-badge">Main Venue</span>
+            <span className="venue-badge">Church Ceremony • 11:00 AM</span>
             <h3>Christ Embassy Ogba 1</h3>
             <p className="venue-address">
-              3 Ogunnusi Rd, Aguda, Ojodu 101233, Lagos, Nigeria
+              25 Odusanmi Street, Ogba, Lagos, Nigeria
+              <br />
+              <span style={{ fontSize: '13px', color: '#8C4050' }}>(Landmark: AY Hotel)</span>
             </p>
             <div className="venue-features">
               <div className="feature-item">
                 <span>🚗</span>
                 <div>
-                  <strong>Complimentary Parking</strong>
-                  <p>Dedicated secure guest parking is available inside the premises.</p>
+                  <strong>Guest Parking</strong>
+                  <p>Secure parking available at the church grounds.</p>
                 </div>
               </div>
               <div className="feature-item">
                 <span>🛡️</span>
                 <div>
-                  <strong>Event Security</strong>
-                  <p>Uniformed protocol and security teams will guide your entry with your digital pass.</p>
+                  <strong>Protocol &amp; Security</strong>
+                  <p>Uniformed ushering teams will assist with seating.</p>
                 </div>
               </div>
             </div>
             <a
-              href="https://maps.google.com/?q=Christ+Embassy+Ogba+1+Lagos"
+              href="https://maps.google.com/?q=25+Odusanmi+Street+Ogba+Lagos"
               target="_blank"
               rel="noopener noreferrer"
               className="venue-map-btn"
             >
-              Open in Google Maps ↗
+              Directions to Church ↗
             </a>
           </div>
 
+          {/* 2. Reception Venue Card */}
+          <div className="venue-card">
+            <span className="venue-badge">Grand Reception • 1:00 PM</span>
+            <h3>CELVZ Youth Church</h3>
+            <p className="venue-address">
+              24 Sanyaolu Street, Oregun, Ikeja, Lagos, Nigeria
+            </p>
+            <div className="venue-features">
+              <div className="feature-item">
+                <span>🥂</span>
+                <div>
+                  <strong>Grand Banquet Hall</strong>
+                  <p>Feast, cake cutting, toasts, and dancing celebration.</p>
+                </div>
+              </div>
+              <div className="feature-item">
+                <span>📞</span>
+                <div>
+                  <strong>RSVP Contacts</strong>
+                  <p>Bright: 09066157126 • Faith: 08079071291</p>
+                </div>
+              </div>
+            </div>
+            <a
+              href="https://maps.google.com/?q=24+Sanyaolu+Street+Oregun+Ikeja+Lagos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="venue-map-btn"
+            >
+              Directions to Reception ↗
+            </a>
+          </div>
+
+          {/* 3. Accommodations Card */}
           <div className="accommodation-card">
             <span className="venue-badge">Guest Stay</span>
             <h3>Nearby Accommodations</h3>
-            <p>For guests traveling from out of state or abroad, we recommend the following comfortable hotels nearby:</p>
+            <p>For guests traveling from out of state or abroad, we recommend the following comfortable hotels nearby in Ikeja:</p>
             <div className="hotels-list">
               <div className="hotel-item">
                 <strong>Sheraton Lagos Hotel</strong>
