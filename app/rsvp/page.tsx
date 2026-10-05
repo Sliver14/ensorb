@@ -84,7 +84,7 @@ export default function RsvpPage() {
           {/* Left Column: Couple Photo with Torn Edge */}
           <div className="rsvp-hero-photo-col reveal-fade-left">
             <img
-              src="/couple/hero-portrait.png"
+              src="/couple/IMG_6075.png"
               alt="Ngozi & Sorbari loving couple portrait"
               className="rsvp-hero-couple-img"
             />
@@ -92,7 +92,7 @@ export default function RsvpPage() {
             <div className="rsvp-hero-torn-divider" aria-hidden="true">
               <svg viewBox="0 0 40 800" preserveAspectRatio="none" className="torn-edge-svg">
                 <path
-                  d="M40,0 L0,0 C15,60 5,120 20,180 C32,240 10,300 24,360 C35,420 8,480 22,540 C34,600 12,660 26,720 C35,760 18,785 40,800 Z"
+                  d="M14,0 C22,40 10,100 24,160 C34,220 16,280 26,340 C34,400 12,460 24,520 C34,580 14,640 26,700 C32,750 18,780 22,800 L40,800 L40,0 Z"
                   fill="#FAF7F2"
                 />
               </svg>

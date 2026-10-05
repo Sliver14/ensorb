@@ -309,7 +309,7 @@ export default function WishlistPage() {
           </div>
         </div>
 
-        <TornBannerEdge position="bottom" color="#FAF7F2" flip />
+        <TornBannerEdge position="bottom" color="#FAF7F2" />
       </section>
 
       {/* ====================================================================

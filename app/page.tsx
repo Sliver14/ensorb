@@ -118,7 +118,7 @@ export default function HomePage() {
         {/* Left: Romantic Couple Portrait */}
         <div className="hero-photo-wrap">
           <img
-            src="/couple/hero-portrait.png"
+            src="/couple/IMG_4784-Recovered.jpg"
             alt="Ngozi & Sorbari Wedding Portrait"
             className="hero-couple-img"
           />
@@ -135,7 +135,7 @@ export default function HomePage() {
 
           <div className="hero-card-inner">
             <span className="eyebrow-spaced">THE WEDDING OF</span>
-            
+
             <h1 className="hero-couple-title">
               Ngozi <span className="script-amp">&amp;</span>
               <br />
@@ -346,7 +346,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <TornBannerEdge position="bottom" color="#FAF7F2" flip />
+        <TornBannerEdge position="bottom" color="#FAF7F2" />
       </section>
 
       {/* ====================================================================

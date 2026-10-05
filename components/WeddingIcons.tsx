@@ -208,39 +208,55 @@ export function HeroCornerFlower({ className = '', style = {} }: { className?: s
 }
 
 export function TornPaperDivider({ position = 'top', color = '#FAF7F2' }: { position?: 'top' | 'bottom'; color?: string }) {
+  const isTop = position === 'top'
   return (
     <div className={`torn-paper-divider torn-${position}`} aria-hidden="true">
       <svg
-        viewBox="0 0 1440 56"
+        viewBox="0 0 1440 44"
         fill="none"
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ display: 'block', width: '100%', height: '44px' }}
+        style={{ display: 'block', width: '100%', height: '34px' }}
       >
-        <path
-          d="M0,28 C30,22 65,34 110,24 C165,12 210,32 270,20 C330,8 385,28 450,16 C515,4 570,30 640,18 C710,6 775,28 850,16 C925,4 985,28 1060,18 C1135,8 1195,30 1270,18 C1335,8 1395,26 1440,22 L1440,56 L0,56 Z"
-          fill={color}
-        />
+        {isTop ? (
+          <path
+            d="M0,0 L1440,0 L1440,18 C1395,24 1335,8 1270,18 C1195,28 1135,8 1060,18 C985,26 925,4 850,16 C775,28 710,6 640,18 C570,28 515,4 450,16 C385,26 330,8 270,20 C210,30 165,12 110,24 C65,32 30,20 0,26 Z"
+            fill={color}
+          />
+        ) : (
+          <path
+            d="M0,22 C30,16 65,28 110,18 C165,8 210,26 270,16 C330,4 385,22 450,12 C515,2 570,24 640,14 C710,2 775,22 850,12 C925,2 985,22 1060,14 C1135,4 1195,24 1270,14 C1335,4 1395,20 1440,16 L1440,44 L0,44 Z"
+            fill={color}
+          />
+        )}
       </svg>
     </div>
   )
 }
 
-export function HeroBottomTornWithWash({ className = '' }: { className?: string }) {
+export function HeroBottomTornWithWash({
+  className = '',
+  paperColor = '#FAF7F2',
+  washColor = 'rgba(229, 161, 168, 0.45)'
+}: {
+  className?: string;
+  paperColor?: string;
+  washColor?: string;
+}) {
   return (
     <div className={`hero-bottom-torn-container ${className}`} aria-hidden="true">
       {/* Underlying Organic Blush Pink Watercolor Wash Ribbon */}
       <div className="hero-blush-wash-layer">
         <svg
-          viewBox="0 0 1440 70"
+          viewBox="0 0 1440 64"
           fill="none"
           preserveAspectRatio="none"
           xmlns="http://www.w3.org/2000/svg"
-          style={{ display: 'block', width: '100%', height: '58px' }}
+          style={{ display: 'block', width: '100%', height: '52px' }}
         >
           <path
-            d="M0,32 C40,18 90,44 150,30 C220,14 280,38 360,24 C440,10 510,36 600,22 C690,8 760,40 850,26 C940,12 1010,38 1100,24 C1190,10 1260,34 1350,20 C1395,14 1425,26 1440,30 L1440,70 L0,70 Z"
-            fill="rgba(229, 161, 168, 0.42)"
+            d="M0,24 C40,12 90,36 150,22 C220,8 280,32 360,18 C440,4 510,30 600,16 C690,2 760,34 850,20 C940,6 1010,32 1100,18 C1190,4 1260,28 1350,14 C1395,8 1425,20 1440,24 L1440,64 L0,64 Z"
+            fill={washColor}
           />
         </svg>
       </div>
@@ -248,15 +264,15 @@ export function HeroBottomTornWithWash({ className = '' }: { className?: string 
       {/* Main Foreground Cream Torn Paper Edge */}
       <div className="hero-cream-torn-layer">
         <svg
-          viewBox="0 0 1440 60"
+          viewBox="0 0 1440 50"
           fill="none"
           preserveAspectRatio="none"
           xmlns="http://www.w3.org/2000/svg"
-          style={{ display: 'block', width: '100%', height: '48px' }}
+          style={{ display: 'block', width: '100%', height: '42px' }}
         >
           <path
-            d="M0,26 C35,16 80,36 135,22 C195,8 250,32 320,18 C390,4 455,30 530,16 C605,2 670,32 750,18 C830,4 895,30 975,16 C1055,2 1120,28 1200,16 C1275,4 1345,26 1440,18 L1440,60 L0,60 Z"
-            fill="#FAF7F2"
+            d="M0,22 C35,12 80,30 135,18 C195,6 250,28 320,14 C390,2 455,26 530,12 C605,0 670,28 750,14 C830,2 895,26 975,12 C1055,0 1120,24 1200,12 C1275,2 1345,22 1440,14 L1440,50 L0,50 Z"
+            fill={paperColor}
           />
         </svg>
       </div>
@@ -264,20 +280,36 @@ export function HeroBottomTornWithWash({ className = '' }: { className?: string 
   )
 }
 
-export function TornBannerEdge({ position = 'top', color = '#FAF7F2', flip = false }: { position?: 'top' | 'bottom'; color?: string; flip?: boolean }) {
+export function TornBannerEdge({
+  position = 'top',
+  color = '#FAF7F2',
+  flip = false
+}: {
+  position?: 'top' | 'bottom';
+  color?: string;
+  flip?: boolean;
+}) {
+  const isTop = position === 'top'
   return (
     <div className={`torn-banner-edge edge-${position} ${flip ? 'flipped' : ''}`} aria-hidden="true">
       <svg
-        viewBox="0 0 1440 50"
+        viewBox="0 0 1440 38"
         fill="none"
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ display: 'block', width: '100%', height: '36px' }}
+        style={{ display: 'block', width: '100%', height: '28px' }}
       >
-        <path
-          d="M0,24 C45,12 95,34 160,20 C230,6 295,30 370,16 C445,2 510,32 590,18 C670,4 735,30 815,16 C895,2 960,28 1040,16 C1120,4 1185,28 1265,16 C1335,4 1395,24 1440,18 L1440,50 L0,50 Z"
-          fill={color}
-        />
+        {isTop ? (
+          <path
+            d="M0,0 L1440,0 L1440,16 C1395,24 1335,4 1265,16 C1185,26 1120,6 1040,16 C960,26 895,4 815,16 C735,28 670,6 590,18 C510,28 445,4 370,16 C295,26 230,8 160,20 C95,30 45,12 0,22 Z"
+            fill={color}
+          />
+        ) : (
+          <path
+            d="M0,16 C45,6 95,24 160,12 C230,2 295,20 370,8 C445,0 510,22 590,10 C670,0 735,22 815,10 C895,0 960,20 1040,10 C1120,0 1185,20 1265,10 C1335,0 1395,18 1440,12 L1440,38 L0,38 Z"
+            fill={color}
+          />
+        )}
       </svg>
     </div>
   )

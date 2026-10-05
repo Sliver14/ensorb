@@ -6991,6 +6991,7 @@ body {
 }
 
 /* Dual-layer Bottom Torn Paper Edge with Soft Blush Watercolor Wash */
+.hero-bottom-torn-container,
 .hero-bottom-wash-edge {
   position: absolute;
   bottom: -1px;
@@ -6999,18 +7000,27 @@ body {
   width: 100%;
   z-index: 6;
   pointer-events: none;
-  display: flex;
-  flex-direction: column;
+  line-height: 0;
+  display: block;
 }
 
 .hero-blush-wash-layer {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
   width: 100%;
-  transform: translateY(16px);
-  opacity: 0.9;
+  line-height: 0;
+  opacity: 0.88;
+  pointer-events: none;
 }
 
 .hero-cream-torn-layer {
+  position: relative;
   width: 100%;
+  line-height: 0;
+  display: block;
+  z-index: 2;
 }
 
 
@@ -7371,7 +7381,7 @@ body {
   max-width: 1440px;
   margin: 60px auto 40px;
   overflow: hidden;
-  background: #FAF7F2;
+  background-color: #4A1525;
 }
 
 .torn-banner-edge {
@@ -7379,18 +7389,22 @@ body {
   width: 100%;
   z-index: 5;
   pointer-events: none;
+  line-height: 0;
+  display: block;
 }
 
 .torn-banner-edge.edge-top {
-  margin-bottom: -18px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .torn-banner-edge.edge-bottom {
-  margin-top: -18px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .torn-banner-edge.flipped svg {
-  transform: scaleY(-1);
+  transform: none;
 }
 
 .quote-banner-split {
@@ -9708,6 +9722,7 @@ body {
   height: 100%;
   z-index: 5;
   pointer-events: none;
+  filter: drop-shadow(-4px 0 6px rgba(0, 0, 0, 0.08));
 }
 
 .torn-edge-svg {

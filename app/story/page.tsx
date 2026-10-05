@@ -249,7 +249,7 @@ export default function StoryPage() {
           </div>
         </div>
 
-        <TornBannerEdge position="bottom" color="#FAF7F2" flip />
+        <TornBannerEdge position="bottom" color="#FAF7F2" />
       </section>
 
       {/* ====================================================================
