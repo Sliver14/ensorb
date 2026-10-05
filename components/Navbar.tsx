@@ -138,46 +138,50 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Drawer (Only active/visible on mobile screens) */}
-      <div
-        className={`burgundy-drawer-backdrop ${isMobileMenuOpen ? 'active' : ''}`}
-        onClick={() => setIsMobileMenuOpen(false)}
-        aria-hidden={!isMobileMenuOpen}
-      />
-      <aside
-        className={`burgundy-drawer ${isMobileMenuOpen ? 'open' : ''}`}
-        aria-hidden={!isMobileMenuOpen}
-      >
-        <div className="drawer-top">
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
-            <MonogramLogo size={44} />
-          </Link>
-          <button
-            type="button"
-            className="drawer-close-btn"
+      {/* Mobile Drawer (Only mounted when opened) */}
+      {isMobileMenuOpen && (
+        <>
+          <div
+            className="burgundy-drawer-backdrop active"
             onClick={() => setIsMobileMenuOpen(false)}
-            aria-label="Close menu"
+            aria-hidden="false"
+          />
+          <aside
+            className="burgundy-drawer open"
+            aria-hidden="false"
           >
-            ✕
-          </button>
-        </div>
-
-        <nav className="drawer-links">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href
-            return (
-              <Link
-                key={link.label}
-                href={link.href}
-                className={`drawer-link ${isActive ? 'active' : ''}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
+            <div className="drawer-top">
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+                <MonogramLogo size={44} />
               </Link>
-            )
-          })}
-        </nav>
-      </aside>
+              <button
+                type="button"
+                className="drawer-close-btn"
+                onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                ✕
+              </button>
+            </div>
+
+            <nav className="drawer-links">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className={`drawer-link ${isActive ? 'active' : ''}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              })}
+            </nav>
+          </aside>
+        </>
+      )}
     </>
   )
 }
