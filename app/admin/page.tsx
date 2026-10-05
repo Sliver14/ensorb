@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { Invite, AdminStats, CreateInviteInput } from '@/lib/types'
 import { AccessCardPass } from '@/components/AccessCardPass'
@@ -1585,7 +1586,7 @@ export default function AdminPage() {
       {/* =========================================================================
           MODAL: ACCESS CARD PREVIEW (Luxury Sample Match)
           ========================================================================= */}
-      {previewInvite && (
+      {previewInvite && typeof document !== 'undefined' && createPortal(
         <div className="gift-modal-backdrop" onClick={() => setPreviewInvite(null)}>
           <div
             className="gift-modal access-card-preview-modal"
@@ -1617,13 +1618,14 @@ export default function AdminPage() {
               />
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* =========================================================================
           MODAL: GENERATE OR EMAIL UNIQUE INVITE LINKS
           ========================================================================= */}
-      {showCreateModal && (
+      {showCreateModal && typeof document !== 'undefined' && createPortal(
         <div className="gift-modal-backdrop" onClick={() => setShowCreateModal(false)}>
           <div
             className="gift-modal admin-create-modal"
@@ -2053,7 +2055,8 @@ export default function AdminPage() {
               </form>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* =========================================================================
@@ -2165,7 +2168,8 @@ export default function AdminPage() {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       <footer className="admin-custom-footer">

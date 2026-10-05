@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { Footer } from '@/components/Footer'
 import { wishlistItems, WishlistItem, bankDetails } from '@/lib/data'
@@ -36,6 +37,11 @@ export default function WishlistPage() {
   const [contributorName, setContributorName] = useState<string>('')
   const [copiedAccount, setCopiedAccount] = useState(false)
   const [copiedRef, setCopiedRef] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Lock body scroll and listen for Escape key when modal is open
   useEffect(() => {
@@ -637,8 +643,8 @@ export default function WishlistPage() {
         </div>
       </section>
 
-      {/* Interactive Contribution & Gift Modal */}
-      {selectedItem && (
+      {/* Interactive Contribution & Gift Modal (Portaled to document.body for instant 100vh viewport positioning) */}
+      {selectedItem && mounted && createPortal(
         <div className="gift-modal-backdrop" onClick={() => setSelectedItem(null)}>
           <div
             className="gift-modal wishlist-modal"
@@ -871,7 +877,8 @@ export default function WishlistPage() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Footer */}

@@ -6507,7 +6507,6 @@ body {
 /* Page Transition Animation */
 .page-transition-wrapper {
   animation: pageFadeSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: opacity, transform;
   width: 100%;
 }
 
@@ -6518,7 +6517,7 @@ body {
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -9083,15 +9082,21 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   INTERACTIVE CONTRIBUTION MODAL
+   INTERACTIVE CONTRIBUTION MODAL (STANDALONE 100VH VIEWPORT MODAL)
    -------------------------------------------------------------------------- */
 .gift-modal-backdrop {
   position: fixed;
-  inset: 0;
-  background: rgba(28, 8, 14, 0.68);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 99999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(28, 8, 14, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 999999;
   display: flex;
   align-items: center;
   justify-content: center;
