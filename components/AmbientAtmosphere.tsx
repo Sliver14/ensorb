@@ -25,7 +25,17 @@ interface PetalParticle {
   color: string
 }
 
-export function AmbientAtmosphere() {
+interface AmbientAtmosphereProps {
+  className?: string
+  sparkleCount?: number
+  petalCount?: number
+}
+
+export function AmbientAtmosphere({
+  className = '',
+  sparkleCount = 8,
+  petalCount = 5,
+}: AmbientAtmosphereProps) {
   const [sparkles, setSparkles] = useState<SparkleParticle[]>([])
   const [petals, setPetals] = useState<PetalParticle[]>([])
   const [isClient, setIsClient] = useState(false)
@@ -33,40 +43,40 @@ export function AmbientAtmosphere() {
   useEffect(() => {
     setIsClient(true)
 
-    // Generate lightweight gold sparkles
-    const generatedSparkles: SparkleParticle[] = Array.from({ length: 14 }, (_, i) => ({
+    // Generate lightweight gold sparkles within section boundaries (5% to 92%)
+    const generatedSparkles: SparkleParticle[] = Array.from({ length: sparkleCount }, (_, i) => ({
       id: i,
-      x: Math.random() * 96 + 2, // 2% to 98%
-      y: Math.random() * 90 + 5,
-      size: Math.random() * 4 + 3, // 3px to 7px
-      duration: Math.random() * 6 + 7, // 7s to 13s
-      delay: Math.random() * 5,
-      drift: (Math.random() - 0.5) * 40,
-      opacity: Math.random() * 0.4 + 0.35,
+      x: Math.random() * 86 + 6,
+      y: Math.random() * 85 + 8,
+      size: Math.random() * 3 + 3, // 3px to 6px
+      duration: Math.random() * 5 + 6, // 6s to 11s
+      delay: Math.random() * 4,
+      drift: (Math.random() - 0.5) * 24, // gentle drift within container
+      opacity: Math.random() * 0.35 + 0.3,
     }))
 
     // Generate romantic delicate burgundy/gold floating petals
     const petalColors = ['#5C1D2E', '#8B263E', '#D4AF37', '#E5A1A8']
-    const generatedPetals: PetalParticle[] = Array.from({ length: 8 }, (_, i) => ({
+    const generatedPetals: PetalParticle[] = Array.from({ length: petalCount }, (_, i) => ({
       id: i,
-      x: Math.random() * 92 + 4,
-      y: Math.random() * 90 + 5,
-      size: Math.random() * 10 + 8, // 8px to 18px
+      x: Math.random() * 84 + 8,
+      y: Math.random() * 85 + 8,
+      size: Math.random() * 7 + 7, // 7px to 14px
       rotation: Math.random() * 360,
-      duration: Math.random() * 10 + 14, // 14s to 24s
-      delay: Math.random() * 8,
-      drift: (Math.random() - 0.5) * 60,
+      duration: Math.random() * 8 + 12, // 12s to 20s
+      delay: Math.random() * 6,
+      drift: (Math.random() - 0.5) * 36,
       color: petalColors[i % petalColors.length],
     }))
 
     setSparkles(generatedSparkles)
     setPetals(generatedPetals)
-  }, [])
+  }, [sparkleCount, petalCount])
 
   if (!isClient) return null
 
   return (
-    <div className="ambient-atmosphere-layer" aria-hidden="true">
+    <div className={`section-atmosphere-layer ${className}`} aria-hidden="true">
       {/* Floating Gold Sparkle Stars */}
       {sparkles.map((s) => (
         <div

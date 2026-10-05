@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { AccessCardPass } from '@/components/AccessCardPass'
 import { Invite } from '@/lib/types'
 import {
   Check,
@@ -455,7 +456,7 @@ export default function UniqueInvitePage({ params }: PageProps) {
              REGISTERED STATE: DESIGN CARD / WEDDING PASS & ACTIONS (LINK LOCKED)
              ========================================================================= */
           <div className="registered-pass-container">
-            {/* Security banner informing that the link is locked */}
+            {/* Security banner informing that the link is verified */}
             <div className="link-locked-notice">
               <div className="lock-icon-wrap">
                 <Lock size={18} />
@@ -463,160 +464,18 @@ export default function UniqueInvitePage({ params }: PageProps) {
               <div className="lock-text">
                 <strong>Invitation Registered &amp; Verified</strong>
                 <span>
-                  This unique invitation link is registered to <strong>{invite.guestName}</strong>. It cannot be used to register a new person, but you can always view, download, or resend your digital pass here.
+                  This unique invitation link is registered to <strong>{invite.guestName}</strong>. You can view, save, or download your official lanyard Access Card below.
                 </span>
               </div>
             </div>
 
-            {resendStatus && (
-              <div
-                className={`invite-alert-banner ${
-                  resendStatus.startsWith('✓') ? 'success' : 'error'
-                }`}
-              >
-                {resendStatus.startsWith('✓') ? <Check size={20} /> : <AlertCircle size={20} />}
-                <span>{resendStatus}</span>
-              </div>
-            )}
-
-            {/* Official Luxury Design Card / Wedding Pass */}
-            <div className="luxury-wedding-card-wrapper" id="luxury-wedding-pass">
-              <div className="luxury-card-outer">
-                <div className="luxury-card-inner">
-                  {/* Watermark Logo */}
-                  <div className="card-watermark">ENSORB</div>
-
-                  {/* Top Bar */}
-                  <div className="card-top-bar">
-                    <div className="card-brand" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <img src="/logo.png" alt="ENSORB" style={{ height: 28, width: 'auto', objectFit: 'contain' }} />
-                      <span className="brand-sub">OFFICIAL GUEST PASS</span>
-                    </div>
-                    <div className="card-vip-pill">
-                      <ShieldCheck size={14} />
-                      <span>{invite.category.toUpperCase()} ACCESS</span>
-                    </div>
-                  </div>
-
-                  {/* Header Titles */}
-                  <div className="card-event-header">
-                    <span className="card-eyebrow">The Wedding Celebration of</span>
-                    <h2 className="card-couple-title">Ngozi &amp; Sorbari</h2>
-                    <p className="card-date-line">Saturday, October 31, 2026 • 2:00 PM</p>
-                  </div>
-
-                  {/* Guest Showcase Grid */}
-                  <div className="card-guest-grid">
-                    <div className="card-photo-col">
-                      <div className="card-photo-frame">
-                        {invite.guestPhoto ? (
-                          <img
-                            src={invite.guestPhoto}
-                            alt={invite.guestName || 'Guest'}
-                            className="card-photo-img"
-                          />
-                        ) : (
-                          <div className="card-photo-placeholder">
-                            {(invite.guestName || invite.targetName || 'G').charAt(0).toUpperCase()}
-                          </div>
-                        )}
-                        <span className="photo-gold-border" />
-                      </div>
-                    </div>
-
-                    <div className="card-details-col">
-                      <div className="card-field-row">
-                        <span className="card-field-lbl">Honored Guest</span>
-                        <h3 className="card-guest-name">{invite.guestName || invite.targetName}</h3>
-                      </div>
-
-                      <div className="card-field-split">
-                        <div className="split-item">
-                          <span className="card-field-lbl">Assigned Table</span>
-                          <strong className="split-val highlight">{invite.tableNumber}</strong>
-                        </div>
-                        <div className="split-item">
-                          <span className="card-field-lbl">Seats Reserved</span>
-                          <strong className="split-val">
-                            {invite.actualGuestCount || invite.maxGuests || 1} Seat
-                            {(invite.actualGuestCount || invite.maxGuests || 1) > 1 ? 's' : ''}
-                          </strong>
-                        </div>
-                      </div>
-
-                      <div className="card-field-row">
-                        <span className="card-field-lbl">Ceremony Venue</span>
-                        <strong className="card-venue-val">Christ Embassy Ogba 1, Lagos</strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Divider */}
-                  <div className="card-divider-line">
-                    <span className="divider-diamond">◆</span>
-                  </div>
-
-                  {/* Card Footer with QR Simulation & Pass ID */}
-                  <div className="card-bottom-grid">
-                    <div className="card-pass-id-block">
-                      <span className="pass-meta-label">Pass Identification</span>
-                      <strong className="pass-code-display font-mono">{invite.passId || `PASS-${code}`}</strong>
-                      <span className="pass-reg-date">
-                        Registered: {invite.registeredAt ? new Date(invite.registeredAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Verified'}
-                      </span>
-                    </div>
-
-                    <div className="card-qr-block">
-                      <div className="qr-box-sim">
-                        <QrCode size={46} className="qr-icon-svg" />
-                      </div>
-                      <span className="qr-scan-label">SCAN AT ENTRANCE</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Interactive Action Controls */}
-            <div className="pass-actions-toolbar">
-              <button
-                type="button"
-                className="action-btn email-btn"
-                onClick={handleResendEmail}
-                disabled={isResending}
-              >
-                <Mail size={18} />
-                <span>{isResending ? 'Sending...' : 'Resend Pass to My Email'}</span>
-              </button>
-
-              <button
-                type="button"
-                className="action-btn print-btn"
-                onClick={() => window.print()}
-              >
-                <Printer size={18} />
-                <span>Print / Save PDF</span>
-              </button>
-
-              <a
-                href={googleCalendarUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="action-btn calendar-btn"
-              >
-                <Calendar size={18} />
-                <span>Add to Calendar</span>
-              </a>
-
-              <button
-                type="button"
-                className="action-btn copy-btn"
-                onClick={handleCopyLink}
-              >
-                {copiedLink ? <Check size={18} /> : <Copy size={18} />}
-                <span>{copiedLink ? 'Link Copied!' : 'Copy Pass URL'}</span>
-              </button>
-            </div>
+            {/* Official Luxury Access Card / Wedding Pass (Sample Design Match) */}
+            <AccessCardPass
+              invite={invite}
+              onResendEmail={handleResendEmail}
+              isResending={isResending}
+              resendStatus={resendStatus}
+            />
 
             {/* Dress code and ceremony notes */}
             <div className="rsvp-info-cards-grid pass-guidelines">

@@ -60,7 +60,7 @@ export default function StoryPage() {
         'As time went on, our conversations became more meaningful, and eventually, he made his intentions known.',
         'And just like that, a journey we never saw coming began.',
       ],
-      image: '/couple/table-centerpiece.jpg',
+      image: '/couple/IMG_6069.png',
       imageAlt: 'Romantic dining table setting',
       imageCaption: 'Reconnecting • Meaningful Conversations',
       tag: 'New Chapter',

@@ -156,30 +156,51 @@ export default function RsvpPage() {
               {submittedData ? (
                 /* Success Confirmation State */
                 <div className="rsvp-success-box">
-                  <div className="success-badge-icon">✓</div>
+                  <div className="success-badge-icon">
+                    {submittedData.approvalStatus === 'pending' ? '⏳' : '✓'}
+                  </div>
                   <h3 className="success-heading">
                     {submittedData.attendance === 'declined'
                       ? 'Thank You for Letting Us Know'
-                      : 'RSVP Confirmed! 🎉'}
+                      : submittedData.approvalStatus === 'pending'
+                      ? 'RSVP Received & Under Review ✨'
+                      : 'RSVP Confirmed & Access Card Ready! 🎟️'}
                   </h3>
                   <p className="success-desc">
                     {submittedData.attendance === 'declined'
                       ? `Dear ${submittedData.guestName}, thank you for your warm wishes. You will be dearly missed on our special day!`
-                      : `Dear ${submittedData.guestName}, we are overjoyed that you will be celebrating with us on October 31, 2026!`}
+                      : submittedData.approvalStatus === 'pending'
+                      ? `Dear ${submittedData.guestName}, thank you for submitting your RSVP! Your reservation is currently being reviewed by Ngozi & Sorbari. Once approved, your official Access Card, assigned table, and entry QR code will be emailed directly to ${submittedData.guestEmail}.`
+                      : `Dear ${submittedData.guestName}, we are overjoyed that you will be celebrating with us! Your official wedding Access Card has been activated.`}
                   </p>
 
                   {submittedData.attendance !== 'declined' && (
                     <div className="rsvp-pass-summary-card">
                       <div className="summary-row">
-                        <span className="lbl">Digital Pass ID:</span>
-                        <strong className="font-mono">{submittedData.passId || 'PASS-NS-2026'}</strong>
+                        <span className="lbl">Approval Status:</span>
+                        <strong
+                          style={{
+                            color:
+                              submittedData.approvalStatus === 'pending' ? '#B87333' : '#2E7D32',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.08em',
+                          }}
+                        >
+                          {submittedData.approvalStatus === 'pending'
+                            ? '⏳ Pending Couple Approval'
+                            : '✓ Approved & Access Pass Active'}
+                        </strong>
                       </div>
                       <div className="summary-row">
                         <span className="lbl">Assigned Table:</span>
-                        <strong className="text-burgundy">{submittedData.tableNumber}</strong>
+                        <strong className="text-burgundy">
+                          {submittedData.approvalStatus === 'pending'
+                            ? 'Allocated upon approval'
+                            : submittedData.tableNumber}
+                        </strong>
                       </div>
                       <div className="summary-row">
-                        <span className="lbl">Guests Confirmed:</span>
+                        <span className="lbl">Guests Requested:</span>
                         <strong>{submittedData.actualGuestCount} Guest(s)</strong>
                       </div>
                       <div className="summary-row">
@@ -190,9 +211,11 @@ export default function RsvpPage() {
                   )}
 
                   <div className="success-actions">
-                    <Link href={`/invite/${submittedData.code}`} className="btn-view-pass">
-                      View Digital Pass <span>→</span>
-                    </Link>
+                    {submittedData.approvalStatus !== 'pending' && (
+                      <Link href={`/invite/${submittedData.code}`} className="btn-view-pass">
+                        View Digital Pass <span>→</span>
+                      </Link>
+                    )}
                     <button
                       type="button"
                       className="btn-reset-form"

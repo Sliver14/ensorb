@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { AmbientAtmosphere } from '@/components/AmbientAtmosphere'
 import {
   MonogramLogo,
   BotanicalSprig,
@@ -115,6 +116,9 @@ export default function HomePage() {
           SECTION 1: HERO (SPLIT TORN PAPER LAYOUT)
          ==================================================================== */}
       <section className="hero-split-section">
+        {/* Section Scoped Ambient Atmosphere */}
+        <AmbientAtmosphere sparkleCount={10} petalCount={5} />
+
         {/* Left: Romantic Couple Portrait */}
         <div className="hero-photo-wrap">
           <img
@@ -174,6 +178,9 @@ export default function HomePage() {
           SECTION 2: OUR STORY (TWO HEARTS, ONE JOURNEY & POLAROID)
          ==================================================================== */}
       <section className="our-story-section">
+        {/* Section Scoped Ambient Atmosphere */}
+        <AmbientAtmosphere sparkleCount={6} petalCount={4} />
+
         <div className="story-content-grid">
           {/* Left Text */}
           <div className="story-copy-col reveal-fade-left">

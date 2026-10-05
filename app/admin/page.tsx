@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { Invite, AdminStats, CreateInviteInput } from '@/lib/types'
+import { AccessCardPass } from '@/components/AccessCardPass'
 import {
   Users,
   UserCheck,
@@ -27,6 +28,13 @@ import {
   AlertCircle,
   FileSpreadsheet,
   Zap,
+  Send,
+  Eye,
+  X,
+  UserPlus,
+  SlidersHorizontal,
+  Calendar,
+  Phone,
 } from 'lucide-react'
 
 export default function AdminPage() {
@@ -47,16 +55,34 @@ export default function AdminPage() {
 
   // Modals & UI States
   const [showCreateModal, setShowCreateModal] = useState(false)
-  const [createMode, setCreateMode] = useState<'bare' | 'batch' | 'custom'>('bare')
+  const [createMode, setCreateMode] = useState<'email_direct' | 'bare' | 'batch' | 'custom'>('email_direct')
   const [editingInvite, setEditingInvite] = useState<Invite | null>(null)
-  const [activeTab, setActiveTab] = useState<'all' | 'registered' | 'pending' | 'declined' | 'vip' | 'checkedin'>('all')
+  const [previewInvite, setPreviewInvite] = useState<Invite | null>(null)
+  const [activeTab, setActiveTab] = useState<'approvals' | 'all' | 'registered' | 'pending' | 'vip' | 'checkedin' | 'declined'>('approvals')
   const [searchQuery, setSearchQuery] = useState('')
   const [quickCheckInCode, setQuickCheckInCode] = useState('')
+
+  // Approval draft settings per invite code (for pending items)
+  const [approvalDrafts, setApprovalDrafts] = useState<{
+    [code: string]: { tableNumber: string; category: Invite['category']; maxGuests: number }
+  }>({})
+  const [approvingCode, setApprovingCode] = useState<string | null>(null)
+  const [decliningCode, setDecliningCode] = useState<string | null>(null)
+
+  // Email Direct Invite Form
+  const [emailInviteForm, setEmailInviteForm] = useState({
+    targetName: '',
+    targetEmail: '',
+    maxGuests: 2,
+    tableNumber: '',
+    category: 'General' as Invite['category'],
+    customNote: '',
+  })
 
   // Bare Link Generator state
   const [bareCount, setBareCount] = useState<number>(1)
   const [bareSeats, setBareSeats] = useState<number>(2)
-  const [bareCategory, setBareCategory] = useState<'VIP' | 'Family' | 'Friends' | 'Colleagues' | 'General'>('General')
+  const [bareCategory, setBareCategory] = useState<Invite['category']>('General')
 
   // Custom Form
   const [customForm, setCustomForm] = useState<CreateInviteInput>({
@@ -113,6 +139,17 @@ export default function AdminPage() {
       if (res.ok && data.success) {
         setInvites(data.invites)
         setStats(data.stats)
+
+        // Initialize approval drafts with sensible defaults
+        const drafts: { [code: string]: { tableNumber: string; category: Invite['category']; maxGuests: number } } = {}
+        data.invites.forEach((inv: Invite) => {
+          drafts[inv.code] = {
+            tableNumber: inv.tableNumber || 'Table 01 - Emerald VIP',
+            category: inv.category || 'General',
+            maxGuests: inv.actualGuestCount || inv.maxGuests || 2,
+          }
+        })
+        setApprovalDrafts(drafts)
       }
     } catch (err) {
       console.error('Failed to load dashboard data:', err)
@@ -162,6 +199,11 @@ export default function AdminPage() {
     }
   }
 
+  // Pending count calculation
+  const pendingApprovalsCount = useMemo(() => {
+    return invites.filter((inv) => inv.approvalStatus === 'pending').length
+  }, [invites])
+
   // 1-Click Instant Bare Link Generator & Copy
   const handleQuickBareLink = async () => {
     setIsQuickGenerating(true)
@@ -190,6 +232,130 @@ export default function AdminPage() {
       showToast('Network error while generating link', 'error')
     } finally {
       setIsQuickGenerating(false)
+    }
+  }
+
+  // Handle Send Unique Link via Email (Resend)
+  const handleSendEmailInvite = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!emailInviteForm.targetName || !emailInviteForm.targetEmail) {
+      showToast('Please enter both guest name and email address.', 'error')
+      return
+    }
+
+    setIsSubmittingForm(true)
+    try {
+      const res = await fetch('/api/admin/send-invite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...emailInviteForm,
+          sendEmailNow: true,
+        }),
+      })
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setInvites((prev) => [data.invite, ...prev])
+        if (data.stats) setStats(data.stats)
+        setShowCreateModal(false)
+        showToast(
+          `✓ Unique invite link emailed to ${emailInviteForm.targetEmail}! They will receive their access card automatically upon registration.`,
+          'success'
+        )
+        setEmailInviteForm({
+          targetName: '',
+          targetEmail: '',
+          maxGuests: 2,
+          tableNumber: '',
+          category: 'General',
+          customNote: '',
+        })
+      } else {
+        showToast(data.error || 'Failed to send invitation email', 'error')
+      }
+    } catch {
+      showToast('Network error sending invite email', 'error')
+    } finally {
+      setIsSubmittingForm(false)
+    }
+  }
+
+  // Handle Approve Pending Guest
+  const handleApproveGuest = async (invite: Invite) => {
+    setApprovingCode(invite.code)
+    try {
+      const draft = approvalDrafts[invite.code] || {
+        tableNumber: invite.tableNumber || 'Table 01 - Emerald VIP',
+        category: invite.category || 'General',
+        maxGuests: invite.actualGuestCount || invite.maxGuests || 2,
+      }
+
+      const res = await fetch('/api/admin/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: invite.code,
+          tableNumber: draft.tableNumber,
+          category: draft.category,
+          maxGuests: draft.maxGuests,
+          sendAccessCardEmail: true,
+        }),
+      })
+      const data = await res.json()
+
+      if (res.ok && data.success && data.invite) {
+        setInvites((prev) =>
+          prev.map((item) => (item.code === invite.code ? data.invite : item))
+        )
+        if (data.stats) setStats(data.stats)
+        showToast(
+          `✓ Guest approved! Official Access Card has been generated & emailed to ${invite.guestEmail || invite.targetName}.`,
+          'success'
+        )
+      } else {
+        showToast(data.error || 'Failed to approve guest', 'error')
+      }
+    } catch {
+      showToast('Network error during guest approval', 'error')
+    } finally {
+      setApprovingCode(null)
+    }
+  }
+
+  // Handle Decline Pending Guest
+  const handleDeclineGuest = async (invite: Invite) => {
+    const reason = prompt(
+      `Decline RSVP for "${invite.guestName || invite.targetName}"? You may specify a reason:`,
+      'Venue capacity limit reached'
+    )
+    if (reason === null) return
+
+    setDecliningCode(invite.code)
+    try {
+      const res = await fetch('/api/admin/decline', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: invite.code,
+          reason,
+        }),
+      })
+      const data = await res.json()
+
+      if (res.ok && data.success && data.invite) {
+        setInvites((prev) =>
+          prev.map((item) => (item.code === invite.code ? data.invite : item))
+        )
+        if (data.stats) setStats(data.stats)
+        showToast(`Guest RSVP marked as declined.`, 'info')
+      } else {
+        showToast(data.error || 'Failed to decline RSVP', 'error')
+      }
+    } catch {
+      showToast('Network error declining guest', 'error')
+    } finally {
+      setDecliningCode(null)
     }
   }
 
@@ -349,7 +515,7 @@ export default function AdminPage() {
 
   // Handle Delete / Revoke Invite
   const handleDeleteInvite = async (code: string) => {
-    if (!confirm(`Are you sure you want to revoke and delete invite code "${code}"?`)) {
+    if (!confirm(`Are you sure you want to revoke and delete invite "${code}"?`)) {
       return
     }
 
@@ -373,12 +539,13 @@ export default function AdminPage() {
 
   // Handle Resend Pass Email from Admin
   const handleResendFromAdmin = async (invite: Invite) => {
-    if (!invite.isRegistered || !invite.guestEmail) {
-      showToast('Cannot resend: this invite is not yet registered with an email', 'error')
+    const targetEmail = invite.guestEmail || invite.targetEmail
+    if (!targetEmail) {
+      showToast('Cannot resend: this invite has no email associated.', 'error')
       return
     }
 
-    showToast(`Sending pass to ${invite.guestEmail}...`, 'info')
+    showToast(`Sending access card pass to ${targetEmail}...`, 'info')
     try {
       const res = await fetch(`/api/invites/${encodeURIComponent(invite.code)}/resend`, {
         method: 'POST',
@@ -386,7 +553,7 @@ export default function AdminPage() {
       const data = await res.json()
 
       if (res.ok && data.success) {
-        showToast(`✓ Pass sent to ${invite.guestEmail}`, 'success')
+        showToast(`✓ Access Card Pass emailed to ${targetEmail}`, 'success')
         setInvites((prev) =>
           prev.map((inv) =>
             inv.code === invite.code ? { ...inv, emailSent: true, emailSentAt: new Date().toISOString() } : inv
@@ -414,9 +581,11 @@ export default function AdminPage() {
         )
         if (data.stats) setStats(data.stats)
         showToast(
-          data.checkedIn ? `✓ ${data.invite.guestName || code} Checked-In!` : `Check-in reverted for ${code}`,
+          data.checkedIn ? `✓ ${data.invite.guestName || code} Checked-In at door!` : `Check-in reverted for ${code}`,
           'success'
         )
+      } else {
+        showToast(data.error || 'Failed to toggle check-in', 'error')
       }
     } catch {
       showToast('Error toggling check-in', 'error')
@@ -430,7 +599,10 @@ export default function AdminPage() {
     if (!query) return
 
     const target = invites.find(
-      (inv) => inv.code.toUpperCase() === query || inv.passId?.toUpperCase() === query
+      (inv) =>
+        inv.code.toUpperCase() === query ||
+        inv.passId?.toUpperCase() === query ||
+        inv.accessCode?.toUpperCase() === query
     )
 
     if (!target) {
@@ -461,41 +633,47 @@ export default function AdminPage() {
     }
 
     const headers = [
-      'Code',
+      'Access Code',
+      'Invite Code',
       'Invite Link',
+      'Approval Status',
       'Assigned Table',
+      'Category',
       'Max Seats',
-      'Status',
-      'Registered Guest Name',
+      'Guest Name',
       'Email',
       'Phone',
       'Attendance',
       'Actual Seats',
+      'Source',
       'Pass ID',
       'Checked In',
       'Dietary/Notes',
       'Created Date',
-      'Registered Date',
+      'Approved Date',
     ]
 
     const siteOrigin = typeof window !== 'undefined' ? window.location.origin : 'https://ensorb.com'
 
     const rows = invites.map((inv) => [
+      `"${inv.accessCode || inv.passId || inv.code}"`,
       `"${inv.code}"`,
       `"${siteOrigin}/invite/${inv.code}"`,
+      `"${inv.approvalStatus || 'approved'}"`,
       `"${inv.tableNumber || ''}"`,
+      `"${inv.category || 'General'}"`,
       inv.maxGuests || 2,
-      inv.isRegistered ? (inv.attendance === 'declined' ? 'Declined' : 'Registered') : 'Pending',
       `"${inv.guestName || inv.targetName || ''}"`,
-      `"${inv.guestEmail || ''}"`,
+      `"${inv.guestEmail || inv.targetEmail || ''}"`,
       `"${inv.guestPhone || ''}"`,
       `"${inv.attendance || ''}"`,
       inv.actualGuestCount || '',
+      `"${inv.source || 'admin_direct'}"`,
       `"${inv.passId || ''}"`,
       inv.checkedIn ? 'YES' : 'NO',
       `"${(inv.dietaryOrNotes || '').replace(/"/g, '""')}"`,
       `"${inv.createdAt ? new Date(inv.createdAt).toLocaleDateString('en-GB') : ''}"`,
-      `"${inv.registeredAt ? new Date(inv.registeredAt).toLocaleDateString('en-GB') : ''}"`,
+      `"${inv.approvedAt ? new Date(inv.approvedAt).toLocaleDateString('en-GB') : ''}"`,
     ])
 
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n')
@@ -512,8 +690,8 @@ export default function AdminPage() {
   // Copy all registered emails
   const handleCopyRegisteredEmails = () => {
     const emails = invites
-      .filter((inv) => inv.isRegistered && inv.guestEmail && inv.attendance === 'attending')
-      .map((inv) => inv.guestEmail)
+      .filter((inv) => (inv.isRegistered || inv.approvalStatus === 'approved') && (inv.guestEmail || inv.targetEmail))
+      .map((inv) => inv.guestEmail || inv.targetEmail)
       .join(', ')
 
     if (!emails) {
@@ -531,9 +709,10 @@ export default function AdminPage() {
   const filteredInvites = useMemo(() => {
     return invites.filter((inv) => {
       // Tab filter
-      if (activeTab === 'registered' && (!inv.isRegistered || inv.attendance === 'declined')) return false
-      if (activeTab === 'pending' && inv.isRegistered) return false
-      if (activeTab === 'declined' && inv.attendance !== 'declined') return false
+      if (activeTab === 'approvals' && inv.approvalStatus !== 'pending') return false
+      if (activeTab === 'registered' && (inv.approvalStatus !== 'approved' || !inv.isRegistered)) return false
+      if (activeTab === 'pending' && (inv.isRegistered || inv.approvalStatus === 'declined')) return false
+      if (activeTab === 'declined' && inv.approvalStatus !== 'declined' && inv.attendance !== 'declined') return false
       if (activeTab === 'vip' && inv.category !== 'VIP') return false
       if (activeTab === 'checkedin' && !inv.checkedIn) return false
 
@@ -542,17 +721,22 @@ export default function AdminPage() {
         const q = searchQuery.toLowerCase()
         const matchName = (inv.targetName || '').toLowerCase().includes(q)
         const matchGuest = (inv.guestName || '').toLowerCase().includes(q)
-        const matchEmail = (inv.guestEmail || '').toLowerCase().includes(q)
+        const matchEmail = (inv.guestEmail || inv.targetEmail || '').toLowerCase().includes(q)
         const matchPhone = (inv.guestPhone || '').toLowerCase().includes(q)
         const matchCode = (inv.code || '').toLowerCase().includes(q)
         const matchTable = (inv.tableNumber || '').toLowerCase().includes(q)
-        const matchPass = (inv.passId || '').toLowerCase().includes(q)
+        const matchPass = (inv.passId || inv.accessCode || '').toLowerCase().includes(q)
         return matchName || matchGuest || matchEmail || matchPhone || matchCode || matchTable || matchPass
       }
 
       return true
     })
   }, [invites, activeTab, searchQuery])
+
+  // Pending Approvals List specifically
+  const pendingApprovalsList = useMemo(() => {
+    return invites.filter((inv) => inv.approvalStatus === 'pending')
+  }, [invites])
 
   // If checking authentication
   if (isAuthenticated === null) {
@@ -604,7 +788,7 @@ export default function AdminPage() {
           <p className="eyebrow">Couple &amp; Planner Access</p>
           <h1>Wedding Admin Dashboard</h1>
           <p className="subpage-hero-desc">
-            Please enter your wedding access passcode to manage guest invitations, generate unique links, and oversee RSVPs.
+            Manage guest registrations, review and approve website RSVPs, generate unique invite links, and issue luxury official Access Cards.
           </p>
         </section>
 
@@ -614,7 +798,7 @@ export default function AdminPage() {
               <Lock size={32} />
             </div>
             <h2>Couple / Admin Login</h2>
-            <p className="login-hint">Enter your designated wedding management PIN.</p>
+            <p className="login-hint">Enter your designated wedding management passcode.</p>
 
             <form onSubmit={handleLogin} className="admin-login-form">
               {authError && (
@@ -708,14 +892,32 @@ export default function AdminPage() {
             <div className="admin-badge-row">
               <span className="admin-pill">COUPLE &amp; ADMIN PORTAL</span>
               <span className="admin-couple-name">Ngozi &amp; Sorbari Wedding</span>
+              {pendingApprovalsCount > 0 && (
+                <span className="admin-pending-alert-badge">
+                  {pendingApprovalsCount} RSVP{pendingApprovalsCount > 1 ? 's' : ''} Awaiting Approval
+                </span>
+              )}
             </div>
             <h1>Invites &amp; Guest Management</h1>
             <p className="admin-subtitle">
-              Generate bare invite links in 1 click with automatically assigned tables. Guests fill in their own details upon receiving the link.
+              Approve pending website RSVPs, send personalized invitation links directly via Resend, and oversee luxury Access Card passes.
             </p>
           </div>
 
           <div className="admin-header-actions">
+            {/* Direct Email Unique Link Button */}
+            <button
+              type="button"
+              className="admin-primary-btn email-btn-gold"
+              onClick={() => {
+                setCreateMode('email_direct')
+                setShowCreateModal(true)
+              }}
+            >
+              <Send size={16} />
+              <span>Email Unique Invite Link</span>
+            </button>
+
             {/* 1-Click Bare Link Quick Generator */}
             <button
               type="button"
@@ -724,21 +926,21 @@ export default function AdminPage() {
               disabled={isQuickGenerating}
               title="Generate a fresh bare invite link with auto-assigned table and copy URL"
             >
-              <Zap size={18} className="zap-icon" />
-              <span>{isQuickGenerating ? 'Generating...' : '⚡ Quick Generate & Copy Link'}</span>
+              <Zap size={16} className="zap-icon" />
+              <span>{isQuickGenerating ? 'Generating...' : '⚡ Quick Bare Link'}</span>
             </button>
 
-            {/* Modal Generator for batch / multi links */}
+            {/* Multi-link / Batch modal */}
             <button
               type="button"
-              className="admin-primary-btn"
+              className="admin-secondary-btn"
               onClick={() => {
                 setCreateMode('bare')
                 setShowCreateModal(true)
               }}
             >
-              <Plus size={18} />
-              <span>Multi-Link Generator</span>
+              <Plus size={16} />
+              <span>Batch / Multi-Link</span>
             </button>
           </div>
         </div>
@@ -746,15 +948,15 @@ export default function AdminPage() {
         {/* Integration Status Bar */}
         <div className="admin-status-ribbon">
           <div className="status-item">
-            <CloudUpload size={16} className={cloudinaryStatus ? 'text-green' : 'text-amber'} />
+            <Mail size={16} className={emailStatus ? 'text-green' : 'text-amber'} />
             <span>
-              Cloudinary Media: <strong>{cloudinaryStatus ? 'Active & Connected' : 'Local Fallback Mode'}</strong>
+              Resend Notification Provider: <strong>{emailStatus ? 'Active (RESEND_API_KEY connected)' : 'Simulated Logger Ready'}</strong>
             </span>
           </div>
           <div className="status-item">
-            <Mail size={16} className={emailStatus ? 'text-green' : 'text-amber'} />
+            <CloudUpload size={16} className={cloudinaryStatus ? 'text-green' : 'text-amber'} />
             <span>
-              Pass Email Service: <strong>{emailStatus ? 'Resend API Active' : 'Simulated Logger Ready'}</strong>
+              Cloudinary Media: <strong>{cloudinaryStatus ? 'Connected' : 'Local Fallback'}</strong>
             </span>
           </div>
           <button
@@ -771,47 +973,59 @@ export default function AdminPage() {
 
       {/* Metrics & KPI Cards */}
       <section className="admin-stats-grid section-shell">
-        <div className="stat-card">
+        <div
+          className={`stat-card clickable ${activeTab === 'approvals' ? 'active-stat' : ''}`}
+          onClick={() => setActiveTab('approvals')}
+        >
+          <div className="stat-icon-box amber">
+            <Clock size={22} />
+          </div>
+          <div className="stat-content">
+            <span className="stat-label">Pending Approvals</span>
+            <strong className="stat-val">{pendingApprovalsCount}</strong>
+            <span className="stat-sub">Website RSVPs awaiting review</span>
+          </div>
+        </div>
+
+        <div
+          className={`stat-card clickable ${activeTab === 'registered' ? 'active-stat' : ''}`}
+          onClick={() => setActiveTab('registered')}
+        >
+          <div className="stat-icon-box green">
+            <UserCheck size={22} />
+          </div>
+          <div className="stat-content">
+            <span className="stat-label">Approved &amp; Registered</span>
+            <strong className="stat-val">{stats?.attendingCount || 0}</strong>
+            <span className="stat-sub">{stats?.totalGuestsAttending || 0} confirmed seats</span>
+          </div>
+        </div>
+
+        <div
+          className={`stat-card clickable ${activeTab === 'all' ? 'active-stat' : ''}`}
+          onClick={() => setActiveTab('all')}
+        >
           <div className="stat-icon-box gold">
             <Users size={22} />
           </div>
           <div className="stat-content">
-            <span className="stat-label">Total Links Generated</span>
+            <span className="stat-label">Total Invites / Links</span>
             <strong className="stat-val">{stats?.totalInvites || invites.length}</strong>
             <span className="stat-sub">{stats?.totalSeatsAllocated || 0} seats allocated</span>
           </div>
         </div>
 
-        <div className="stat-card">
-          <div className="stat-icon-box green">
-            <UserCheck size={22} />
-          </div>
-          <div className="stat-content">
-            <span className="stat-label">Registered Attendees</span>
-            <strong className="stat-val">{stats?.attendingCount || 0}</strong>
-            <span className="stat-sub">{stats?.totalGuestsAttending || 0} confirmed guests</span>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon-box amber">
-            <Clock size={22} />
-          </div>
-          <div className="stat-content">
-            <span className="stat-label">Unfilled / Pending Links</span>
-            <strong className="stat-val">{stats?.pendingCount || 0}</strong>
-            <span className="stat-sub">Ready to send to guests</span>
-          </div>
-        </div>
-
-        <div className="stat-card">
+        <div
+          className={`stat-card clickable ${activeTab === 'checkedin' ? 'active-stat' : ''}`}
+          onClick={() => setActiveTab('checkedin')}
+        >
           <div className="stat-icon-box purple">
             <QrCode size={22} />
           </div>
           <div className="stat-content">
             <span className="stat-label">Door Check-Ins</span>
             <strong className="stat-val">{stats?.checkedInCount || 0}</strong>
-            <span className="stat-sub">Admitted at venue</span>
+            <span className="stat-sub">Admitted at venue gate</span>
           </div>
         </div>
       </section>
@@ -825,7 +1039,7 @@ export default function AdminPage() {
               <QrCode size={18} className="qr-icon" />
               <input
                 type="text"
-                placeholder="Door Entrance Scanner: Scan or type Pass ID / Invite Code..."
+                placeholder="Door Entrance Scanner: Scan or type Access Code / Pass ID / Invite Code..."
                 value={quickCheckInCode}
                 onChange={(e) => setQuickCheckInCode(e.target.value)}
               />
@@ -841,6 +1055,16 @@ export default function AdminPage() {
             <div className="filter-tabs">
               <button
                 type="button"
+                className={`filter-tab ${activeTab === 'approvals' ? 'active' : ''}`}
+                onClick={() => setActiveTab('approvals')}
+              >
+                <span>Pending Approvals</span>
+                {pendingApprovalsCount > 0 && (
+                  <span className="tab-counter-badge">{pendingApprovalsCount}</span>
+                )}
+              </button>
+              <button
+                type="button"
                 className={`filter-tab ${activeTab === 'all' ? 'active' : ''}`}
                 onClick={() => setActiveTab('all')}
               >
@@ -851,14 +1075,14 @@ export default function AdminPage() {
                 className={`filter-tab ${activeTab === 'registered' ? 'active' : ''}`}
                 onClick={() => setActiveTab('registered')}
               >
-                Registered ({stats?.attendingCount || 0})
+                Approved ({stats?.attendingCount || 0})
               </button>
               <button
                 type="button"
                 className={`filter-tab ${activeTab === 'pending' ? 'active' : ''}`}
                 onClick={() => setActiveTab('pending')}
               >
-                Pending RSVP ({stats?.pendingCount || 0})
+                Pre-Generated ({stats?.pendingCount || 0})
               </button>
               <button
                 type="button"
@@ -874,6 +1098,13 @@ export default function AdminPage() {
               >
                 Checked-In ({stats?.checkedInCount || 0})
               </button>
+              <button
+                type="button"
+                className={`filter-tab ${activeTab === 'declined' ? 'active' : ''}`}
+                onClick={() => setActiveTab('declined')}
+              >
+                Declined
+              </button>
             </div>
 
             {/* Actions & Export */}
@@ -882,7 +1113,7 @@ export default function AdminPage() {
                 <Search size={16} />
                 <input
                   type="text"
-                  placeholder="Search code, table, guest name..."
+                  placeholder="Search name, code, table..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -919,227 +1150,478 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Invites Table View */}
-          <div className="admin-table-container">
-            {isLoading ? (
-              <div className="table-loading-wrap">
-                <div className="loading-spinner" />
-                <p>Loading invite records...</p>
+          {/* =========================================================================
+              VIEW: PENDING APPROVALS QUEUE (If on 'approvals' tab)
+              ========================================================================= */}
+          {activeTab === 'approvals' && (
+            <div className="pending-approvals-queue">
+              <div className="queue-header-banner">
+                <div className="queue-header-text">
+                  <h3>Guest RSVP Review &amp; Approval Queue</h3>
+                  <p>
+                    Guests who submitted their details on the general RSVP page are shown below. Assign their table and seats, then click <strong>Approve &amp; Send Access Card</strong> to immediately generate and email their official entry pass.
+                  </p>
+                </div>
               </div>
-            ) : filteredInvites.length === 0 ? (
-              <div className="empty-table-wrap">
-                <Users size={40} className="empty-icon" />
-                <h3>No Invitations Found</h3>
-                <p>
-                  {searchQuery
-                    ? `No invites match your search for "${searchQuery}".`
-                    : 'Click "⚡ Quick Generate & Copy Link" to create your first bare invite.'}
-                </p>
-              </div>
-            ) : (
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Guest / Registered Profile</th>
-                    <th>Unique Invite Link (1-Click Copy)</th>
-                    <th>Status</th>
-                    <th>Auto Table &amp; Seats</th>
-                    <th>Guest Contact</th>
-                    <th>Pass ID &amp; Email</th>
-                    <th>Door Check-In</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredInvites.map((inv) => {
-                    const isRegistered = inv.isRegistered
-                    const isDeclined = inv.attendance === 'declined'
+
+              {pendingApprovalsList.length === 0 ? (
+                <div className="empty-queue-box">
+                  <CheckCircle2 size={42} className="text-green" />
+                  <h4>No Pending RSVPs to Review</h4>
+                  <p>All submitted guest RSVPs have been reviewed and issued their official access cards!</p>
+                </div>
+              ) : (
+                <div className="pending-cards-grid">
+                  {pendingApprovalsList.map((guest) => {
+                    const draft = approvalDrafts[guest.code] || {
+                      tableNumber: guest.tableNumber || 'Table 01 - Emerald VIP',
+                      category: guest.category || 'General',
+                      maxGuests: guest.actualGuestCount || guest.maxGuests || 2,
+                    }
+                    const isApproving = approvingCode === guest.code
+                    const isDeclining = decliningCode === guest.code
 
                     return (
-                      <tr key={inv.id} className={inv.checkedIn ? 'checked-in-row' : ''}>
-                        {/* Guest Profile Column */}
-                        <td>
-                          <div className="guest-cell-profile">
-                            {inv.guestPhoto ? (
+                      <div key={guest.id} className="approval-card-item">
+                        <div className="approval-card-top">
+                          <div className="guest-identity-wrap">
+                            {guest.guestPhoto ? (
                               <img
-                                src={inv.guestPhoto}
-                                alt={inv.guestName || 'Guest'}
-                                className="guest-thumb-img"
+                                src={guest.guestPhoto}
+                                alt={guest.guestName || 'Guest'}
+                                className="approval-guest-avatar"
                               />
                             ) : (
-                              <div className="guest-thumb-placeholder">
-                                {(inv.guestName || inv.targetName || 'G').charAt(0).toUpperCase()}
+                              <div className="approval-guest-placeholder">
+                                {(guest.guestName || guest.targetName || 'G').charAt(0).toUpperCase()}
                               </div>
                             )}
-                            <div className="guest-names-wrap">
-                              {isRegistered ? (
-                                <>
-                                  <strong className="target-name">{inv.guestName || inv.targetName}</strong>
-                                  <span className="registered-sub-name text-green">
-                                    ✓ Registered Guest
+                            <div>
+                              <h4 className="guest-display-name">{guest.guestName || guest.targetName}</h4>
+                              <div className="guest-contact-pills">
+                                {guest.guestEmail && (
+                                  <span className="contact-pill">
+                                    <Mail size={12} />
+                                    {guest.guestEmail}
                                   </span>
-                                </>
-                              ) : inv.targetName ? (
-                                <>
-                                  <strong className="target-name">{inv.targetName}</strong>
-                                  <span className="registered-sub-name text-amber">
-                                    Awaiting Guest Fill
+                                )}
+                                {guest.guestPhone && (
+                                  <span className="contact-pill">
+                                    <Phone size={12} />
+                                    {guest.guestPhone}
                                   </span>
-                                </>
-                              ) : (
-                                <>
-                                  <strong className="target-name bare-tag">⚡ Bare Link</strong>
-                                  <span className="registered-sub-name text-muted">
-                                    Guest fills details upon receiving
-                                  </span>
-                                </>
-                              )}
-                              <span className={`category-tag ${inv.category.toLowerCase()}`}>
-                                {inv.category}
-                              </span>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </td>
 
-                        {/* Code & 1-Click Copy Link */}
-                        <td>
-                          <div className="code-cell">
-                            <span className="invite-code-pill font-mono">{inv.code}</span>
-                            <button
-                              type="button"
-                              className="copy-url-icon-btn highlight-copy"
-                              onClick={() => copyInviteLink(inv.code)}
-                              title="Copy full invite URL to send on WhatsApp/SMS"
-                            >
-                              {copiedCode === inv.code ? (
-                                <Check size={14} className="text-green" />
-                              ) : (
-                                <Copy size={14} />
-                              )}
-                              <span>{copiedCode === inv.code ? '✓ Link Copied!' : 'Copy Link'}</span>
-                            </button>
-                          </div>
-                        </td>
-
-                        {/* Status Column */}
-                        <td>
-                          {isRegistered ? (
-                            isDeclined ? (
-                              <span className="status-badge declined">✕ Declined</span>
-                            ) : (
-                              <span className="status-badge registered">✓ Registered</span>
-                            )
-                          ) : (
-                            <span className="status-badge pending">⏳ Pending RSVP</span>
-                          )}
-                        </td>
-
-                        {/* Table & Seats */}
-                        <td>
-                          <div className="table-seats-cell">
-                            <strong className="table-badge auto-table">{inv.tableNumber}</strong>
-                            <span className="seat-count">
-                              {isRegistered
-                                ? `${inv.actualGuestCount || 1} of ${inv.maxGuests} seat(s)`
-                                : `${inv.maxGuests} seat(s) allocated`}
+                          <div className="submission-meta">
+                            <span className="source-tag">Website RSVP</span>
+                            <span className="date-tag">
+                              {guest.registeredAt
+                                ? new Date(guest.registeredAt).toLocaleDateString('en-GB')
+                                : guest.createdAt
+                                ? new Date(guest.createdAt).toLocaleDateString('en-GB')
+                                : 'Recent'}
                             </span>
                           </div>
-                        </td>
+                        </div>
 
-                        {/* Contact Details */}
-                        <td>
-                          {isRegistered ? (
-                            <div className="contact-cell">
-                              <span className="contact-email">{inv.guestEmail || '—'}</span>
-                              <span className="contact-phone">{inv.guestPhone || '—'}</span>
+                        {/* Guest Request Information */}
+                        <div className="approval-details-row">
+                          <div className="detail-field">
+                            <span className="field-label">Requested Seats:</span>
+                            <strong className="field-val">
+                              {guest.actualGuestCount || guest.maxGuests || 1} Person(s)
+                            </strong>
+                          </div>
+                          <div className="detail-field">
+                            <span className="field-label">Code / Pass:</span>
+                            <span className="access-code-tag">{guest.accessCode || guest.code}</span>
+                          </div>
+                          {guest.dietaryOrNotes && (
+                            <div className="detail-field full-width">
+                              <span className="field-label">Guest Note / Wishes:</span>
+                              <p className="guest-note-text">“{guest.dietaryOrNotes}”</p>
                             </div>
-                          ) : (
-                            <span className="text-muted">Unfilled by guest</span>
                           )}
-                        </td>
+                        </div>
 
-                        {/* Pass ID & Email Delivery */}
-                        <td>
-                          {isRegistered ? (
-                            <div className="pass-meta-cell">
-                              <span className="pass-id-text font-mono">{inv.passId || '—'}</span>
-                              {inv.emailSent ? (
-                                <span className="email-sent-badge">✓ Pass Emailed</span>
+                        {/* Editable Table & Category Assignment Controls */}
+                        <div className="approval-assignment-box">
+                          <div className="assignment-grid">
+                            <div className="assignment-group">
+                              <label>Assigned Table</label>
+                              <input
+                                type="text"
+                                value={draft.tableNumber}
+                                onChange={(e) =>
+                                  setApprovalDrafts({
+                                    ...approvalDrafts,
+                                    [guest.code]: { ...draft, tableNumber: e.target.value },
+                                  })
+                                }
+                                placeholder="e.g. Table 01 - Emerald VIP"
+                              />
+                            </div>
+
+                            <div className="assignment-group">
+                              <label>Category</label>
+                              <select
+                                value={draft.category}
+                                onChange={(e) =>
+                                  setApprovalDrafts({
+                                    ...approvalDrafts,
+                                    [guest.code]: {
+                                      ...draft,
+                                      category: e.target.value as Invite['category'],
+                                    },
+                                  })
+                                }
+                              >
+                                <option value="General">General</option>
+                                <option value="VIP">VIP</option>
+                                <option value="Family">Family</option>
+                                <option value="Friends">Friends</option>
+                                <option value="Colleagues">Colleagues</option>
+                              </select>
+                            </div>
+
+                            <div className="assignment-group">
+                              <label>Confirmed Seats</label>
+                              <select
+                                value={draft.maxGuests}
+                                onChange={(e) =>
+                                  setApprovalDrafts({
+                                    ...approvalDrafts,
+                                    [guest.code]: {
+                                      ...draft,
+                                      maxGuests: Number(e.target.value),
+                                    },
+                                  })
+                                }
+                              >
+                                <option value="1">1 Seat</option>
+                                <option value="2">2 Seats (Plus One)</option>
+                                <option value="3">3 Seats</option>
+                                <option value="4">4 Seats</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          {/* Approval Actions */}
+                          <div className="approval-buttons-bar">
+                            <button
+                              type="button"
+                              className="approve-action-btn"
+                              onClick={() => handleApproveGuest(guest)}
+                              disabled={isApproving || isDeclining}
+                            >
+                              <CheckCircle2 size={16} />
+                              <span>
+                                {isApproving ? 'Approving & Sending Pass...' : '✓ Approve & Send Access Card'}
+                              </span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="decline-action-btn"
+                              onClick={() => handleDeclineGuest(guest)}
+                              disabled={isApproving || isDeclining}
+                            >
+                              <XCircle size={16} />
+                              <span>{isDeclining ? 'Declining...' : 'Decline'}</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* =========================================================================
+              VIEW: GENERAL INVITES TABLE (All other tabs)
+              ========================================================================= */}
+          {activeTab !== 'approvals' && (
+            <div className="admin-table-container">
+              {isLoading ? (
+                <div className="table-loading-wrap">
+                  <div className="loading-spinner" />
+                  <p>Loading invite records...</p>
+                </div>
+              ) : filteredInvites.length === 0 ? (
+                <div className="empty-table-wrap">
+                  <Users size={40} className="empty-icon" />
+                  <h3>No Invitations Found</h3>
+                  <p>
+                    {searchQuery
+                      ? `No invites match your search for "${searchQuery}".`
+                      : 'Generate a unique link or email an invitation to get started.'}
+                  </p>
+                </div>
+              ) : (
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Guest / Profile</th>
+                      <th>Access Card &amp; Code</th>
+                      <th>Approval / Status</th>
+                      <th>Table &amp; Seats</th>
+                      <th>Guest Contact</th>
+                      <th>Pass Delivery</th>
+                      <th>Door Check-In</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredInvites.map((inv) => {
+                      const isRegistered = inv.isRegistered
+                      const isDeclined = inv.approvalStatus === 'declined' || inv.attendance === 'declined'
+                      const isPending = inv.approvalStatus === 'pending'
+                      const isApproved = inv.approvalStatus === 'approved'
+
+                      return (
+                        <tr key={inv.id} className={inv.checkedIn ? 'checked-in-row' : ''}>
+                          {/* Guest Profile Column */}
+                          <td>
+                            <div className="guest-cell-profile">
+                              {inv.guestPhoto ? (
+                                <img
+                                  src={inv.guestPhoto}
+                                  alt={inv.guestName || 'Guest'}
+                                  className="guest-thumb-img"
+                                />
                               ) : (
-                                <span className="email-unsent-badge">Email Pending</span>
+                                <div className="guest-thumb-placeholder">
+                                  {(inv.guestName || inv.targetName || 'G').charAt(0).toUpperCase()}
+                                </div>
+                              )}
+                              <div className="guest-names-wrap">
+                                {inv.guestName || inv.targetName ? (
+                                  <strong className="target-name">{inv.guestName || inv.targetName}</strong>
+                                ) : (
+                                  <strong className="target-name bare-tag">⚡ Bare Link</strong>
+                                )}
+                                <div className="tags-row">
+                                  <span className={`category-tag ${inv.category.toLowerCase()}`}>
+                                    {inv.category}
+                                  </span>
+                                  {inv.source === 'frontend_rsvp' && (
+                                    <span className="source-mini-tag">Website RSVP</span>
+                                  )}
+                                  {inv.source === 'admin_direct' && (
+                                    <span className="source-mini-tag direct">Admin Invite</span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* Code & 1-Click Copy Link */}
+                          <td>
+                            <div className="code-cell">
+                              <span className="invite-code-pill font-mono">
+                                {inv.accessCode || inv.passId || inv.code}
+                              </span>
+                              <button
+                                type="button"
+                                className="copy-url-icon-btn highlight-copy"
+                                onClick={() => copyInviteLink(inv.code)}
+                                title="Copy unique invite registration URL"
+                              >
+                                {copiedCode === inv.code ? (
+                                  <Check size={14} className="text-green" />
+                                ) : (
+                                  <Copy size={14} />
+                                )}
+                                <span>{copiedCode === inv.code ? '✓ Copied' : 'Copy Link'}</span>
+                              </button>
+                            </div>
+                          </td>
+
+                          {/* Status Column */}
+                          <td>
+                            {isPending ? (
+                              <div className="pending-status-block">
+                                <span className="status-badge pending">⏳ Awaiting Approval</span>
+                                <button
+                                  type="button"
+                                  className="inline-quick-approve-btn"
+                                  onClick={() => handleApproveGuest(inv)}
+                                  disabled={approvingCode === inv.code}
+                                >
+                                  {approvingCode === inv.code ? 'Approving...' : '✓ Approve'}
+                                </button>
+                              </div>
+                            ) : isDeclined ? (
+                              <span className="status-badge declined">✕ Declined</span>
+                            ) : isRegistered || isApproved ? (
+                              <span className="status-badge registered">✓ Approved</span>
+                            ) : (
+                              <span className="status-badge pending">⏳ Unfilled Link</span>
+                            )}
+                          </td>
+
+                          {/* Table & Seats */}
+                          <td>
+                            <div className="table-seats-cell">
+                              <strong className="table-badge auto-table">{inv.tableNumber}</strong>
+                              <span className="seat-count">
+                                {isRegistered
+                                  ? `${inv.actualGuestCount || 1} of ${inv.maxGuests} seat(s)`
+                                  : `${inv.maxGuests} seat(s) allocated`}
+                              </span>
+                            </div>
+                          </td>
+
+                          {/* Contact Details */}
+                          <td>
+                            <div className="contact-cell">
+                              <span className="contact-email">
+                                {inv.guestEmail || inv.targetEmail || '—'}
+                              </span>
+                              {inv.guestPhone && (
+                                <span className="contact-phone">{inv.guestPhone}</span>
                               )}
                             </div>
-                          ) : (
-                            <span className="text-muted">—</span>
-                          )}
-                        </td>
+                          </td>
 
-                        {/* Check-In Toggle */}
-                        <td>
-                          <button
-                            type="button"
-                            className={`checkin-toggle-btn ${inv.checkedIn ? 'checked' : ''}`}
-                            onClick={() => handleToggleCheckIn(inv.code)}
-                            title={inv.checkedIn ? 'Guest is checked in (Click to revert)' : 'Click to check in guest'}
-                          >
-                            {inv.checkedIn ? '✓ Admitted' : 'Admit Guest'}
-                          </button>
-                        </td>
+                          {/* Pass ID & Email Delivery */}
+                          <td>
+                            <div className="pass-meta-cell">
+                              {inv.emailSent || inv.inviteEmailSent ? (
+                                <span className="email-sent-badge">✓ Emailed via Resend</span>
+                              ) : (
+                                <span className="email-unsent-badge">Email Ready</span>
+                              )}
+                              {inv.passId && (
+                                <span className="pass-id-sub font-mono">{inv.passId}</span>
+                              )}
+                            </div>
+                          </td>
 
-                        {/* Actions */}
-                        <td>
-                          <div className="row-actions">
-                            <Link
-                              href={`/invite/${inv.code}`}
-                              target="_blank"
-                              className="action-icon-link"
-                              title="Open Guest Invite Page"
+                          {/* Check-In Toggle */}
+                          <td>
+                            <button
+                              type="button"
+                              className={`checkin-toggle-btn ${inv.checkedIn ? 'checked' : ''}`}
+                              onClick={() => handleToggleCheckIn(inv.code)}
+                              title={inv.checkedIn ? 'Guest is checked in (Click to revert)' : 'Click to check in guest'}
                             >
-                              <ExternalLink size={16} />
-                            </Link>
+                              {inv.checkedIn ? '✓ Admitted' : 'Admit Guest'}
+                            </button>
+                          </td>
 
-                            {isRegistered && (
+                          {/* Actions */}
+                          <td>
+                            <div className="row-actions">
+                              {/* Preview Access Card */}
+                              <button
+                                type="button"
+                                className="action-icon-link preview-card-btn"
+                                onClick={() => setPreviewInvite(inv)}
+                                title="Preview Luxury Access Card Pass"
+                              >
+                                <Eye size={16} />
+                              </button>
+
+                              {/* Open link */}
+                              <Link
+                                href={`/invite/${inv.code}`}
+                                target="_blank"
+                                className="action-icon-link"
+                                title="Open Guest Invite Page"
+                              >
+                                <ExternalLink size={16} />
+                              </Link>
+
+                              {/* Resend Pass Email */}
+                              {(inv.guestEmail || inv.targetEmail) && (
+                                <button
+                                  type="button"
+                                  className="action-icon-link"
+                                  onClick={() => handleResendFromAdmin(inv)}
+                                  title="Resend Access Card Pass to Guest Email"
+                                >
+                                  <Mail size={16} />
+                                </button>
+                              )}
+
+                              {/* Edit details */}
                               <button
                                 type="button"
                                 className="action-icon-link"
-                                onClick={() => handleResendFromAdmin(inv)}
-                                title="Resend digital pass to guest email"
+                                onClick={() => setEditingInvite(inv)}
+                                title="Edit table number or seats"
                               >
-                                <Mail size={16} />
+                                <Edit2 size={16} />
                               </button>
-                            )}
 
-                            <button
-                              type="button"
-                              className="action-icon-link"
-                              onClick={() => setEditingInvite(inv)}
-                              title="Edit table number or seats"
-                            >
-                              <Edit2 size={16} />
-                            </button>
-
-                            <button
-                              type="button"
-                              className="action-icon-link delete"
-                              onClick={() => handleDeleteInvite(inv.code)}
-                              title="Revoke and delete invite"
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            )}
-          </div>
+                              {/* Delete invite */}
+                              <button
+                                type="button"
+                                className="action-icon-link delete"
+                                onClick={() => handleDeleteInvite(inv.code)}
+                                title="Revoke and delete invite"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
       {/* =========================================================================
-          MODAL: MULTI-LINK BARE GENERATOR OR CUSTOM INVITE
+          MODAL: ACCESS CARD PREVIEW (Luxury Sample Match)
+          ========================================================================= */}
+      {previewInvite && (
+        <div className="gift-modal-backdrop" onClick={() => setPreviewInvite(null)}>
+          <div
+            className="gift-modal access-card-preview-modal"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <button
+              className="modal-close-btn"
+              onClick={() => setPreviewInvite(null)}
+              aria-label="Close dialog"
+            >
+              ✕
+            </button>
+
+            <div className="preview-modal-header">
+              <span className="eyebrow">Digital Access Pass Preview</span>
+              <h2>Official Wedding Access Card</h2>
+              <p>
+                Sample design matching the couple's official physical lanyard badge for{' '}
+                <strong>{previewInvite.guestName || previewInvite.targetName || 'Valued Guest'}</strong>.
+              </p>
+            </div>
+
+            <div className="preview-modal-body">
+              <AccessCardPass
+                invite={previewInvite}
+                onResendEmail={() => handleResendFromAdmin(previewInvite)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =========================================================================
+          MODAL: GENERATE OR EMAIL UNIQUE INVITE LINKS
           ========================================================================= */}
       {showCreateModal && (
         <div className="gift-modal-backdrop" onClick={() => setShowCreateModal(false)}>
@@ -1159,35 +1641,175 @@ export default function AdminPage() {
 
             <div className="modal-header-admin">
               <span className="eyebrow">Invitation Generator</span>
-              <h2>Generate Unique Invite Links</h2>
-              <p>Create single or batch invite links with automatically assigned wedding tables.</p>
+              <h2>Generate &amp; Email Wedding Invitations</h2>
+              <p>Send unique invitation links directly to guests or generate batch links for messaging.</p>
 
               <div className="create-tabs">
+                <button
+                  type="button"
+                  className={`create-tab-btn ${createMode === 'email_direct' ? 'active' : ''}`}
+                  onClick={() => setCreateMode('email_direct')}
+                >
+                  <Send size={14} />
+                  <span>Email Unique Link</span>
+                </button>
                 <button
                   type="button"
                   className={`create-tab-btn ${createMode === 'bare' ? 'active' : ''}`}
                   onClick={() => setCreateMode('bare')}
                 >
-                  ⚡ Bare Links (1-Click)
+                  <Zap size={14} />
+                  <span>1-Click Bare Links</span>
                 </button>
                 <button
                   type="button"
                   className={`create-tab-btn ${createMode === 'batch' ? 'active' : ''}`}
                   onClick={() => setCreateMode('batch')}
                 >
-                  From Guest Names List
+                  <Users size={14} />
+                  <span>Batch Names List</span>
                 </button>
                 <button
                   type="button"
                   className={`create-tab-btn ${createMode === 'custom' ? 'active' : ''}`}
                   onClick={() => setCreateMode('custom')}
                 >
-                  Custom Preset Invite
+                  <SlidersHorizontal size={14} />
+                  <span>Custom Preset</span>
                 </button>
               </div>
             </div>
 
-            {createMode === 'bare' ? (
+            {/* MODE 1: EMAIL UNIQUE LINK DIRECTLY VIA RESEND */}
+            {createMode === 'email_direct' && (
+              <form onSubmit={handleSendEmailInvite} className="modal-form-admin">
+                <div className="bare-generator-info-box">
+                  <p>
+                    <strong>Automatic Flow:</strong> An official royal invitation with a unique RSVP button is emailed directly to the guest. Once they open it and complete their profile, their official Access Card is generated and sent to them automatically.
+                  </p>
+                </div>
+
+                <div className="form-grid">
+                  <div className="form-group">
+                    <label htmlFor="targetName">
+                      Guest / Family Name <span>*</span>
+                    </label>
+                    <input
+                      id="targetName"
+                      type="text"
+                      required
+                      placeholder="e.g. Pastor & Mrs. David Oladipo"
+                      value={emailInviteForm.targetName}
+                      onChange={(e) =>
+                        setEmailInviteForm({ ...emailInviteForm, targetName: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="targetEmail">
+                      Guest Email Address <span>*</span>
+                    </label>
+                    <input
+                      id="targetEmail"
+                      type="email"
+                      required
+                      placeholder="guest@example.com"
+                      value={emailInviteForm.targetEmail}
+                      onChange={(e) =>
+                        setEmailInviteForm({ ...emailInviteForm, targetEmail: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="maxGuests">Reserved Seats</label>
+                    <select
+                      id="maxGuests"
+                      value={emailInviteForm.maxGuests}
+                      onChange={(e) =>
+                        setEmailInviteForm({
+                          ...emailInviteForm,
+                          maxGuests: Number(e.target.value),
+                        })
+                      }
+                    >
+                      <option value="1">1 Seat (Solo)</option>
+                      <option value="2">2 Seats (Plus One)</option>
+                      <option value="3">3 Seats</option>
+                      <option value="4">4 Seats (Family)</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="category">Category</label>
+                    <select
+                      id="category"
+                      value={emailInviteForm.category}
+                      onChange={(e) =>
+                        setEmailInviteForm({
+                          ...emailInviteForm,
+                          category: e.target.value as Invite['category'],
+                        })
+                      }
+                    >
+                      <option value="General">General</option>
+                      <option value="VIP">VIP</option>
+                      <option value="Family">Family</option>
+                      <option value="Friends">Friends</option>
+                      <option value="Colleagues">Colleagues</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="tableNumber">Assigned Table (Auto if empty)</label>
+                    <input
+                      id="tableNumber"
+                      type="text"
+                      placeholder="e.g. Table 01 - Emerald VIP (Auto assigned)"
+                      value={emailInviteForm.tableNumber}
+                      onChange={(e) =>
+                        setEmailInviteForm({ ...emailInviteForm, tableNumber: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  <div className="form-group full-width">
+                    <label htmlFor="customNote">Personal Note / Message in Email (Optional)</label>
+                    <input
+                      id="customNote"
+                      type="text"
+                      placeholder="e.g. We would be deeply honored by your presence!"
+                      value={emailInviteForm.customNote}
+                      onChange={(e) =>
+                        setEmailInviteForm({ ...emailInviteForm, customNote: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="modal-actions-admin">
+                  <button
+                    type="button"
+                    className="modal-cancel-btn"
+                    onClick={() => setShowCreateModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="modal-submit-btn gold"
+                    disabled={isSubmittingForm}
+                  >
+                    <Send size={16} />
+                    <span>{isSubmittingForm ? 'Sending Email...' : 'Send Official Invitation Email ↗'}</span>
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* MODE 2: BARE LINKS GENERATOR */}
+            {createMode === 'bare' && (
               <form onSubmit={handleCreateBareModal} className="modal-form-admin">
                 <div className="bare-generator-info-box">
                   <p>
@@ -1228,7 +1850,7 @@ export default function AdminPage() {
                     <select
                       value={bareCategory}
                       onChange={(e) =>
-                        setBareCategory(e.target.value as 'VIP' | 'Family' | 'Friends' | 'Colleagues' | 'General')
+                        setBareCategory(e.target.value as Invite['category'])
                       }
                     >
                       <option value="General">General</option>
@@ -1257,7 +1879,10 @@ export default function AdminPage() {
                   </button>
                 </div>
               </form>
-            ) : createMode === 'batch' ? (
+            )}
+
+            {/* MODE 3: BATCH FROM NAMES LIST */}
+            {createMode === 'batch' && (
               <form onSubmit={handleCreateBatch} className="modal-form-admin">
                 <div className="form-group">
                   <label htmlFor="batchNames">
@@ -1295,7 +1920,7 @@ export default function AdminPage() {
                     <select
                       value={bareCategory}
                       onChange={(e) =>
-                        setBareCategory(e.target.value as 'VIP' | 'Family' | 'Friends' | 'Colleagues' | 'General')
+                        setBareCategory(e.target.value as Invite['category'])
                       }
                     >
                       <option value="General">General</option>
@@ -1324,7 +1949,10 @@ export default function AdminPage() {
                   </button>
                 </div>
               </form>
-            ) : (
+            )}
+
+            {/* MODE 4: CUSTOM PRESET INVITE */}
+            {createMode === 'custom' && (
               <form onSubmit={handleCreateCustom} className="modal-form-admin">
                 <div className="form-grid">
                   <div className="form-group">

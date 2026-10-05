@@ -7135,15 +7135,18 @@ body {
 }
 
 .polaroid-photo-inner {
+  position: relative;
   overflow: hidden;
   height: 340px;
   background: #EAE5DC;
+  border-radius: 2px;
 }
 
 .polaroid-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 38%;
   display: block;
 }
 
@@ -7904,12 +7907,24 @@ body {
   }
 
   .washi-polaroid-frame {
-    max-width: 300px;
-    transform: rotate(1.5deg);
+    max-width: min(340px, 88vw);
+    width: 100%;
+    margin: 0 auto;
+    padding: 14px 14px 44px 14px;
+    transform: rotate(0deg);
   }
 
   .polaroid-photo-inner {
-    height: 270px;
+    height: clamp(280px, 76vw, 340px);
+    width: 100%;
+    background: #EAE5DC;
+  }
+
+  .polaroid-photo-inner .polaroid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38% !important;
   }
 
   .polaroid-botanical-corner {
@@ -7975,11 +7990,17 @@ body {
   }
 
   .washi-polaroid-frame {
-    max-width: 270px;
+    max-width: min(320px, 92vw);
+    margin: 0 auto;
+    padding: 12px 12px 40px 12px;
   }
 
   .polaroid-photo-inner {
-    height: 240px;
+    height: clamp(270px, 78vw, 320px);
+  }
+
+  .polaroid-photo-inner .polaroid-img {
+    object-position: center 38% !important;
   }
 }
 
@@ -11211,14 +11232,15 @@ body {
    LUXURY WEDDING ANIMATION SUITE (SCROLL REVEALS, FLOATING OBJECTS & SHIMMER)
    ========================================================================== */
 
-/* 1. Ambient Atmosphere Floating Layer */
+/* 1. Section Atmosphere Floating Layer (Scoped within page sections) */
+.section-atmosphere-layer,
 .ambient-atmosphere-layer {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-  z-index: 35;
+  z-index: 2;
   overflow: hidden;
 }
 
@@ -11532,6 +11554,25 @@ body {
 .scroll-animated.is-visible {
   opacity: 1 !important;
   transform: translate(0, 0) scale(1) !important;
+}
+
+/* Mobile Scroll Animation: Pure vertical translation to prevent horizontal offset before scroll/refresh */
+@media (max-width: 768px) {
+  .reveal-fade-left,
+  .reveal-fade-right,
+  .story-copy-col.scroll-animated,
+  .faq-contact-col.scroll-animated,
+  .hero-photo-wrap.scroll-animated,
+  .hero-deckled-card.scroll-animated,
+  .story-polaroid-col.scroll-animated,
+  .quote-photo-col.scroll-animated,
+  .quote-burgundy-card.scroll-animated {
+    transform: translateY(16px) !important;
+  }
+
+  .scroll-animated.is-visible {
+    transform: translateY(0) scale(1) !important;
+  }
 }
 
 /* 6. Heartbeat Countdown Glow */
@@ -12440,5 +12481,812 @@ body {
 
   .celebrate-title {
     font-size: 24px;
+  }
+}
+
+/* ==========================================================================
+   LUXURY ACCESS CARD PASS & LANYARD BADGE (SAMPLE EXACT MATCH)
+   ========================================================================== */
+.access-card-lanyard-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px 10px 40px;
+}
+
+.access-card-badge {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(180deg, #FAF7F2 0%, #F5EFE9 40%, #EFE7DE 100%);
+  border: 4px solid #D4AF37;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(74, 21, 37, 0.18), 0 4px 16px rgba(212, 175, 55, 0.2), inset 0 0 0 2px #F2E8D5, inset 0 0 0 6px #FFFFFF;
+  padding: 36px 24px 28px;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Metallic Gold Top Lanyard Clip & Slot */
+.lanyard-clip-area {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.lanyard-ribbon-loop {
+  width: 32px;
+  height: 12px;
+  background: linear-gradient(90deg, #4A1525 0%, #701F37 50%, #4A1525 100%);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.lanyard-hole-slot {
+  width: 58px;
+  height: 10px;
+  background: #383431;
+  border: 2px solid #D4AF37;
+  border-radius: 6px;
+  margin-top: 4px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Corner Filigree Ornaments */
+.corner-filigree {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border: 2px solid #D4AF37;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.corner-filigree.top-left {
+  top: 14px;
+  left: 14px;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 8px 0 0 0;
+}
+
+.corner-filigree.top-right {
+  top: 14px;
+  right: 14px;
+  border-left: none;
+  border-bottom: none;
+  border-radius: 0 8px 0 0;
+}
+
+.corner-filigree.bottom-left {
+  bottom: 14px;
+  left: 14px;
+  border-right: none;
+  border-top: none;
+  border-radius: 0 0 0 8px;
+}
+
+.corner-filigree.bottom-right {
+  bottom: 14px;
+  right: 14px;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 8px 0;
+}
+
+/* Header & Gold Rings */
+.access-card-header {
+  margin-top: 12px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gold-rings-icon {
+  width: 54px;
+  height: 38px;
+  margin-bottom: 8px;
+}
+
+.rings-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(212, 175, 55, 0.4));
+}
+
+.access-card-title {
+  font-family: var(--font-cormorant), 'Cinzel', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #4A1525;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+.access-card-couple {
+  font-family: var(--font-cormorant), 'Cinzel', Georgia, serif;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #4A1525;
+  margin: 0 0 2px;
+  line-height: 1.15;
+}
+
+.access-card-subtitle {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #7D6B64;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Date & Time Bar */
+.access-card-date-bar {
+  background: #FAF7F2;
+  border-top: 1.5px solid #D4AF37;
+  border-bottom: 1.5px solid #D4AF37;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.date-highlight {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #2B2725;
+  text-transform: uppercase;
+}
+
+.time-highlight {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #7D6B64;
+}
+
+/* Details Box (Gold Box) */
+.access-card-details-box {
+  background: #FFFFFF;
+  border: 1.5px solid #D4AF37;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  text-align: left;
+}
+
+.details-box-title {
+  font-family: var(--font-cormorant), 'Cinzel', Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #4A1525;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 0 12px;
+}
+
+.details-box-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px dashed #EFE7DE;
+}
+
+.details-box-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.details-box-row .label {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #4A1525;
+  white-space: nowrap;
+}
+
+.details-box-row .val {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #2B2725;
+  text-align: right;
+  word-break: break-word;
+}
+
+.access-code-pill {
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4A1525;
+  background: #FAF3E6;
+  border: 1px solid #D4AF37;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.06em;
+}
+
+/* QR Code Section */
+.access-card-qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.qr-frame {
+  background: #FFFFFF;
+  padding: 8px;
+  border: 2px solid #D4AF37;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  display: inline-flex;
+}
+
+.qr-image {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+
+.qr-caption {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #7D6B64;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* Card Footer */
+.access-card-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.entry-notice {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #4A1525;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.strictly-by-invitation-badge {
+  background: #4A1525;
+  border: 1px solid #D4AF37;
+  border-radius: 6px;
+  padding: 6px 18px;
+  box-shadow: 0 2px 8px rgba(74, 21, 37, 0.25);
+}
+
+.strictly-by-invitation-badge span {
+  font-family: var(--font-cormorant), 'Cinzel', Georgia, serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #FAF7F2;
+  text-transform: uppercase;
+}
+
+/* Action Controls Under Pass */
+.pass-actions-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.pass-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.pass-btn.primary-gold-btn {
+  background: linear-gradient(135deg, #D4AF37 0%, #B89028 100%);
+  color: #1A1308;
+  border: none;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+}
+
+.pass-btn.primary-gold-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+}
+
+.pass-btn.outline-btn {
+  background: #FAF7F2;
+  border: 1px solid #C4BAAA;
+  color: #4A1525;
+}
+
+.pass-btn.outline-btn:hover {
+  background: #FFFFFF;
+  border-color: #4A1525;
+  transform: translateY(-1px);
+}
+
+.pass-status-toast {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: #EAF7EE;
+  border: 1px solid #A3E0B5;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #1E6B37;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   ADMIN APPROVALS QUEUE & LUXURY ADMIN DASHBOARD ADDITIONS
+   ========================================================================== */
+.admin-pending-alert-badge {
+  background: #FFF3E0;
+  color: #C77000;
+  border: 1px solid #FFD180;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.03); }
+}
+
+.tab-counter-badge {
+  background: #D4AF37;
+  color: #2B1600;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  margin-left: 6px;
+}
+
+.email-btn-gold {
+  background: linear-gradient(135deg, #4A1525 0%, #681B32 100%) !important;
+  border: 1px solid #D4AF37 !important;
+  color: #FAF7F2 !important;
+  box-shadow: 0 4px 16px rgba(74, 21, 37, 0.3) !important;
+}
+
+.email-btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(74, 21, 37, 0.45) !important;
+}
+
+/* Approvals Queue Container */
+.pending-approvals-queue {
+  padding: 20px;
+}
+
+.queue-header-banner {
+  background: linear-gradient(135deg, #FAF4E8 0%, #F5ECDD 100%);
+  border: 1px solid #E5D5AA;
+  border-left: 4px solid #D4AF37;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+}
+
+.queue-header-text h3 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 20px;
+  color: #4A1525;
+  margin: 0 0 6px;
+}
+
+.queue-header-text p {
+  font-size: 13px;
+  color: #635850;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.empty-queue-box {
+  background: #FFFFFF;
+  border: 1px dashed #D4CEBF;
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.empty-queue-box h4 {
+  font-size: 18px;
+  color: #383431;
+  margin: 8px 0 2px;
+}
+
+.empty-queue-box p {
+  font-size: 13px;
+  color: #7D7670;
+  max-width: 420px;
+  margin: 0;
+}
+
+/* Approvals Grid Cards */
+.pending-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.approval-card-item {
+  background: #FFFFFF;
+  border: 1.5px solid #E5DFD3;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.approval-card-item:hover {
+  border-color: #D4AF37;
+  box-shadow: 0 8px 28px rgba(74, 21, 37, 0.09);
+}
+
+.approval-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #F0EAE1;
+  margin-bottom: 14px;
+}
+
+.guest-identity-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.approval-guest-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #D4AF37;
+}
+
+.approval-guest-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #4A1525;
+  color: #FAF7F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  border: 2px solid #D4AF37;
+}
+
+.guest-display-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #383431;
+  margin: 0 0 4px;
+}
+
+.guest-contact-pills {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: #665E57;
+}
+
+.submission-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.source-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: #FAF0F2;
+  color: #4A1525;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #EEDCE0;
+}
+
+.date-tag {
+  font-size: 11px;
+  color: #8C847E;
+}
+
+.approval-details-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background: #FAF7F2;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detail-field.full-width {
+  grid-column: span 2;
+}
+
+.field-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8C847E;
+}
+
+.field-val {
+  font-size: 13px;
+  color: #383431;
+}
+
+.access-code-tag {
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4A1525;
+}
+
+.guest-note-text {
+  font-size: 12px;
+  font-style: italic;
+  color: #59534E;
+  margin: 2px 0 0;
+  line-height: 1.4;
+}
+
+.approval-assignment-box {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.assignment-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 0.9fr;
+  gap: 8px;
+}
+
+.assignment-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.assignment-group label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #59534E;
+}
+
+.assignment-group input,
+.assignment-group select {
+  padding: 7px 8px;
+  border: 1px solid #D4CEBF;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: inherit;
+  background: #FAF7F2;
+}
+
+.assignment-group input:focus,
+.assignment-group select:focus {
+  border-color: #4A1525;
+  background: #FFFFFF;
+  outline: none;
+}
+
+.approval-buttons-bar {
+  display: flex;
+  gap: 8px;
+}
+
+.approve-action-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #2E7D32;
+  color: #FFFFFF;
+  border: none;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.approve-action-btn:hover:not(:disabled) {
+  background: #1B5E20;
+  transform: translateY(-1px);
+}
+
+.decline-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: transparent;
+  color: #C62828;
+  border: 1px solid #FFCDD2;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.decline-action-btn:hover:not(:disabled) {
+  background: #FFEBEE;
+}
+
+/* Table Quick Action Extras */
+.pending-status-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inline-quick-approve-btn {
+  background: #2E7D32;
+  color: #FFFFFF;
+  border: none;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.inline-quick-approve-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.source-mini-tag {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: #EFEAE1;
+  color: #59534E;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+.source-mini-tag.direct {
+  background: #E8F4EE;
+  color: #1E6B37;
+}
+
+.pass-id-sub {
+  font-size: 10px;
+  color: #8C847E;
+  display: block;
+}
+
+.action-icon-link.preview-card-btn {
+  background: #FAF4E8;
+  color: #B89028;
+  border-color: #E5D5AA;
+}
+
+.action-icon-link.preview-card-btn:hover {
+  background: #D4AF37;
+  color: #FFFFFF;
+}
+
+/* Access Card Preview Modal */
+.access-card-preview-modal {
+  max-width: 540px !important;
+  padding: 24px !important;
+}
+
+.preview-modal-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.preview-modal-header h2 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 26px;
+  color: #4A1525;
+  margin: 4px 0 6px;
+}
+
+.preview-modal-header p {
+  font-size: 13px;
+  color: #665E57;
+  margin: 0;
+}
+
+.preview-modal-body {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .pending-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .assignment-grid {
+    grid-template-columns: 1fr;
   }
 }

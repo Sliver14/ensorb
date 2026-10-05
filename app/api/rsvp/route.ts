@@ -4,8 +4,8 @@ import {
   registerInvite,
   getInviteByCode,
   getAllInvites,
+  updateInvite,
 } from '@/lib/invites-store'
-import { generateInviteCode } from '@/lib/invites-store'
 
 export async function POST(req: NextRequest) {
   try {
@@ -34,8 +34,10 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const siteUrl = req.nextUrl.origin || 'https://ensorb.com'
     let targetCode = inviteCode ? inviteCode.trim().toUpperCase() : ''
 
+    // Case 1: Guest provided an authorized unique invite code
     if (targetCode) {
       const existing = await getInviteByCode(targetCode)
       if (!existing) {
@@ -45,59 +47,91 @@ export async function POST(req: NextRequest) {
         )
       }
       if (existing.isRegistered) {
-        // Already registered, return pass details
         return NextResponse.json({
           success: true,
           invite: existing,
           alreadyRegistered: true,
-          message: 'You have already confirmed your RSVP.',
-        })
-      }
-    } else {
-      // Check if this email already registered
-      const all = await getAllInvites()
-      const existingByEmail = all.find(
-        (inv) => inv.isRegistered && inv.guestEmail?.toLowerCase() === email.trim().toLowerCase()
-      )
-      if (existingByEmail) {
-        return NextResponse.json({
-          success: true,
-          invite: existingByEmail,
-          alreadyRegistered: true,
-          message: 'You have already confirmed your RSVP for this wedding celebration.',
+          message: 'You have already confirmed your RSVP for this wedding.',
         })
       }
 
-      // Create new invite
-      const newInv = await createInvite({
+      // Complete registration with auto-approval
+      const registrationResult = await registerInvite(
+        targetCode,
+        {
+          guestName: fullName.trim(),
+          guestEmail: email.trim(),
+          guestPhone: phone?.trim() || '',
+          attendance: attending === 'declined' ? 'declined' : 'attending',
+          actualGuestCount: Math.max(1, Number(guestCount) || 1),
+          dietaryOrNotes: message?.trim() || '',
+        },
+        siteUrl
+      )
+
+      if (!registrationResult.success) {
+        return NextResponse.json(
+          { success: false, error: registrationResult.error || 'Failed to submit RSVP.' },
+          { status: 400 }
+        )
+      }
+
+      return NextResponse.json({
+        success: true,
+        invite: registrationResult.invite,
+        message: 'RSVP confirmed and Access Card sent successfully!',
+      })
+    }
+
+    // Case 2: General RSVP from the website (requires admin approval)
+    const all = await getAllInvites()
+    const existingByEmail = all.find(
+      (inv) => inv.guestEmail?.toLowerCase() === email.trim().toLowerCase()
+    )
+
+    if (existingByEmail) {
+      return NextResponse.json({
+        success: true,
+        invite: existingByEmail,
+        alreadyRegistered: true,
+        isPending: existingByEmail.approvalStatus === 'pending',
+        message:
+          existingByEmail.approvalStatus === 'pending'
+            ? 'Your RSVP is currently pending approval by the couple. Your Access Card will be emailed as soon as approved!'
+            : 'You have already confirmed your RSVP for this celebration.',
+      })
+    }
+
+    // Create new pending RSVP record
+    const newPendingInvite = await createInvite(
+      {
         targetName: fullName.trim(),
         maxGuests: Math.max(1, Number(guestCount) || 1),
         category: 'General',
-      })
-      targetCode = newInv.code
-    }
+        source: 'rsvp_form',
+      },
+      siteUrl
+    )
 
-    // Register the invite
-    const registrationResult = await registerInvite(targetCode, {
+    // Fill in the guest details
+    const updated = await updateInvite(newPendingInvite.code, {
       guestName: fullName.trim(),
       guestEmail: email.trim(),
       guestPhone: phone?.trim() || '',
       attendance: attending === 'declined' ? 'declined' : 'attending',
       actualGuestCount: Math.max(1, Number(guestCount) || 1),
       dietaryOrNotes: message?.trim() || '',
+      isRegistered: true,
+      registeredAt: new Date().toISOString(),
+      approvalStatus: 'pending',
     })
-
-    if (!registrationResult.success) {
-      return NextResponse.json(
-        { success: false, error: registrationResult.error || 'Failed to submit RSVP.' },
-        { status: 400 }
-      )
-    }
 
     return NextResponse.json({
       success: true,
-      invite: registrationResult.invite,
-      message: 'RSVP confirmed successfully!',
+      invite: updated,
+      isPending: true,
+      message:
+        'Thank you! Your RSVP has been submitted and is awaiting approval by Ngozi & Sorbari. Your official Access Card and table assignment will be delivered directly to your email upon confirmation.',
     })
   } catch (err) {
     console.error('Error in POST /api/rsvp:', err)
@@ -107,3 +141,4 @@ export async function POST(req: NextRequest) {
     )
   }
 }
+

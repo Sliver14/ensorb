@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Great_Vibes, Montserrat } from 'next/font/google'
 import { WelcomeGate } from '@/components/WelcomeGate'
 import { ScrollAnimationProvider } from '@/components/ScrollAnimationProvider'
-import { AmbientAtmosphere } from '@/components/AmbientAtmosphere'
 import './globals.css'
 
 const cormorant = Cormorant_Garamond({
@@ -187,7 +186,6 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <WelcomeGate />
-        <AmbientAtmosphere />
         <ScrollAnimationProvider>{children}</ScrollAnimationProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
