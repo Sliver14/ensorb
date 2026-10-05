@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { galleryPhotos } from '@/lib/data'
 import {
@@ -87,8 +86,6 @@ export default function StoryPage() {
 
   return (
     <main className="elegant-burgundy-theme story-page-layout">
-      <Navbar />
-
       {/* ====================================================================
           HERO: OUR LOVE STORY
          ==================================================================== */}

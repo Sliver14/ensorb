@@ -6504,7 +6504,25 @@ body {
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.04));
 }
 
-/* Header Nav Tabs (Home, Wishlist, RSVP) */
+/* Page Transition Animation */
+.page-transition-wrapper {
+  animation: pageFadeSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+  width: 100%;
+}
+
+@keyframes pageFadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header Nav Tabs (Home, Our Story, Wishlist, RSVP) */
 .header-nav-tabs {
   display: flex;
   align-items: center;
@@ -6516,20 +6534,23 @@ body {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #4A4540;
+  color: #554F49;
   text-decoration: none;
   position: relative;
-  padding: 6px 0;
-  transition: color 0.2s ease;
+  padding: 6px 2px;
+  transition: color 0.22s ease, font-weight 0.22s ease;
 }
 
-.nav-tab-item:hover,
+.nav-tab-item:hover {
+  color: #4A1525;
+}
+
 .nav-tab-item.active {
   color: #4A1525;
   font-weight: 600;
 }
 
-.nav-tab-item.active::after {
+.nav-tab-item::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -6538,6 +6559,25 @@ body {
   height: 2px;
   background: #4A1525;
   border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  opacity: 0;
+}
+
+.nav-tab-item.active::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.nav-tab-item:hover::after {
+  transform: scaleX(0.5);
+  opacity: 0.5;
+}
+
+.nav-tab-item.active:hover::after {
+  transform: scaleX(1);
+  opacity: 1;
 }
 
 /* Hamburger Menu Toggle */

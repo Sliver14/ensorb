@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { wishlistItems, WishlistItem, bankDetails } from '@/lib/data'
 import {
@@ -241,8 +240,6 @@ export default function WishlistPage() {
 
   return (
     <main className="elegant-burgundy-theme wishlist-page-layout">
-      <Navbar />
-
       {/* ====================================================================
           SECTION 1: HERO (A LITTLE SOMETHING FROM YOU)
          ==================================================================== */}

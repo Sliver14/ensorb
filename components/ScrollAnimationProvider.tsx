@@ -1,8 +1,11 @@
 'use client'
 
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 export function ScrollAnimationProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
+
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -47,8 +50,8 @@ export function ScrollAnimationProvider({ children }: { children: React.ReactNod
           })
         },
         {
-          threshold: 0.08,
-          rootMargin: '0px 0px -20px 0px',
+          threshold: 0.05,
+          rootMargin: '0px 0px -10px 0px',
         }
       )
 
@@ -60,7 +63,7 @@ export function ScrollAnimationProvider({ children }: { children: React.ReactNod
       // Stagger children inside .reveal-stagger
       document.querySelectorAll('.reveal-stagger').forEach((container) => {
         Array.from(container.children).forEach((child, index) => {
-          ;(child as HTMLElement).style.setProperty('--stagger-delay', `${index * 0.1}s`)
+          ;(child as HTMLElement).style.setProperty('--stagger-delay', `${index * 0.08}s`)
         })
       })
 
@@ -71,29 +74,29 @@ export function ScrollAnimationProvider({ children }: { children: React.ReactNod
 
     const cleanup = setupObserver()
 
+    // Smoothly scroll to top on route change
+    window.scrollTo({ top: 0, behavior: 'instant' })
+
+    // Re-check shortly after DOM paint
+    const timer = setTimeout(() => {
+      setupObserver()
+    }, 60)
+
     // Re-observe when unlock event fires
     const handleUnlock = () => {
       setTimeout(() => {
         setupObserver()
-      }, 400)
-    }
-
-    // Also re-check when DOM changes (e.g. navigation or tabs)
-    const handleRouteChange = () => {
-      setTimeout(() => {
-        setupObserver()
-      }, 100)
+      }, 300)
     }
 
     window.addEventListener('ensorb-portal-unlocked', handleUnlock)
-    window.addEventListener('popstate', handleRouteChange)
 
     return () => {
       if (cleanup) cleanup()
+      clearTimeout(timer)
       window.removeEventListener('ensorb-portal-unlocked', handleUnlock)
-      window.removeEventListener('popstate', handleRouteChange)
     }
-  }, [])
+  }, [pathname])
 
   return <>{children}</>
 }

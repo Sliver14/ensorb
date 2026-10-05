@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { AmbientAtmosphere } from '@/components/AmbientAtmosphere'
 import {
@@ -109,9 +108,6 @@ export default function HomePage() {
 
   return (
     <main className="elegant-burgundy-theme">
-      {/* Top Header */}
-      <Navbar />
-
       {/* ====================================================================
           SECTION 1: HERO (SPLIT TORN PAPER LAYOUT)
          ==================================================================== */}

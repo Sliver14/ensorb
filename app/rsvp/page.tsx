@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import {
   BotanicalSprig,
@@ -75,8 +74,6 @@ export default function RsvpPage() {
 
   return (
     <main className="elegant-burgundy-theme rsvp-page-layout">
-      <Navbar />
-
       {/* ====================================================================
           SECTION 1: HERO (WE CAN'T WAIT TO CELEBRATE WITH YOU)
          ==================================================================== */}

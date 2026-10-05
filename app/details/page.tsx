@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { ColorCodeSection } from '@/components/ColorCodeSection'
 import { weddingSchedule } from '@/lib/data'
@@ -9,8 +8,6 @@ import { weddingSchedule } from '@/lib/data'
 export default function DetailsPage() {
   return (
     <main className="elegant-burgundy-theme details-page-wrapper">
-      <Navbar />
-
       <section className="subpage-hero section-shell">
         <div className="breadcrumb">
           <Link href="/">Home</Link>

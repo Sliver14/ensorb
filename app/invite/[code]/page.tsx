@@ -2,7 +2,6 @@
 
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
-import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { AccessCardPass } from '@/components/AccessCardPass'
 import { Invite } from '@/lib/types'
@@ -169,8 +168,6 @@ export default function UniqueInvitePage({ params }: PageProps) {
 
   return (
     <main className="elegant-burgundy-theme unique-invite-page">
-      <Navbar />
-
       {/* Hero Section */}
       <section className="subpage-hero section-shell">
         <div className="breadcrumb">
