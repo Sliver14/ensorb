@@ -94,15 +94,6 @@ export function WelcomeGate() {
     }, 4400)
   }
 
-  const handleSkip = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('ensorb_wedding_unlocked', 'true')
-      window.dispatchEvent(new Event('ensorb-portal-unlocked'))
-    }
-    setIsUnlocked(true)
-  }
-
   // Bypass on admin or if already unlocked
   if (isUnlocked || (pathname && pathname.startsWith('/admin'))) {
     return null
@@ -145,16 +136,6 @@ export function WelcomeGate() {
         <span className="gold-bokeh bokeh-5" />
         <span className="gold-bokeh bokeh-6" />
       </div>
-
-      {/* Quick Skip Intro Button */}
-      <button
-        type="button"
-        className="gate-skip-btn"
-        onClick={handleSkip}
-        title="Skip intro animation"
-      >
-        <span>Enter Site ✕</span>
-      </button>
 
       {/* Main Foreground Container */}
       <div className="journey-content-shell">
