@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
@@ -37,6 +37,21 @@ export default function WishlistPage() {
   const [contributorName, setContributorName] = useState<string>('')
   const [copiedAccount, setCopiedAccount] = useState(false)
   const [copiedRef, setCopiedRef] = useState(false)
+
+  // Lock body scroll and listen for Escape key when modal is open
+  useEffect(() => {
+    if (!selectedItem) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedItem(null)
+    }
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.body.style.overflow = originalOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [selectedItem])
 
   const handleCopy = (text: string, type: 'account' | 'ref') => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {

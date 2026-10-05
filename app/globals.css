@@ -9011,61 +9011,96 @@ body {
 .gift-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(30, 8, 14, 0.65);
-  backdrop-filter: blur(6px);
+  background: rgba(28, 8, 14, 0.68);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: clamp(12px, 3vw, 24px);
+  box-sizing: border-box;
   overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@keyframes modalZoomFade {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .gift-modal.wishlist-modal {
-  background: #FDFBF7;
-  border-radius: 14px;
-  max-width: 800px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
   position: relative;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  background: #FDFBF7;
+  border-radius: 16px;
+  max-width: 860px;
+  width: 100%;
+  max-height: min(86vh, 670px);
+  height: min(86vh, 670px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 28px 70px rgba(28, 8, 14, 0.35), 0 6px 20px rgba(0, 0, 0, 0.1);
   border: 1px solid #E5DFD3;
+  margin: auto;
+  animation: modalZoomFade 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-close-btn {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: #FAF7F2;
+  top: 14px;
+  right: 14px;
+  background: rgba(250, 247, 242, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   border: 1px solid #D5CDC0;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 700;
   color: #4A1525;
   cursor: pointer;
-  z-index: 10;
+  z-index: 40;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .modal-close-btn:hover {
   background: #4A1525;
   color: #FAF7F2;
+  border-color: #4A1525;
+  transform: scale(1.06);
 }
 
 .modal-grid {
   display: grid;
-  grid-template-columns: 1fr 1.3fr;
+  grid-template-columns: 330px 1fr;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
 }
 
 .modal-photo {
   position: relative;
+  height: 100%;
+  min-height: 0;
   background: #ECE7DF;
-  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-right: 1px solid #EBE5DC;
 }
 
 .modal-photo img {
@@ -9078,27 +9113,50 @@ body {
 .modal-complete-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(47, 99, 74, 0.85);
+  background: rgba(47, 99, 74, 0.88);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
 .modal-info {
-  padding: 32px 30px;
+  padding: 24px 28px 24px 24px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  max-height: 100%;
+  min-height: 0;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #D5CDC0 transparent;
+}
+
+.modal-info::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-info::-webkit-scrollbar-thumb {
+  background: #D5CDC0;
+  border-radius: 999px;
+}
+
+.modal-info::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .modal-header-tag-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding-right: 36px;
 }
 
 .modal-tag {
@@ -9132,26 +9190,27 @@ body {
 
 .modal-info h2 {
   font-family: var(--font-serif, 'Cormorant Garamond', serif);
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 600;
+  line-height: 1.15;
   color: #3D101C;
-  margin: 0 0 6px 0;
+  margin: 0 0 4px 0;
 }
 
 .modal-price-tag {
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #4A1525;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .modal-summary {
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 12.5px;
+  line-height: 1.5;
   color: #6B6056;
-  margin: 0 0 20px 0;
+  margin: 0 0 14px 0;
 }
 
 /* Modal Progress */
@@ -9159,8 +9218,8 @@ body {
   background: #FAF7F2;
   border: 1px solid #E5DFD3;
   border-radius: 8px;
-  padding: 12px 14px;
-  margin-bottom: 20px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
 }
 
 .modal-progress-bar-wrap {
@@ -9169,7 +9228,7 @@ body {
   background: #E4ECE6;
   border-radius: 999px;
   overflow: hidden;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .wishlist-progress-fill {
@@ -9186,37 +9245,37 @@ body {
   display: flex;
   justify-content: space-between;
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 11.5px;
+  font-size: 11px;
   color: #6B6056;
 }
 
 .modal-contribution-selector {
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .selector-label {
   display: block;
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #5E6140;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .contribution-chips-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 8px;
-  margin-bottom: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+  gap: 6px;
+  margin-bottom: 8px;
 }
 
 .chip-btn {
   background: #FFFFFF;
   border: 1px solid #D5CDC0;
   border-radius: 8px;
-  padding: 8px 10px;
+  padding: 7px 9px;
   text-align: left;
   cursor: pointer;
   display: flex;
@@ -9236,7 +9295,7 @@ body {
 
 .chip-title {
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 10px;
+  font-size: 9.5px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   opacity: 0.85;
@@ -9244,7 +9303,7 @@ body {
 
 .chip-amt {
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   margin-top: 2px;
 }
@@ -9262,7 +9321,7 @@ body {
 
 .currency-prefix {
   position: absolute;
-  left: 14px;
+  left: 12px;
   font-family: var(--font-body, 'Montserrat', sans-serif);
   font-weight: 700;
   color: #4A1525;
@@ -9273,9 +9332,9 @@ body {
   background: #FFFFFF;
   border: 1px solid #D5CDC0;
   border-radius: 6px;
-  padding: 9px 12px 9px 30px;
+  padding: 8px 12px 8px 28px;
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 13px;
+  font-size: 12.5px;
   outline: none;
 }
 
@@ -9284,16 +9343,16 @@ body {
 }
 
 .contributor-name-input-box {
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .contributor-name-input-box label {
   display: block;
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 600;
   color: #6B6056;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 .contributor-name-input-box input {
@@ -9316,20 +9375,20 @@ body {
   background: #FAF7F2;
   border: 1px solid #E2DDD3;
   border-radius: 8px;
-  padding: 14px 16px;
-  margin-bottom: 20px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
 }
 
 .transfer-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .transfer-badge {
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   color: #4A1525;
@@ -9337,14 +9396,14 @@ body {
 
 .transfer-note {
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 10.5px;
+  font-size: 10px;
   color: #5E6140;
 }
 
 .transfer-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .transfer-row {
@@ -9352,7 +9411,7 @@ body {
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 12px;
+  font-size: 11.5px;
 }
 
 .transfer-label {
@@ -9380,13 +9439,14 @@ body {
   background: #EFE9DE;
   padding: 2px 6px;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: 10.5px;
 }
 
 .modal-actions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
+  margin-top: auto;
 }
 
 .btn-whatsapp-notify {
@@ -9396,7 +9456,7 @@ body {
   font-family: var(--font-body, 'Montserrat', sans-serif);
   font-size: 11px;
   font-weight: 700;
-  padding: 11px 14px;
+  padding: 10px 14px;
   border-radius: 999px;
   display: flex;
   align-items: center;
@@ -9417,7 +9477,7 @@ body {
   font-family: var(--font-body, 'Montserrat', sans-serif);
   font-size: 11px;
   font-weight: 700;
-  padding: 11px 14px;
+  padding: 10px 14px;
   border-radius: 999px;
   display: flex;
   align-items: center;
@@ -9642,53 +9702,129 @@ body {
 
   /* Interactive Modal on Mobile */
   .gift-modal-backdrop {
-    padding: 10px;
+    padding: clamp(8px, 2.5vw, 14px);
+    align-items: center;
+    justify-content: center;
   }
 
   .gift-modal.wishlist-modal {
-    max-height: 92vh;
-    border-radius: 12px;
+    max-width: min(480px, 96vw);
+    max-height: min(92dvh, 90vh);
+    height: auto;
+    border-radius: 14px;
+    overflow: hidden;
   }
 
   .modal-grid {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: min(92dvh, 90vh);
+    overflow: hidden;
   }
 
   .modal-photo {
-    height: 200px;
-    min-height: 200px;
+    height: 120px;
+    min-height: 120px;
+    max-height: 120px;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #EBE5DC;
+    flex-shrink: 0;
+  }
+
+  .modal-photo img {
+    object-position: center 30%;
+  }
+
+  .modal-close-btn {
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
   }
 
   .modal-info {
-    padding: 18px 16px;
+    padding: 14px 14px 18px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-header-tag-row {
+    padding-right: 0;
+    margin-bottom: 6px;
   }
 
   .modal-info h2 {
-    font-size: 22px;
+    font-size: 19px;
+    line-height: 1.2;
+    margin-bottom: 3px;
+  }
+
+  .modal-price-tag {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .modal-summary {
+    font-size: 11.5px;
+    line-height: 1.45;
+    margin-bottom: 10px;
+  }
+
+  .modal-progress-box {
+    padding: 8px 10px;
+    margin-bottom: 10px;
+  }
+
+  .modal-contribution-selector {
+    margin-bottom: 10px;
   }
 
   .contribution-chips-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
+    gap: 5px;
   }
 
   .chip-btn {
-    padding: 7px 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+  }
+
+  .chip-title {
+    font-size: 9px;
+  }
+
+  .chip-amt {
+    font-size: 11.5px;
+  }
+
+  .contributor-name-input-box {
+    margin-bottom: 10px;
   }
 
   .modal-bank-transfer-card {
-    padding: 12px 14px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+
+  .transfer-row {
+    font-size: 11px;
   }
 
   .modal-actions-grid {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 7px;
   }
 
   .btn-whatsapp-notify,
   .btn-email-notify {
-    padding: 12px 16px;
-    font-size: 11.5px;
+    padding: 11px 14px;
+    font-size: 11px;
   }
 }
 
