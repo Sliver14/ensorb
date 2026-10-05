@@ -183,12 +183,12 @@ export default function HomePage() {
               <span className="script-title-block">One Journey</span>
             </h2>
             <p className="story-paragraph">
-              What started as a simple connection has grown into a beautiful love story. Through every season, we&apos;ve chosen each other — and now, we&apos;re stepping into forever.
+              Sometimes, God begins writing a story long before we realise it is ours to tell. From serving together in Campus Ministry to reconnecting in Lagos, God turned a simple friendship into a lifelong journey of faith and love.
             </p>
             <div className="story-learn-more-wrap">
               <span className="story-hairline" />
               <Link href="/story" className="story-learn-more-link">
-                Learn More <span>→</span>
+                Read Our Story <span>→</span>
               </Link>
             </div>
           </div>
