@@ -9,12 +9,34 @@ import { MonogramLogo } from '@/components/WeddingIcons'
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
+  const lastScrollYRef = useRef(0)
   const pathname = usePathname()
 
-  // Sticky header elevation effect on scroll
+  // Smart sticky header: hide when scrolling down, reveal immediately when scrolling back up
   useEffect(() => {
+    lastScrollYRef.current = window.scrollY
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 15)
+      const currentScrollY = window.scrollY
+      const lastScrollY = lastScrollYRef.current
+      const deltaY = currentScrollY - lastScrollY
+
+      // Elevation styling when scrolled past top threshold
+      setIsScrolled(currentScrollY > 15)
+
+      // Handle bounce / overscroll on mobile
+      if (currentScrollY <= 40 || isMobileMenuOpen) {
+        setIsVisible(true)
+      } else if (deltaY > 6 && currentScrollY > 90) {
+        // Scrolling DOWN away from header -> hide smoothly
+        setIsVisible(false)
+      } else if (deltaY < -4) {
+        // Scrolling UP -> reveal immediately so user can navigate
+        setIsVisible(true)
+      }
+
+      lastScrollYRef.current = currentScrollY
     }
 
     // Initialize on mount
@@ -22,7 +44,13 @@ export function Navbar() {
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [isMobileMenuOpen])
+
+  // Reset visibility and close menu on route change
+  useEffect(() => {
+    setIsVisible(true)
+    setIsMobileMenuOpen(false)
+  }, [pathname])
 
   // Auto-close mobile menu on desktop window resize and handle Escape key
   useEffect(() => {
@@ -65,9 +93,9 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`burgundy-site-header is-visible ${
-          isScrolled ? 'is-scrolled' : ''
-        }`}
+        className={`burgundy-site-header ${
+          isVisible ? 'is-visible' : 'is-hidden'
+        } ${isScrolled ? 'is-scrolled' : ''}`}
       >
         <div className="header-inner">
           {/* Left: Botanical Monogram N & S */}

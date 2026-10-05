@@ -6449,13 +6449,17 @@ body {
   border-bottom: 1px solid rgba(212, 206, 194, 0.55);
   padding: 12px clamp(20px, 5vw, 64px);
   box-sizing: border-box;
-  transition: background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, padding 0.25s ease;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, padding 0.25s ease;
   will-change: transform;
   transform: translateY(0);
 }
 
 .burgundy-site-header.is-visible {
   transform: translateY(0);
+}
+
+.burgundy-site-header.is-hidden {
+  transform: translateY(-100%);
 }
 
 .burgundy-site-header.is-scrolled {
