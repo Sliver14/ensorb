@@ -80,7 +80,7 @@ export default function StoryPage() {
       ],
       image: '/couple/hero-portrait.png',
       imageAlt: 'Ngozi & Sorbari wedding portrait',
-      imageCaption: 'Stepping into forever • 31 October 2026',
+      imageCaption: 'Stepping into forever • 21 November 2026',
       tag: 'Forever Together',
     },
   ]
@@ -245,7 +245,7 @@ export default function StoryPage() {
               &ldquo;From church brethren to life partners, we can truly say that God was writing our love story all along.&rdquo;
             </blockquote>
             <cite className="story-banner-cite">— Ngozi &amp; Sorbari</cite>
-            <p className="story-banner-sub">31 October 2026 • Lagos, Nigeria</p>
+            <p className="story-banner-sub">21 November 2026 • Lagos, Nigeria</p>
           </div>
         </div>
 
@@ -286,7 +286,7 @@ export default function StoryPage() {
           <div className="card-decor-heart">♥</div>
           <h3 className="celebrate-title">Celebrate With Us</h3>
           <p className="celebrate-desc">
-            We would be honored to have you share in the joy of our Holy Matrimony on October 31, 2026.
+            We would be honored to have you share in the joy of our Holy Matrimony on November 21, 2026.
           </p>
           <div className="story-cta-bar">
             <Link href="/rsvp" className="btn-burgundy-pill">

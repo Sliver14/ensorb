@@ -17,10 +17,10 @@ import {
 } from '@/components/WeddingIcons'
 
 function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState({ days: 186, hours: 16, minutes: 42, seconds: 18 })
+  const [timeLeft, setTimeLeft] = useState({ days: 207, hours: 16, minutes: 42, seconds: 18 })
 
   useEffect(() => {
-    const weddingDate = new Date('2026-10-31T11:00:00+01:00').getTime()
+    const weddingDate = new Date('2026-11-21T11:00:00+01:00').getTime()
     const updateCountdown = () => {
       const difference = Math.max(0, weddingDate - Date.now())
       setTimeLeft({
@@ -96,7 +96,7 @@ export default function HomePage() {
     {
       question: 'When will the reception details be available?',
       answer:
-        'The reception will commence at 5:00 PM immediately following the church ceremony at Emerald Celebration Hall. Ushers will be on-site to guide all guests smoothly to the reception hall.',
+        'The church ceremony begins at 11:00 AM at Christ Embassy Ogba 1, Lagos, followed by the grand reception feast and banquet at 1:00 PM. Ushers will be on-site to guide all guests smoothly.',
     },
   ]
 
@@ -147,7 +147,7 @@ export default function HomePage() {
             </h1>
 
             <div className="hero-date-box">
-              <span className="hero-date-text font-serif">31 OCTOBER 2026</span>
+              <span className="hero-date-text font-serif">21 NOVEMBER 2026</span>
               <span className="hero-time-text">11:00 AM</span>
             </div>
 
@@ -239,7 +239,7 @@ export default function HomePage() {
             <span className="detail-col-eyebrow">CEREMONY</span>
             <h3 className="detail-col-title">Christ Embassy Ogba 1</h3>
             <p className="detail-col-address">
-              Plot 12/14 Acme Road, Ogba Industrial Estate, Ikeja, Lagos
+              3 Ogunnusi Rd, Aguda, Ojodu 101233, Lagos
             </p>
             <span className="detail-col-time">11:00 AM</span>
             <a
@@ -260,12 +260,12 @@ export default function HomePage() {
               <ChampagneIcon />
             </div>
             <span className="detail-col-eyebrow">RECEPTION</span>
-            <h3 className="detail-col-title">Emerald Celebration Hall</h3>
+            <h3 className="detail-col-title">Reception Hall &amp; Banquet</h3>
             <p className="detail-col-address">
-              Join us immediately after the church ceremony for the royal grand reception and banquet.
+              Join us immediately following the church ceremony for the grand wedding celebration and reception banquet.
             </p>
-            <span className="detail-col-time">5:00 PM</span>
-            <span className="reception-note">Reception Banquet &amp; After-Party</span>
+            <span className="detail-col-time">1:00 PM</span>
+            <span className="reception-note">Reception Banquet &amp; Celebration</span>
           </div>
 
           <div className="detail-vertical-divider" />
@@ -276,9 +276,9 @@ export default function HomePage() {
               <CalendarEventIcon />
             </div>
             <span className="detail-col-eyebrow">DATE</span>
-            <h3 className="detail-col-title">31 October 2026</h3>
+            <h3 className="detail-col-title">21 November 2026</h3>
             <p className="detail-col-address">Saturday</p>
-            <span className="detail-col-time">11:00 AM Prompt</span>
+            <span className="detail-col-time">11:00 AM (Church) | 1:00 PM (Reception)</span>
           </div>
         </div>
       </section>

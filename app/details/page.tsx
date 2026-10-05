@@ -29,7 +29,7 @@ export default function DetailsPage() {
         <div className="section-header-center">
           <p className="eyebrow">Order of Events</p>
           <h2 id="schedule-heading">The Wedding Program</h2>
-          <p className="section-subtext">Saturday, October 31, 2026 • Christ Embassy Ogba 1, Lagos</p>
+          <p className="section-subtext">Saturday, November 21, 2026 • Christ Embassy Ogba 1, Lagos</p>
         </div>
 
         <div className="schedule-timeline">
@@ -59,7 +59,7 @@ export default function DetailsPage() {
             <span className="venue-badge">Main Venue</span>
             <h3>Christ Embassy Ogba 1</h3>
             <p className="venue-address">
-              Plot 12/14 Acme Road, Ogba Industrial Estate, Ikeja / Ogba, Lagos, Nigeria
+              3 Ogunnusi Rd, Aguda, Ojodu 101233, Lagos, Nigeria
             </p>
             <div className="venue-features">
               <div className="feature-item">

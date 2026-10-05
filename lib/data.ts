@@ -140,6 +140,20 @@ export const dressColors: DressColor[] = [
 
 export const registryGifts: WishlistItem[] = [
   {
+    id: 'solar-inverter-system',
+    title: '5kVA Hybrid Solar Inverter & Lithium Battery System',
+    price: '₦2,400,000',
+    numericPrice: 2400000,
+    contributedAmount: 1200000,
+    contributorCount: 4,
+    isFullyGifted: false,
+    category: 'appliances',
+    categoryLabel: 'Home Power & Living',
+    image: '/gifts/solar-inverter.jpg',
+    description: 'Clean, continuous solar backup power and high-capacity lithium storage for our new home.',
+    featured: true,
+  },
+  {
     id: 'honeymoon-fund',
     title: 'Honeymoon Fund',
     price: '₦500,000',
@@ -296,38 +310,38 @@ export const galleryPhotos = [
 
 export const weddingSchedule: ScheduleEvent[] = [
   {
-    time: '01:30 PM',
+    time: '10:30 AM',
     title: 'Guest Arrival & Prelude',
     location: 'Main Sanctuary & Reception Foyer',
     description: 'Welcome music, ushering of guests to designated seats, and gathering for the sacred celebration.',
     icon: '🎻',
   },
   {
-    time: '02:00 PM',
-    title: 'Holy Matrimony & Vows',
-    location: 'Main Sanctuary Floor',
+    time: '11:00 AM',
+    title: 'Holy Matrimony & Church Ceremony',
+    location: 'Christ Embassy Ogba 1 Sanctuary',
     description: 'Procession of the bridal train, worship, exchange of holy matrimonial vows, and pastoral blessings.',
     icon: '💍',
   },
   {
-    time: '03:30 PM',
-    title: 'Photographs & Cocktail Hour',
+    time: '12:30 PM',
+    title: 'Photographs & Celebrations',
     location: 'Church Courtyard & Grand Lawn',
-    description: 'Formal family portraits, celebratory drinks, hors d’oeuvres, and warm congratulations with the couple.',
+    description: 'Formal family portraits, celebratory drinks, and congratulations with the newlyweds.',
     icon: '🥂',
   },
   {
-    time: '05:00 PM',
+    time: '01:00 PM',
     title: 'Grand Reception & Feast',
     location: 'Emerald Celebration Hall',
     description: 'Grand entrance of the newlyweds, culinary banquet, toast, cake cutting, and couple’s first dance.',
     icon: '✨',
   },
   {
-    time: '08:00 PM',
-    title: 'Celebration & After Party',
+    time: '04:30 PM',
+    title: 'Celebration & Dancing',
     location: 'Grand Ballroom Floor',
-    description: 'High-energy music, joyous dancing, dessert buffet, and celebrating the night away with Ngozi & Sorbari!',
+    description: 'High-energy music, joyous dancing, dessert buffet, and celebrating with Ngozi & Sorbari!',
     icon: '💃',
   },
 ]
@@ -343,7 +357,7 @@ export const faqData: FAQItem[] = [
   },
   {
     question: 'Where will the wedding take place?',
-    answer: 'The wedding ceremony and celebration will be held at Christ Embassy Ogba 1, Lagos, Nigeria on Saturday, October 31, 2026 starting at 2:00 PM.',
+    answer: 'The wedding ceremony and celebration will be held at Christ Embassy Ogba 1, 3 Ogunnusi Rd, Aguda, Ojodu, Lagos, Nigeria on Saturday, November 21, 2026 starting at 11:00 AM (Church) and 1:00 PM (Reception).',
   },
   {
     question: 'How does the wedding wishlist and cash contributions work?',

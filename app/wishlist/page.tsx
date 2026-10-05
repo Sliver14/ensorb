@@ -268,7 +268,7 @@ export default function WishlistPage() {
               {/* Side Names Stamp */}
               <div className="wishlist-names-stamp floating-gentle">
                 <span className="stamp-names">NGOZI &amp; SORBARI</span>
-                <span className="stamp-date">31 OCTOBER 2026</span>
+                <span className="stamp-date">21 NOVEMBER 2026</span>
                 <span className="stamp-heart">♡</span>
               </div>
             </div>

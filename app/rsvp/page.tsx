@@ -392,8 +392,8 @@ export default function RsvpPage() {
                 </div>
                 <div className="event-item-text">
                   <span className="detail-tag">Date</span>
-                  <strong className="detail-val">31 October 2026</strong>
-                  <span className="detail-sub">Time: 11:00 AM</span>
+                  <strong className="detail-val">21 November 2026</strong>
+                  <span className="detail-sub">11:00 AM (Church) | 1:00 PM (Reception)</span>
                 </div>
               </div>
 
@@ -405,7 +405,7 @@ export default function RsvpPage() {
                   <span className="detail-tag">Venue</span>
                   <strong className="detail-val">Christ Embassy Ogba 1</strong>
                   <span className="detail-sub">
-                    3 Ogunnusi Rd, Aguda, Ojodu / 101233, Lagos
+                    3 Ogunnusi Rd, Aguda, Ojodu 101233, Lagos
                   </span>
                 </div>
               </div>

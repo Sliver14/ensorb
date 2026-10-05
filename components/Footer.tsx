@@ -46,7 +46,7 @@ export function Footer() {
         </nav>
 
         <p className="footer-copyright">
-          © 2026 Ngozi &amp; Sorbari. All rights reserved. • October 31, 2026 • Lagos, Nigeria
+          © 2026 Ngozi &amp; Sorbari. All rights reserved. • November 21, 2026 • Lagos, Nigeria
         </p>
       </div>
     </footer>

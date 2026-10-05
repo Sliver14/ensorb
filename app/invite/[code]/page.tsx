@@ -165,7 +165,7 @@ export default function UniqueInvitePage({ params }: PageProps) {
   }
 
   // Generate Google Calendar Link
-  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding:+Ngozi+%26+Sorbari&dates=20261031T130000Z/20261031T200000Z&details=Official+Wedding+Celebration+of+Ngozi+Emele+Kalu+and+Sorbari+Godwin+Uebari.+Pass+ID:+${invite?.passId || ''}&location=Christ+Embassy+Ogba+1,+Lagos,+Nigeria`
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding:+Ngozi+%26+Sorbari&dates=20261121T100000Z/20261121T180000Z&details=Official+Wedding+Celebration+of+Ngozi+Emele+Kalu+and+Sorbari+Godwin+Uebari.+Pass+ID:+${invite?.passId || ''}&location=Christ+Embassy+Ogba+1,+Lagos,+Nigeria`
 
   return (
     <main className="elegant-burgundy-theme unique-invite-page">
@@ -183,7 +183,7 @@ export default function UniqueInvitePage({ params }: PageProps) {
         <p className="eyebrow">The Holy Matrimony Of</p>
         <h1>Ngozi &amp; Sorbari</h1>
         <p className="subpage-hero-desc">
-          Saturday, October 31, 2026 • 2:00 PM • Christ Embassy Ogba 1, Lagos, Nigeria
+          Saturday, November 21, 2026 • 11:00 AM (Church) | 1:00 PM (Reception) • Christ Embassy Ogba 1, Lagos, Nigeria
         </p>
       </section>
 

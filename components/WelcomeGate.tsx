@@ -192,7 +192,7 @@ export function WelcomeGate() {
                   <span className="dot">✦</span>
                   <span className="line" />
                 </div>
-                <p className="inner-card-date">OCTOBER 31, 2026 • LAGOS</p>
+                <p className="inner-card-date">NOVEMBER 21, 2026 • LAGOS</p>
                 <p className="inner-card-blessing">
                   We are blessed to share our forever with you ♡
                 </p>

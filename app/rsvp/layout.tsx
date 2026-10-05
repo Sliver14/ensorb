@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'RSVP & Digital Wedding Pass',
   description:
-    'Confirm your attendance for the wedding celebration of Ngozi & Sorbari on Saturday, October 31, 2026. Register your seat and generate your personalized digital guest entry pass instantly.',
+    'Confirm your attendance for the wedding celebration of Ngozi & Sorbari on Saturday, November 21, 2026. Register your seat and generate your personalized digital guest entry pass instantly.',
   alternates: {
     canonical: '/rsvp',
   },

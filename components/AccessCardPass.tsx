@@ -110,7 +110,7 @@ export function AccessCardPass({
       ctx.font = 'bold 34px "Montserrat", sans-serif'
       ctx.letterSpacing = '4px'
       ctx.fillStyle = '#2B2725'
-      ctx.fillText('SATURDAY, 31ST OCTOBER, 2026', 540, 530)
+      ctx.fillText('SATURDAY, 21ST NOVEMBER, 2026', 540, 530)
 
       ctx.font = '500 26px "Montserrat", sans-serif'
       ctx.letterSpacing = '2px'
@@ -222,7 +222,7 @@ export function AccessCardPass({
   }
 
   // Google Calendar Link
-  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding:+Ngozi+%26+Sorbari&dates=20261031T100000Z/20261031T180000Z&details=Official+Wedding+Celebration+of+Ngozi+Emele+Kalu+and+Sorbari+Godwin+Uebari.+Access+Code:+${accessCode}+|+Table:+${encodeURIComponent(
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding:+Ngozi+%26+Sorbari&dates=20261121T100000Z/20261121T180000Z&details=Official+Wedding+Celebration+of+Ngozi+Emele+Kalu+and+Sorbari+Godwin+Uebari.+Access+Code:+${accessCode}+|+Table:+${encodeURIComponent(
     invite.tableNumber
   )}&location=Christ+Embassy+Ogba+1,+Lagos,+Nigeria`
 
@@ -272,7 +272,7 @@ export function AccessCardPass({
 
         {/* Date & Venue Bar */}
         <div className="access-card-date-bar">
-          <span className="date-highlight">SATURDAY, 31ST OCTOBER, 2026</span>
+          <span className="date-highlight">SATURDAY, 21ST NOVEMBER, 2026</span>
           <span className="time-highlight">11:00 AM (CHURCH) | 1:00 PM (RECEPTION)</span>
         </div>
 

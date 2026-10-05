@@ -240,7 +240,7 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
 
               <!-- Date & Venue Bar -->
               <div class="date-venue-bar">
-                <div class="event-date">SATURDAY, 31ST OCTOBER, 2026</div>
+                <div class="event-date">SATURDAY, 21ST NOVEMBER, 2026</div>
                 <div class="event-time">11:00 AM (CHURCH) | 1:00 PM (RECEPTION) • LAGOS, NIGERIA</div>
               </div>
 
@@ -438,7 +438,7 @@ export function generateUniqueInviteEmailHtml(invite: Invite, siteUrl: string): 
               <div class="rings">💍</div>
               <div class="eyebrow">OFFICIAL WEDDING INVITATION</div>
               <h1 class="title">Ngozi &amp; Sorbari</h1>
-              <p style="font-size: 12px; color: #D4AF37; margin: 8px 0 0; letter-spacing: 0.1em; text-transform: uppercase;">Saturday, October 31, 2026 • Lagos, Nigeria</p>
+              <p style="font-size: 12px; color: #D4AF37; margin: 8px 0 0; letter-spacing: 0.1em; text-transform: uppercase;">Saturday, November 21, 2026 • Lagos, Nigeria</p>
             </div>
 
             <div class="body-content">
