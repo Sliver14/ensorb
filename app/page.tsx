@@ -116,9 +116,6 @@ export default function HomePage() {
           SECTION 1: HERO (SPLIT TORN PAPER LAYOUT)
          ==================================================================== */}
       <section className="hero-split-section">
-        {/* Section Scoped Ambient Atmosphere */}
-        <AmbientAtmosphere sparkleCount={10} petalCount={5} />
-
         {/* Left: Romantic Couple Portrait */}
         <div className="hero-photo-wrap">
           <img
@@ -126,7 +123,6 @@ export default function HomePage() {
             alt="Ngozi & Sorbari Wedding Portrait"
             className="hero-couple-img"
           />
-          <div className="hero-photo-vignette" />
         </div>
 
         {/* Right: Torn Paper Deckled Card */}
