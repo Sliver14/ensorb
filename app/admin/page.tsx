@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { Invite, AdminStats, CreateInviteInput } from '@/lib/types'
+import { GiftRecord, GiftContribution, GiftAdminStats } from '@/lib/db'
 import { AccessCardPass } from '@/components/AccessCardPass'
 import {
   Users,
@@ -36,6 +37,12 @@ import {
   SlidersHorizontal,
   Calendar,
   Phone,
+  Gift,
+  DollarSign,
+  CheckCheck,
+  CreditCard,
+  TrendingUp,
+  Heart,
 } from 'lucide-react'
 
 export default function AdminPage() {
@@ -59,9 +66,19 @@ export default function AdminPage() {
   const [createMode, setCreateMode] = useState<'email_direct' | 'bare' | 'batch' | 'custom'>('email_direct')
   const [editingInvite, setEditingInvite] = useState<Invite | null>(null)
   const [previewInvite, setPreviewInvite] = useState<Invite | null>(null)
-  const [activeTab, setActiveTab] = useState<'approvals' | 'all' | 'registered' | 'pending' | 'vip' | 'checkedin' | 'declined'>('approvals')
+  const [activeTab, setActiveTab] = useState<'approvals' | 'all' | 'registered' | 'pending' | 'vip' | 'checkedin' | 'declined' | 'gifts'>('approvals')
   const [searchQuery, setSearchQuery] = useState('')
   const [quickCheckInCode, setQuickCheckInCode] = useState('')
+
+  // Gift Registry Data & States
+  const [giftContributions, setGiftContributions] = useState<GiftContribution[]>([])
+  const [giftStats, setGiftStats] = useState<GiftAdminStats | null>(null)
+  const [giftItems, setGiftItems] = useState<GiftRecord[]>([])
+  const [isLoadingGifts, setIsLoadingGifts] = useState(false)
+  const [confirmingContribId, setConfirmingContribId] = useState<string | null>(null)
+  const [decliningContribId, setDecliningContribId] = useState<string | null>(null)
+  const [giftFilter, setGiftFilter] = useState<'all' | 'pending' | 'confirmed' | 'declined'>('all')
+  const [giftSearchQuery, setGiftSearchQuery] = useState('')
 
   // Approval draft settings per invite code (for pending items)
   const [approvalDrafts, setApprovalDrafts] = useState<{
@@ -131,10 +148,88 @@ export default function AdminPage() {
     checkAuth()
   }, [])
 
+  // Load Gift Registry Data
+  const loadGiftData = async () => {
+    try {
+      setIsLoadingGifts(true)
+      const [contribsRes, giftsRes] = await Promise.all([
+        fetch('/api/gifts/contributions'),
+        fetch('/api/gifts'),
+      ])
+      const contribsData = await contribsRes.json()
+      const giftsData = await giftsRes.json()
+
+      if (contribsData.success) {
+        setGiftContributions(contribsData.contributions || [])
+        setGiftStats(contribsData.stats || null)
+      }
+      if (giftsData.success) {
+        setGiftItems(giftsData.gifts || [])
+        if (!contribsData.stats && giftsData.stats) {
+          setGiftStats(giftsData.stats)
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load gifts data:', err)
+    } finally {
+      setIsLoadingGifts(false)
+    }
+  }
+
+  // Handle Confirm Gift Transfer
+  const handleConfirmGift = async (contributionId: string) => {
+    setConfirmingContribId(contributionId)
+    try {
+      const res = await fetch('/api/gifts/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contributionId, confirmedBy: 'Admin / Couple' }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        showToast('✓ Gift transfer confirmed! Progress updated on live website.', 'success')
+        await loadGiftData()
+      } else {
+        showToast(data.error || 'Failed to confirm gift transfer', 'error')
+      }
+    } catch {
+      showToast('Network error while confirming gift transfer', 'error')
+    } finally {
+      setConfirmingContribId(null)
+    }
+  }
+
+  // Handle Decline / Delete Gift Contribution
+  const handleDeclineGift = async (contributionId: string, action: 'decline' | 'delete' = 'decline') => {
+    if (action === 'delete' && !confirm('Are you sure you want to permanently delete this gift record?')) {
+      return
+    }
+    setDecliningContribId(contributionId)
+    try {
+      const res = await fetch('/api/gifts/decline', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contributionId, action }),
+      })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        showToast(data.message || (action === 'delete' ? 'Gift record deleted' : 'Gift contribution declined'), 'info')
+        await loadGiftData()
+      } else {
+        showToast(data.error || 'Failed to process gift action', 'error')
+      }
+    } catch {
+      showToast('Network error while processing gift action', 'error')
+    } finally {
+      setDecliningContribId(null)
+    }
+  }
+
   // Load all invites and stats
   const loadDashboardData = async () => {
     try {
       setIsLoading(true)
+      loadGiftData()
       const res = await fetch('/api/invites')
       const data = await res.json()
       if (res.ok && data.success) {
@@ -739,6 +834,31 @@ export default function AdminPage() {
     return invites.filter((inv) => inv.approvalStatus === 'pending')
   }, [invites])
 
+  // Pending Gifts List specifically
+  const pendingGiftsList = useMemo(() => {
+    return giftContributions.filter((c) => c.status === 'pending')
+  }, [giftContributions])
+
+  const pendingGiftCount = pendingGiftsList.length
+  const confirmedGiftsCount = giftContributions.filter((c) => c.status === 'confirmed').length
+  const declinedGiftsCount = giftContributions.filter((c) => c.status === 'declined').length
+
+  const filteredGiftContributions = useMemo(() => {
+    return giftContributions.filter((c) => {
+      if (giftFilter !== 'all' && c.status !== giftFilter) return false
+      if (giftSearchQuery.trim()) {
+        const q = giftSearchQuery.toLowerCase()
+        const matchName = (c.contributorName || '').toLowerCase().includes(q)
+        const matchItem = (c.giftTitle || '').toLowerCase().includes(q)
+        const matchRef = (c.paymentReference || '').toLowerCase().includes(q)
+        const matchEmail = (c.contributorEmail || '').toLowerCase().includes(q)
+        const matchPhone = (c.contributorPhone || '').toLowerCase().includes(q)
+        return matchName || matchItem || matchRef || matchEmail || matchPhone
+      }
+      return true
+    })
+  }, [giftContributions, giftFilter, giftSearchQuery])
+
   // If checking authentication
   if (isAuthenticated === null) {
     return (
@@ -1029,6 +1149,24 @@ export default function AdminPage() {
             <span className="stat-sub">Admitted at venue gate</span>
           </div>
         </div>
+
+        <div
+          className={`stat-card clickable ${activeTab === 'gifts' ? 'active-stat' : ''}`}
+          onClick={() => setActiveTab('gifts')}
+        >
+          <div className="stat-icon-box gold">
+            <Gift size={22} />
+          </div>
+          <div className="stat-content">
+            <span className="stat-label">Gift Registry</span>
+            <strong className="stat-val">
+              ₦{((giftStats?.totalConfirmedAmount || 0) / 1000).toLocaleString()}k
+            </strong>
+            <span className="stat-sub">
+              {pendingGiftCount > 0 ? `${pendingGiftCount} transfers to verify` : 'All gifts up to date'}
+            </span>
+          </div>
+        </div>
       </section>
 
       {/* Main Table & Management Area */}
@@ -1105,6 +1243,17 @@ export default function AdminPage() {
                 onClick={() => setActiveTab('declined')}
               >
                 Declined
+              </button>
+              <button
+                type="button"
+                className={`filter-tab gift-tab-highlight ${activeTab === 'gifts' ? 'active' : ''}`}
+                onClick={() => setActiveTab('gifts')}
+              >
+                <Gift size={15} style={{ display: 'inline', marginRight: '4px', verticalAlign: 'middle' }} />
+                <span>Gift Registry</span>
+                {pendingGiftCount > 0 && (
+                  <span className="tab-counter-badge gift-pending-pill">{pendingGiftCount}</span>
+                )}
               </button>
             </div>
 
@@ -1344,9 +1493,408 @@ export default function AdminPage() {
           )}
 
           {/* =========================================================================
+              VIEW: GIFT REGISTRY & CONTRIBUTIONS TRACKER (If on 'gifts' tab)
+              ========================================================================= */}
+          {activeTab === 'gifts' && (
+            <div className="gift-admin-dashboard">
+              {/* Header & Quick Actions */}
+              <div className="gift-dashboard-header">
+                <div className="gift-header-titles">
+                  <h2>
+                    <span>🎁</span>
+                    <span>Gift Registry &amp; Contributions Tracker</span>
+                  </h2>
+                  <p>
+                    Verify guest bank transfers, track funding progress per item, and monitor overall celebration gifts. Confirmed transfers automatically update item progress bars on the live public registry.
+                  </p>
+                </div>
+                <div className="gift-header-actions">
+                  <button
+                    type="button"
+                    className="btn-gift-refresh"
+                    onClick={loadGiftData}
+                    disabled={isLoadingGifts}
+                  >
+                    <RefreshCw size={14} className={isLoadingGifts ? 'spinning' : ''} />
+                    <span>Refresh Gifts</span>
+                  </button>
+                  <Link href="/wishlist" target="_blank" className="btn-gift-public">
+                    <span>View Public Wishlist</span>
+                    <ExternalLink size={14} />
+                  </Link>
+                </div>
+              </div>
+
+              {/* KPI Metrics Summary Grid */}
+              <div className="gift-kpi-grid">
+                <div className="gift-kpi-card">
+                  <div className="kpi-top-row">
+                    <span className="kpi-label">Registry Goal</span>
+                    <div className="kpi-icon burgundy">
+                      <DollarSign size={18} />
+                    </div>
+                  </div>
+                  <div className="kpi-value">
+                    ₦{((giftStats?.totalRegistryValue || 0) / 1000000).toFixed(2)}M
+                  </div>
+                  <div className="kpi-subtext">
+                    Total target for {giftStats?.totalItemsCount || 12} home registry items
+                  </div>
+                </div>
+
+                <div className="gift-kpi-card kpi-accent">
+                  <div className="kpi-top-row">
+                    <span className="kpi-label">Verified Gifts</span>
+                    <div className="kpi-icon green">
+                      <CheckCheck size={18} />
+                    </div>
+                  </div>
+                  <div className="kpi-value text-green">
+                    ₦{(giftStats?.totalConfirmedAmount || 0).toLocaleString()}
+                  </div>
+                  <div className="kpi-subtext">
+                    {giftStats?.totalRegistryValue
+                      ? `${Math.round(((giftStats.totalConfirmedAmount || 0) / giftStats.totalRegistryValue) * 100)}% of total registry goal funded`
+                      : 'Confirmed transfers'}
+                  </div>
+                  <div className="kpi-progress-bar">
+                    <div
+                      className="kpi-progress-fill"
+                      style={{
+                        width: `${giftStats?.totalRegistryValue ? Math.min(100, Math.round(((giftStats.totalConfirmedAmount || 0) / giftStats.totalRegistryValue) * 100)) : 0}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="gift-kpi-card">
+                  <div className="kpi-top-row">
+                    <span className="kpi-label">Pending Verifications</span>
+                    <div className="kpi-icon amber">
+                      <Clock size={18} />
+                    </div>
+                  </div>
+                  <div className="kpi-value text-amber">
+                    ₦{(giftStats?.totalPendingAmount || 0).toLocaleString()}
+                  </div>
+                  <div className="kpi-subtext">
+                    {giftStats?.pendingCount || 0} guest transfers awaiting admin confirmation
+                  </div>
+                </div>
+
+                <div className="gift-kpi-card">
+                  <div className="kpi-top-row">
+                    <span className="kpi-label">Fully Gifted Items</span>
+                    <div className="kpi-icon gold">
+                      <Sparkles size={18} />
+                    </div>
+                  </div>
+                  <div className="kpi-value">
+                    {giftStats?.fullyGiftedCount || 0} / {giftStats?.totalItemsCount || 12}
+                  </div>
+                  <div className="kpi-subtext">
+                    Items reached 100% funding goal
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Center: Pending Transfers Verification Queue */}
+              <div className="gift-pending-section">
+                <div className="gift-section-title">
+                  <h3>
+                    <Clock size={20} className="text-amber" />
+                    <span>Pending Bank Transfer Verifications</span>
+                  </h3>
+                  {pendingGiftCount > 0 ? (
+                    <span className="pending-alert-tag">{pendingGiftCount} transfers to verify</span>
+                  ) : (
+                    <span className="status-pill confirmed">✓ All Caught Up</span>
+                  )}
+                </div>
+
+                {pendingGiftsList.length === 0 ? (
+                  <div className="empty-queue-box">
+                    <CheckCircle2 size={42} className="text-green" />
+                    <h4>All Gift Transfers Verified!</h4>
+                    <p>When guests submit their bank transfer references on the wishlist page, they will appear here for one-click verification.</p>
+                  </div>
+                ) : (
+                  <div className="gift-pending-grid">
+                    {pendingGiftsList.map((contrib) => {
+                      const isConfirming = confirmingContribId === contrib.id
+                      const isDeclining = decliningContribId === contrib.id
+
+                      return (
+                        <div key={contrib.id} className="gift-pending-card">
+                          <div>
+                            <div className="pending-card-header">
+                              <div className="contributor-profile-wrap">
+                                <div className="contributor-avatar">
+                                  {contrib.contributorName.charAt(0).toUpperCase()}
+                                </div>
+                                <div>
+                                  <h4 className="contributor-name-text">{contrib.contributorName}</h4>
+                                  <div className="contributor-contact-text">
+                                    {contrib.contributorPhone || contrib.contributorEmail || 'Guest Transfer'}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="pending-amount-box">
+                                <div className="pending-amount-value">
+                                  ₦{contrib.amount.toLocaleString()}
+                                </div>
+                                <span className="pending-ref-badge font-mono">
+                                  {contrib.paymentReference}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="pending-gift-target">
+                              <span>🎁 Target:</span>
+                              <strong>{contrib.giftTitle}</strong>
+                            </div>
+
+                            {contrib.customNote && (
+                              <div className="pending-guest-note">
+                                “{contrib.customNote}”
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="pending-actions-bar">
+                            <button
+                              type="button"
+                              className="btn-confirm-transfer"
+                              onClick={() => handleConfirmGift(contrib.id)}
+                              disabled={isConfirming || isDeclining}
+                            >
+                              <CheckCircle2 size={16} />
+                              <span>{isConfirming ? 'Updating Registry...' : '✓ Confirm Transfer & Update Progress'}</span>
+                            </button>
+                            <button
+                              type="button"
+                              className="btn-decline-transfer"
+                              onClick={() => handleDeclineGift(contrib.id, 'decline')}
+                              disabled={isConfirming || isDeclining}
+                            >
+                              <XCircle size={16} />
+                              <span>{isDeclining ? 'Declining...' : 'Decline'}</span>
+                            </button>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Complete Contributions Ledger Table */}
+              <div className="gift-ledger-container">
+                <div className="ledger-filter-row">
+                  <div className="gift-section-title" style={{ margin: 0 }}>
+                    <h3>
+                      <CreditCard size={20} className="text-burgundy" />
+                      <span>Contributions Ledger ({giftContributions.length})</span>
+                    </h3>
+                  </div>
+
+                  <div className="ledger-pill-group">
+                    <button
+                      type="button"
+                      className={`ledger-pill ${giftFilter === 'all' ? 'active' : ''}`}
+                      onClick={() => setGiftFilter('all')}
+                    >
+                      All ({giftContributions.length})
+                    </button>
+                    <button
+                      type="button"
+                      className={`ledger-pill ${giftFilter === 'pending' ? 'active' : ''}`}
+                      onClick={() => setGiftFilter('pending')}
+                    >
+                      Pending ({pendingGiftCount})
+                    </button>
+                    <button
+                      type="button"
+                      className={`ledger-pill ${giftFilter === 'confirmed' ? 'active' : ''}`}
+                      onClick={() => setGiftFilter('confirmed')}
+                    >
+                      Confirmed ({confirmedGiftsCount})
+                    </button>
+                    <button
+                      type="button"
+                      className={`ledger-pill ${giftFilter === 'declined' ? 'active' : ''}`}
+                      onClick={() => setGiftFilter('declined')}
+                    >
+                      Declined ({declinedGiftsCount})
+                    </button>
+                  </div>
+
+                  <div className="search-input-wrap">
+                    <Search size={16} />
+                    <input
+                      type="text"
+                      placeholder="Search contributor, item, ref..."
+                      value={giftSearchQuery}
+                      onChange={(e) => setGiftSearchQuery(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {filteredGiftContributions.length === 0 ? (
+                  <div className="empty-table-wrap">
+                    <Gift size={36} className="empty-icon" />
+                    <h4>No Contributions Found</h4>
+                    <p>
+                      {giftSearchQuery
+                        ? `No contributions match "${giftSearchQuery}".`
+                        : 'No gift contributions in this category yet.'}
+                    </p>
+                  </div>
+                ) : (
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>Date &amp; Ref</th>
+                        <th>Contributor</th>
+                        <th>Target Gift</th>
+                        <th>Amount</th>
+                        <th>Blessings Note</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredGiftContributions.map((c) => (
+                        <tr key={c.id}>
+                          <td>
+                            <div className="font-mono text-xs text-muted">
+                              {c.createdAt ? new Date(c.createdAt).toLocaleDateString('en-GB') : 'Recent'}
+                            </div>
+                            <span className="pending-ref-badge font-mono">{c.paymentReference}</span>
+                          </td>
+                          <td>
+                            <strong className="target-name">{c.contributorName}</strong>
+                            <div className="text-xs text-muted">
+                              {c.contributorEmail || c.contributorPhone || '—'}
+                            </div>
+                          </td>
+                          <td>
+                            <strong className="text-burgundy">{c.giftTitle}</strong>
+                          </td>
+                          <td>
+                            <strong className="font-mono text-base">₦{c.amount.toLocaleString()}</strong>
+                          </td>
+                          <td style={{ maxWidth: '200px' }}>
+                            <span className="text-xs italic text-muted">
+                              {c.customNote || '—'}
+                            </span>
+                          </td>
+                          <td>
+                            {c.status === 'confirmed' ? (
+                              <span className="status-badge registered">✓ Verified &amp; Applied</span>
+                            ) : c.status === 'declined' ? (
+                              <span className="status-badge declined">✕ Declined</span>
+                            ) : (
+                              <span className="status-badge pending">⏳ Pending Verification</span>
+                            )}
+                          </td>
+                          <td>
+                            <div className="row-actions">
+                              {c.status !== 'confirmed' && (
+                                <button
+                                  type="button"
+                                  className="inline-quick-approve-btn"
+                                  onClick={() => handleConfirmGift(c.id)}
+                                  disabled={confirmingContribId === c.id}
+                                  title="Confirm transfer and add to gift progress"
+                                >
+                                  {confirmingContribId === c.id ? '...' : '✓ Confirm'}
+                                </button>
+                              )}
+                              {c.status === 'pending' && (
+                                <button
+                                  type="button"
+                                  className="action-icon-link text-danger"
+                                  onClick={() => handleDeclineGift(c.id, 'decline')}
+                                  title="Decline contribution"
+                                >
+                                  <XCircle size={15} />
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                className="action-icon-link text-danger"
+                                onClick={() => handleDeclineGift(c.id, 'delete')}
+                                title="Permanently delete record"
+                              >
+                                <Trash2 size={15} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+
+              {/* Live Gift Registry Items Progress Tracker */}
+              <div className="gift-items-admin-section">
+                <div className="gift-section-title">
+                  <h3>
+                    <TrendingUp size={20} className="text-burgundy" />
+                    <span>Live Gift Registry Items &amp; Target Progress</span>
+                  </h3>
+                </div>
+
+                <div className="admin-gift-cards-grid">
+                  {giftItems.map((gift) => {
+                    const percentage = Math.min(
+                      100,
+                      Math.round((gift.contributedAmount / gift.numericPrice) * 100)
+                    )
+                    const isFunded = gift.isFullyGifted || percentage >= 100
+
+                    return (
+                      <div key={gift.id} className="admin-gift-item-card">
+                        <div className="admin-gift-card-top">
+                          <img
+                            src={gift.image}
+                            alt={gift.title}
+                            className="admin-gift-card-img"
+                          />
+                          <span className={`admin-gift-card-badge ${isFunded ? 'funded' : ''}`}>
+                            {isFunded ? '✓ Goal Reached' : `${percentage}% Funded`}
+                          </span>
+                        </div>
+                        <div className="admin-gift-card-body">
+                          <h4 className="admin-gift-card-title">{gift.title}</h4>
+                          <div className="admin-gift-card-pricing">
+                            <span>Raised: <strong>₦{gift.contributedAmount.toLocaleString()}</strong></span>
+                            <span>Goal: {gift.price}</span>
+                          </div>
+                          <div className="kpi-progress-bar">
+                            <div
+                              className="kpi-progress-fill"
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                          <div className="text-xs text-muted mt-2">
+                            👥 {gift.contributorCount} {gift.contributorCount === 1 ? 'contributor' : 'contributors'}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* =========================================================================
               VIEW: GENERAL INVITES TABLE (All other tabs)
               ========================================================================= */}
-          {activeTab !== 'approvals' && (
+          {activeTab !== 'approvals' && activeTab !== 'gifts' && (
             <div className="admin-table-container">
               {isLoading ? (
                 <div className="table-loading-wrap">
