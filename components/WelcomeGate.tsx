@@ -8,6 +8,8 @@ export function WelcomeGate() {
   const [isUnlocked, setIsUnlocked] = useState(true) // default true for SSR safety
   const [isUnlocking, setIsUnlocking] = useState(false)
   const [cardRevealed, setCardRevealed] = useState(false)
+  const [cardFloating, setCardFloating] = useState(false)
+  const [isFadingOut, setIsFadingOut] = useState(false)
   const pathname = usePathname()
   const audioContextRef = useRef<AudioContext | null>(null)
 
@@ -23,7 +25,7 @@ export function WelcomeGate() {
     }
   }, [pathname])
 
-  // Play a delicate, luxury harp/chime tone on unsealing
+  // Play a rich, extended celestial harp / chime arpeggio on unsealing
   const playUnsealSound = () => {
     try {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext
@@ -34,25 +36,25 @@ export function WelcomeGate() {
         ctx.resume()
       }
 
-      // Elegant harmonic arpeggio: C5, E5, G5, B5, C6 (523, 659, 784, 987, 1046 Hz)
-      const notes = [523.25, 659.25, 783.99, 987.77, 1046.5]
+      // Elegant harmonic arpeggio extended: C5, E5, G5, B5, C6, E6, G6, B6 (523, 659, 784, 987, 1046, 1318, 1568, 1975 Hz)
+      const notes = [523.25, 659.25, 783.99, 987.77, 1046.5, 1318.51, 1567.98, 1975.53]
       notes.forEach((freq, idx) => {
         const osc = ctx.createOscillator()
         const gain = ctx.createGain()
         osc.type = 'sine'
-        osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.08)
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.12)
 
-        gain.gain.setValueAtTime(0, ctx.currentTime + idx * 0.08)
-        gain.gain.linearRampToValueAtTime(0.045, ctx.currentTime + idx * 0.08 + 0.04)
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.08 + 1.2)
+        gain.gain.setValueAtTime(0, ctx.currentTime + idx * 0.12)
+        gain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + idx * 0.12 + 0.05)
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.12 + 2.0)
 
         osc.connect(gain)
         gain.connect(ctx.destination)
 
-        osc.start(ctx.currentTime + idx * 0.08)
-        osc.stop(ctx.currentTime + idx * 0.08 + 1.25)
+        osc.start(ctx.currentTime + idx * 0.12)
+        osc.stop(ctx.currentTime + idx * 0.12 + 2.1)
       })
-    } catch (e) {
+    } catch {
       // Non-blocking audio fallback
     }
   }
@@ -62,24 +64,43 @@ export function WelcomeGate() {
     setIsUnlocking(true)
     playUnsealSound()
 
-    // Step 1: Reveal inner wedding card after flap lifts
+    // Step 1: Flap lifts, seal glints, inner card begins rising (0.75s)
     setTimeout(() => {
       setCardRevealed(true)
-    }, 450)
+    }, 750)
 
-    // Step 2: Store in session storage
+    // Step 2: Inner card reaches peak and floats gracefully in center with light rays (2.0s)
+    setTimeout(() => {
+      setCardFloating(true)
+    }, 2000)
+
+    // Step 3: Store in session storage
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('ensorb_wedding_unlocked', 'true')
     }
 
-    // Step 3: Fade out overlay and reveal the portal
+    // Step 4: Golden light dissolve begins (3.6s)
+    setTimeout(() => {
+      setIsFadingOut(true)
+    }, 3600)
+
+    // Step 5: Full portal reveal (4.4s)
     setTimeout(() => {
       setIsUnlocked(true)
       setIsUnlocking(false)
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new Event('ensorb-portal-unlocked'))
       }
-    }, 1850)
+    }, 4400)
+  }
+
+  const handleSkip = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('ensorb_wedding_unlocked', 'true')
+      window.dispatchEvent(new Event('ensorb-portal-unlocked'))
+    }
+    setIsUnlocked(true)
   }
 
   // Bypass on admin or if already unlocked
@@ -91,15 +112,24 @@ export function WelcomeGate() {
     <div
       className={`wedding-journey-gate ${isUnlocking ? 'is-opening' : ''} ${
         cardRevealed ? 'card-out' : ''
-      }`}
+      } ${cardFloating ? 'card-floating-stage' : ''} ${isFadingOut ? 'is-fading-out' : ''}`}
       onClick={handleUnlock}
       role="button"
       tabIndex={0}
       aria-label="Tap to unlock wedding journey"
     >
-      {/* Background Ambience Layers */}
+      {/* Background Ambience & Moving Light Beams */}
       <div className="journey-bg-layer" />
       <div className="journey-lighting-vignette" />
+
+      {/* Moving Ambient Light Beams & Sunburst Rays */}
+      <div className="journey-moving-lights-container" aria-hidden="true">
+        <div className="moving-light-beam beam-1" />
+        <div className="moving-light-beam beam-2" />
+        <div className="moving-light-beam beam-3" />
+        <div className="aurora-glow-drift" />
+        {isUnlocking && <div className="moving-sunburst-rays" />}
+      </div>
 
       {/* Floating Rose Petals & Golden Shimmer Bokeh */}
       <div className="journey-floating-elements" aria-hidden="true">
@@ -111,7 +141,20 @@ export function WelcomeGate() {
         <span className="gold-bokeh bokeh-1" />
         <span className="gold-bokeh bokeh-2" />
         <span className="gold-bokeh bokeh-3" />
+        <span className="gold-bokeh bokeh-4" />
+        <span className="gold-bokeh bokeh-5" />
+        <span className="gold-bokeh bokeh-6" />
       </div>
+
+      {/* Quick Skip Intro Button */}
+      <button
+        type="button"
+        className="gate-skip-btn"
+        onClick={handleSkip}
+        title="Skip intro animation"
+      >
+        <span>Enter Site ✕</span>
+      </button>
 
       {/* Main Foreground Container */}
       <div className="journey-content-shell">
@@ -138,8 +181,9 @@ export function WelcomeGate() {
         {/* CENTER INTERACTIVE ENVELOPE */}
         <div className="journey-envelope-stage">
           <div className="journey-envelope-3d">
-            {/* Inner Wedding Invitation Letter (Slides Up on Opening) */}
+            {/* Inner Wedding Invitation Letter (Slides Up & Floats on Opening) */}
             <div className="journey-inner-card">
+              <div className="card-sheen-sweep" />
               <div className="inner-card-deckle-border">
                 <span className="inner-card-eyebrow">A CELEBRATION OF LOVE</span>
                 <h3 className="inner-card-names">Ngozi &amp; Sorbari</h3>
@@ -152,6 +196,13 @@ export function WelcomeGate() {
                 <p className="inner-card-blessing">
                   We are blessed to share our forever with you ♡
                 </p>
+                {cardFloating && (
+                  <div className="card-opening-sparkle-stars">
+                    <span className="mini-star star-1">✦</span>
+                    <span className="mini-star star-2">✦</span>
+                    <span className="mini-star star-3">✦</span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -204,6 +255,7 @@ export function WelcomeGate() {
               {/* Deep Burgundy Glossy Wax Seal */}
               <div className="envelope-wax-seal">
                 <div className="seal-glow-halo" />
+                {isUnlocking && <div className="seal-burst-flare" />}
                 <div className="seal-medallion-body">
                   <span className="seal-monogram">N&amp;S</span>
                 </div>
@@ -245,7 +297,9 @@ export function WelcomeGate() {
             </div>
           </div>
 
-          <span className="tap-unlock-caption">TAP TO UNLOCK</span>
+          <span className="tap-unlock-caption">
+            {isUnlocking ? 'UNSEALING WEDDING INVITATION...' : 'TAP TO UNLOCK'}
+          </span>
         </footer>
       </div>
     </div>
