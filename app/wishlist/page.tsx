@@ -337,45 +337,65 @@ export default function WishlistPage() {
 
         {/* Filter Controls Bar */}
         <div className="wishlist-controls-bar reveal-fade-up">
-          <div className="wishlist-status-tabs">
+          <div className="wishlist-status-tabs" role="tablist" aria-label="Filter wishlist by gift status">
             <button
               type="button"
+              role="tab"
+              aria-selected={statusFilter === 'all'}
               className={`status-tab-btn ${statusFilter === 'all' ? 'active' : ''}`}
               onClick={() => setStatusFilter('all')}
             >
-              All Wishlist ({stats.totalItems})
+              <span className="status-tab-text">
+                <span className="tab-full-label">All Wishlist</span>
+                <span className="tab-short-label">All</span>
+              </span>
+              <span className="status-tab-count">{stats.totalItems}</span>
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={statusFilter === 'needed'}
               className={`status-tab-btn ${statusFilter === 'needed' ? 'active' : ''}`}
               onClick={() => setStatusFilter('needed')}
             >
-              Still Needed ({stats.openItems})
+              <span className="status-tab-text">
+                <span className="tab-full-label">Still Needed</span>
+                <span className="tab-short-label">Needed</span>
+              </span>
+              <span className="status-tab-count">{stats.openItems}</span>
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={statusFilter === 'gifted'}
               className={`status-tab-btn ${statusFilter === 'gifted' ? 'active' : ''}`}
               onClick={() => setStatusFilter('gifted')}
             >
-              ✓ 100% Gifted ({stats.fullyGifted})
+              <span className="tab-check-icon" aria-hidden="true">✓</span>
+              <span className="status-tab-text">
+                <span className="tab-full-label">100% Gifted</span>
+                <span className="tab-short-label">Gifted</span>
+              </span>
+              <span className="status-tab-count">{stats.fullyGifted}</span>
             </button>
           </div>
 
           <div className="wishlist-search-wrap">
-            <span className="search-icon">🔍</span>
+            <span className="search-icon" aria-hidden="true">🔍</span>
             <input
               type="text"
               placeholder="Search wishlist items..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="wishlist-search-input"
+              aria-label="Search wishlist items"
             />
             {searchQuery && (
               <button
                 type="button"
                 className="search-clear-btn"
                 onClick={() => setSearchQuery('')}
-                aria-label="Clear search"
+                aria-label="Clear search query"
               >
                 ✕
               </button>
