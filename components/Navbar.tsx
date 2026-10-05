@@ -9,37 +9,20 @@ import { MonogramLogo } from '@/components/WeddingIcons'
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isVisible, setIsVisible] = useState(true)
-  const lastScrollYRef = useRef(0)
   const pathname = usePathname()
 
-  // Smart sticky header: detect scroll direction & elevation
+  // Sticky header elevation effect on scroll
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      const lastScrollY = lastScrollYRef.current
-      const deltaY = currentScrollY - lastScrollY
-
-      // Elevation styling when scrolled beyond top
-      setIsScrolled(currentScrollY > 15)
-
-      // Always show when near top or if mobile menu is open
-      if (currentScrollY <= 80 || isMobileMenuOpen) {
-        setIsVisible(true)
-      } else if (deltaY > 8 && currentScrollY > 120) {
-        // Scrolling down -> hide smoothly to give full content focus
-        setIsVisible(false)
-      } else if (deltaY < -3) {
-        // Scrolling up -> show immediately so navigation is right at hand
-        setIsVisible(true)
-      }
-
-      lastScrollYRef.current = currentScrollY
+      setIsScrolled(window.scrollY > 15)
     }
+
+    // Initialize on mount
+    handleScroll()
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [isMobileMenuOpen])
+  }, [])
 
   // Auto-close mobile menu on desktop window resize and handle Escape key
   useEffect(() => {
@@ -82,8 +65,8 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`burgundy-site-header ${isScrolled ? 'is-scrolled' : ''} ${
-          isVisible ? 'is-visible' : 'is-hidden'
+        className={`burgundy-site-header is-visible ${
+          isScrolled ? 'is-scrolled' : ''
         }`}
       >
         <div className="header-inner">
