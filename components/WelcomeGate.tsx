@@ -213,23 +213,83 @@ export function WelcomeGate() {
                 <div className="twine-line twine-diagonal" />
               </div>
 
-              {/* Baby's Breath Floral Sprig */}
+              {/* Baby's Breath & Rosebud Floral Sprig */}
               <div className="envelope-babys-breath">
-                <svg viewBox="0 0 160 120" fill="none" className="floral-svg">
-                  <path d="M10 80 C 50 60, 90 40, 140 10" stroke="#7A8050" strokeWidth="1.6" strokeLinecap="round" opacity="0.8" />
-                  <path d="M60 55 C 80 40, 100 35, 120 20" stroke="#7A8050" strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
-                  <path d="M40 65 C 55 52, 70 48, 85 36" stroke="#7A8050" strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
-                  {/* Delicate White Flower Buds */}
-                  <circle cx="140" cy="10" r="4.5" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.8" />
-                  <circle cx="132" cy="18" r="3.5" fill="#FFFFFF" />
-                  <circle cx="120" cy="20" r="4" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.8" />
-                  <circle cx="112" cy="28" r="3" fill="#FFFFFF" />
-                  <circle cx="102" cy="32" r="3.8" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.8" />
-                  <circle cx="85" cy="36" r="3.5" fill="#FFFFFF" />
-                  <circle cx="75" cy="45" r="3" fill="#FFFFFF" />
-                  <circle cx="68" cy="50" r="3.8" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.8" />
-                  <circle cx="55" cy="56" r="3" fill="#FFFFFF" />
-                  <circle cx="48" cy="62" r="3.2" fill="#FFFFFF" />
+                <svg viewBox="0 0 170 130" fill="none" className="floral-svg">
+                  <defs>
+                    <linearGradient id="gateStemGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#434B24" />
+                      <stop offset="60%" stopColor="#677338" />
+                      <stop offset="100%" stopColor="#8F9C52" />
+                    </linearGradient>
+                    <linearGradient id="gateLeafSage" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#C4DDD2" />
+                      <stop offset="60%" stopColor="#87B09F" />
+                      <stop offset="100%" stopColor="#4A7060" />
+                    </linearGradient>
+                    <linearGradient id="gateRoseBlush" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#FFFFFF" />
+                      <stop offset="40%" stopColor="#FDE6EA" />
+                      <stop offset="80%" stopColor="#E59CA8" />
+                      <stop offset="100%" stopColor="#B3364E" />
+                    </linearGradient>
+                    <radialGradient id="gateGoldDot" cx="35%" cy="35%" r="65%">
+                      <stop offset="0%" stopColor="#FFF9E0" />
+                      <stop offset="50%" stopColor="#E5C158" />
+                      <stop offset="100%" stopColor="#8C660B" />
+                    </radialGradient>
+                  </defs>
+
+                  {/* Main Arched Stems */}
+                  <path d="M12 90 C 50 68, 95 44, 150 14" stroke="url(#gateStemGrad)" strokeWidth="1.8" strokeLinecap="round" />
+                  <path d="M65 62 C 85 46, 110 40, 130 22" stroke="url(#gateStemGrad)" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
+                  <path d="M42 74 C 60 58, 80 52, 98 38" stroke="url(#gateStemGrad)" strokeWidth="1.2" strokeLinecap="round" opacity="0.8" />
+                  <path d="M90 48 C 105 38, 120 42, 138 34" stroke="url(#gateStemGrad)" strokeWidth="1.1" strokeLinecap="round" opacity="0.75" />
+
+                  {/* Delicate Sage Leaves */}
+                  <path d="M38 74 C 28 66, 32 56, 44 60 C 42 68, 40 72, 38 74 Z" fill="url(#gateLeafSage)" />
+                  <path d="M64 58 C 54 48, 60 38, 72 42 C 70 50, 68 56, 64 58 Z" fill="url(#gateLeafSage)" />
+                  <path d="M92 44 C 84 34, 90 24, 102 28 C 99 36, 96 42, 92 44 Z" fill="url(#gateLeafSage)" />
+
+                  {/* Miniature Blush Rosebud tucked beside twine */}
+                  <g transform="translate(48, 68) rotate(-25)">
+                    <path d="M-6 6 C -3 -3, 0 -6, 2 -9 C 4 -6, 7 -3, 10 6 Z" fill="#58632E" />
+                    <path d="M-3 -1 C -1 -11, 4 -12, 5 -4 C 4 2, -1 4, -3 -1 Z" fill="url(#gateRoseBlush)" />
+                    <circle cx="1" cy="-4" r="1.5" fill="#FFF2F4" />
+                  </g>
+
+                  {/* Multi-layered Baby's Breath Florets with Gold Centers */}
+                  <circle cx="150" cy="14" r="4.5" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.8" />
+                  <circle cx="150" cy="14" r="1.2" fill="url(#gateGoldDot)" />
+
+                  <circle cx="140" cy="22" r="3.6" fill="#FFFDF8" stroke="#DCD5C8" strokeWidth="0.7" />
+                  <circle cx="140" cy="22" r="1" fill="url(#gateGoldDot)" />
+
+                  <circle cx="130" cy="22" r="4.2" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.8" />
+                  <circle cx="130" cy="22" r="1.1" fill="url(#gateGoldDot)" />
+
+                  <circle cx="138" cy="34" r="3.4" fill="#FFFDF8" />
+                  <circle cx="138" cy="34" r="0.9" fill="url(#gateGoldDot)" />
+
+                  <circle cx="120" cy="30" r="3.8" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.8" />
+                  <circle cx="120" cy="30" r="1" fill="url(#gateGoldDot)" />
+
+                  <circle cx="110" cy="36" r="3.5" fill="#FFFDF8" />
+                  <circle cx="110" cy="36" r="0.9" fill="url(#gateGoldDot)" />
+
+                  <circle cx="98" cy="38" r="4.2" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.8" />
+                  <circle cx="98" cy="38" r="1.1" fill="url(#gateGoldDot)" />
+
+                  <circle cx="86" cy="46" r="3.6" fill="#FFFDF8" />
+                  <circle cx="86" cy="46" r="0.9" fill="url(#gateGoldDot)" />
+
+                  <circle cx="78" cy="52" r="3.8" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.8" />
+                  <circle cx="78" cy="52" r="1" fill="url(#gateGoldDot)" />
+
+                  <circle cx="62" cy="62" r="3.2" fill="#FFFDF8" />
+                  <circle cx="62" cy="62" r="0.8" fill="url(#gateGoldDot)" />
+
+                  <circle cx="52" cy="68" r="3.4" fill="#FFFFFF" stroke="#DCD5C8" strokeWidth="0.7" />
                 </svg>
               </div>
 

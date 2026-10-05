@@ -6821,7 +6821,7 @@ body {
   height: clamp(180px, 20vw, 260px);
   pointer-events: none;
   z-index: 5;
-  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.06));
+  filter: drop-shadow(0 6px 18px rgba(74, 21, 37, 0.08)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.04));
 }
 
 .hero-card-inner {
@@ -7157,6 +7157,7 @@ body {
   width: 90px;
   height: 90px;
   pointer-events: none;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.08));
 }
 
 
@@ -7300,6 +7301,7 @@ body {
   width: 90px;
   height: 90px;
   pointer-events: none;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.06));
 }
 
 .colors-sprig-right {
@@ -7310,6 +7312,7 @@ body {
   width: 90px;
   height: 90px;
   pointer-events: none;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.06));
 }
 
 .colors-header-center {
@@ -7636,6 +7639,7 @@ body {
   width: 90px;
   height: 90px;
   pointer-events: none;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.05));
 }
 
 .footer-botanical-right {
@@ -7646,6 +7650,7 @@ body {
   height: 90px;
   transform: scaleX(-1);
   pointer-events: none;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.05));
 }
 
 .footer-inner {

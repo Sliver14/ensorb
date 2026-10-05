@@ -21,21 +21,106 @@ export function BotanicalSprig({ className = '', style = {} }: { className?: str
       xmlns="http://www.w3.org/2000/svg"
       className={`botanical-sprig ${className}`}
       style={style}
+      aria-hidden="true"
     >
+      <defs>
+        <linearGradient id="sprigStemGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#3E4424" />
+          <stop offset="60%" stopColor="#5E6638" />
+          <stop offset="100%" stopColor="#7E8850" />
+        </linearGradient>
+        <linearGradient id="sprigLeafSage" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#C2DBD0" />
+          <stop offset="60%" stopColor="#87ADA0" />
+          <stop offset="100%" stopColor="#4F7366" />
+        </linearGradient>
+        <linearGradient id="sprigLeafOlive" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#9FA768" />
+          <stop offset="60%" stopColor="#69713C" />
+          <stop offset="100%" stopColor="#3D4420" />
+        </linearGradient>
+        <linearGradient id="sprigLeafLight" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#E2EFE9" />
+          <stop offset="60%" stopColor="#B2D0C4" />
+          <stop offset="100%" stopColor="#799E90" />
+        </linearGradient>
+        <radialGradient id="sprigGoldBerry" cx="35%" cy="35%" r="65%">
+          <stop offset="0%" stopColor="#FFF7D6" />
+          <stop offset="45%" stopColor="#E5C058" />
+          <stop offset="100%" stopColor="#9C7714" />
+        </radialGradient>
+      </defs>
+
+      {/* Main Arching Stem */}
       <path
-        d="M20 100 C 40 70, 70 45, 100 20"
-        stroke="#5E6140"
-        strokeWidth="2"
+        d="M16 104 C 36 76, 66 48, 104 16"
+        stroke="url(#sprigStemGrad)"
+        strokeWidth="2.2"
         strokeLinecap="round"
-        opacity="0.75"
       />
-      {/* Leaves */}
-      <path d="M42 78 C 34 72, 38 62, 48 64 C 47 72, 43 76, 42 78 Z" fill="#7B9E8E" opacity="0.8" />
-      <path d="M52 70 C 60 64, 66 70, 60 78 C 54 77, 51 73, 52 70 Z" fill="#5E6140" opacity="0.75" />
-      <path d="M64 56 C 56 50, 60 40, 70 42 C 69 50, 65 54, 64 56 Z" fill="#8FAFA0" opacity="0.8" />
-      <path d="M74 48 C 82 42, 88 48, 82 56 C 76 55, 73 51, 74 48 Z" fill="#5E6140" opacity="0.75" />
-      <path d="M86 34 C 78 28, 82 18, 92 20 C 91 28, 87 32, 86 34 Z" fill="#7B9E8E" opacity="0.8" />
-      <path d="M96 26 C 104 20, 110 26, 104 34 C 98 33, 95 29, 96 26 Z" fill="#5E6140" opacity="0.75" />
+      {/* Secondary Delicate Stem Branch */}
+      <path
+        d="M48 64 C 62 52, 76 56, 88 44"
+        stroke="url(#sprigStemGrad)"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        opacity="0.8"
+      />
+
+      {/* Leaf Pair 1 (Lower) */}
+      <g className="leaf-pair-1">
+        {/* Left Leaf (Two-tone) */}
+        <path d="M34 84 C 20 80, 18 68, 30 64 C 38 72, 36 80, 34 84 Z" fill="url(#sprigLeafSage)" />
+        <path d="M34 84 C 28 82, 22 74, 30 64 C 32 70, 34 78, 34 84 Z" fill="url(#sprigLeafLight)" opacity="0.6" />
+        <path d="M34 84 Q 28 72 30 64" stroke="#3A5648" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Right Leaf */}
+        <path d="M42 76 C 52 66, 62 70, 58 82 C 48 84, 44 80, 42 76 Z" fill="url(#sprigLeafOlive)" />
+        <path d="M42 76 C 48 70, 56 74, 58 82 C 52 82, 46 80, 42 76 Z" fill="#B3BC7E" opacity="0.4" />
+        <path d="M42 76 Q 52 76 58 82" stroke="#2B2E18" strokeWidth="0.6" opacity="0.5" />
+      </g>
+
+      {/* Golden Berries at Node 1 */}
+      <circle cx="37" cy="80" r="2.8" fill="url(#sprigGoldBerry)" />
+      <circle cx="44" cy="74" r="2.2" fill="url(#sprigGoldBerry)" />
+
+      {/* Leaf Pair 2 (Mid-Lower) */}
+      <g className="leaf-pair-2">
+        <path d="M50 62 C 34 54, 38 42, 50 44 C 54 52, 52 58, 50 62 Z" fill="url(#sprigLeafSage)" />
+        <path d="M50 62 C 40 56, 42 46, 50 44 C 52 50, 52 56, 50 62 Z" fill="url(#sprigLeafLight)" opacity="0.6" />
+        <path d="M50 62 Q 44 52 50 44" stroke="#3A5648" strokeWidth="0.6" opacity="0.5" />
+
+        <path d="M58 54 C 70 46, 78 52, 72 64 C 62 64, 60 58, 58 54 Z" fill="url(#sprigLeafOlive)" />
+        <path d="M58 54 Q 68 54 72 64" stroke="#2B2E18" strokeWidth="0.6" opacity="0.5" />
+      </g>
+
+      {/* Leaf Pair 3 (Mid-Upper) */}
+      <g className="leaf-pair-3">
+        <path d="M68 44 C 54 34, 60 22, 70 26 C 72 34, 70 40, 68 44 Z" fill="url(#sprigLeafSage)" />
+        <path d="M68 44 C 60 36, 62 26, 70 26 C 71 32, 70 38, 68 44 Z" fill="url(#sprigLeafLight)" opacity="0.6" />
+        <path d="M68 44 Q 64 34 70 26" stroke="#3A5648" strokeWidth="0.6" opacity="0.5" />
+
+        <path d="M76 36 C 88 28, 96 34, 90 46 C 80 46, 78 40, 76 36 Z" fill="url(#sprigLeafOlive)" />
+        <path d="M76 36 Q 86 36 90 46" stroke="#2B2E18" strokeWidth="0.6" opacity="0.5" />
+      </g>
+
+      {/* Golden Berries at Mid Node */}
+      <circle cx="71" cy="40" r="2.6" fill="url(#sprigGoldBerry)" />
+      <circle cx="78" cy="34" r="2" fill="url(#sprigGoldBerry)" />
+
+      {/* Leaf Pair 4 (Upper) */}
+      <g className="leaf-pair-4">
+        <path d="M86 26 C 74 18, 80 8, 88 12 C 90 18, 88 23, 86 26 Z" fill="url(#sprigLeafSage)" />
+        <path d="M86 26 C 78 20, 82 12, 88 12 C 89 16, 88 21, 86 26 Z" fill="url(#sprigLeafLight)" opacity="0.6" />
+
+        <path d="M92 20 C 102 12, 110 18, 104 28 C 96 28, 94 23, 92 20 Z" fill="url(#sprigLeafOlive)" />
+      </g>
+
+      {/* Terminal Delicate Bud & White Petal Bloom */}
+      <g className="terminal-bud" transform="translate(98, 14)">
+        <path d="M0 6 C -3 0, 3 -4, 6 2 Z" fill="#FFFDF8" stroke="#E5DFD3" strokeWidth="0.5" />
+        <circle cx="3" cy="1" r="2.2" fill="url(#sprigGoldBerry)" />
+      </g>
     </svg>
   )
 }
@@ -80,126 +165,461 @@ export function HeroCornerFlower({ className = '', style = {} }: { className?: s
   return (
     <div className={`hero-corner-flower-wrap ${className}`} style={style} aria-hidden="true">
       <svg
-        viewBox="0 0 280 280"
+        viewBox="0 0 300 300"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="hero-corner-flower-svg"
         style={{ width: '100%', height: '100%', display: 'block' }}
       >
         <defs>
-          <radialGradient id="blushPetalGrad" cx="40%" cy="40%" r="60%">
-            <stop offset="0%" stopColor="#F8DCE0" stopOpacity="0.95" />
-            <stop offset="60%" stopColor="#E5A1A8" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#C97A84" stopOpacity="0.9" />
+          {/* Master Shading Gradients */}
+          <linearGradient id="blushPetalSoft" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.99" />
+            <stop offset="30%" stopColor="#FFF5F7" stopOpacity="0.97" />
+            <stop offset="70%" stopColor="#F9D7DE" stopOpacity="0.95" />
+            <stop offset="100%" stopColor="#E49CA7" stopOpacity="0.92" />
+          </linearGradient>
+
+          <linearGradient id="blushPetalDeep" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFF0F3" stopOpacity="0.98" />
+            <stop offset="45%" stopColor="#F4B5C1" stopOpacity="0.95" />
+            <stop offset="80%" stopColor="#D47385" stopOpacity="0.92" />
+            <stop offset="100%" stopColor="#8C2237" stopOpacity="0.9" />
+          </linearGradient>
+
+          <radialGradient id="roseCoreGlow" cx="45%" cy="45%" r="55%">
+            <stop offset="0%" stopColor="#FFF9FA" stopOpacity="1" />
+            <stop offset="35%" stopColor="#F8CCD5" stopOpacity="0.98" />
+            <stop offset="70%" stopColor="#D45A72" stopOpacity="0.95" />
+            <stop offset="100%" stopColor="#661424" stopOpacity="0.95" />
           </radialGradient>
-          <radialGradient id="rosebudGrad" cx="35%" cy="35%" r="65%">
-            <stop offset="0%" stopColor="#FAF0F2" stopOpacity="0.95" />
-            <stop offset="50%" stopColor="#EAA7AF" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#8A2840" stopOpacity="0.8" />
+
+          <radialGradient id="roseCenterDark" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#8B1D33" stopOpacity="0.95" />
+            <stop offset="60%" stopColor="#54111F" stopOpacity="0.98" />
+            <stop offset="100%" stopColor="#2E070F" stopOpacity="1" />
           </radialGradient>
+
+          <linearGradient id="ivoryPeonyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.99" />
+            <stop offset="50%" stopColor="#FAF5EE" stopOpacity="0.97" />
+            <stop offset="85%" stopColor="#F0DFD7" stopOpacity="0.94" />
+            <stop offset="100%" stopColor="#DCB8B4" stopOpacity="0.92" />
+          </linearGradient>
+
           <linearGradient id="sageLeafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#A4C4B5" stopOpacity="0.9" />
-            <stop offset="70%" stopColor="#7B9E8E" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#4E7060" stopOpacity="0.8" />
+            <stop offset="0%" stopColor="#C8E2D6" stopOpacity="0.95" />
+            <stop offset="55%" stopColor="#87B09F" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#4F7565" stopOpacity="0.88" />
           </linearGradient>
+
+          <linearGradient id="sageLeafLight" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#E5F3ED" stopOpacity="0.98" />
+            <stop offset="60%" stopColor="#B4D7C9" stopOpacity="0.92" />
+            <stop offset="100%" stopColor="#7DA594" stopOpacity="0.9" />
+          </linearGradient>
+
           <linearGradient id="oliveLeafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#8C9160" stopOpacity="0.9" />
-            <stop offset="60%" stopColor="#5E6140" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#3C4026" stopOpacity="0.8" />
+            <stop offset="0%" stopColor="#9FA865" stopOpacity="0.95" />
+            <stop offset="55%" stopColor="#677038" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#3A401A" stopOpacity="0.95" />
           </linearGradient>
+
+          <linearGradient id="oliveLeafLight" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#CAD194" stopOpacity="0.98" />
+            <stop offset="55%" stopColor="#939D58" stopOpacity="0.92" />
+            <stop offset="100%" stopColor="#5B642B" stopOpacity="0.9" />
+          </linearGradient>
+
+          <linearGradient id="goldFiligreeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FFF8D9" />
+            <stop offset="35%" stopColor="#E8C762" />
+            <stop offset="70%" stopColor="#BA8E1E" />
+            <stop offset="100%" stopColor="#8C660B" />
+          </linearGradient>
+
+          <radialGradient id="goldBerryGrad" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stopColor="#FFFDF0" />
+            <stop offset="40%" stopColor="#E8C762" />
+            <stop offset="85%" stopColor="#AA7E14" />
+            <stop offset="100%" stopColor="#664906" />
+          </radialGradient>
+
+          <radialGradient id="burgundyBerryGrad" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stopColor="#FCE4E9" />
+            <stop offset="40%" stopColor="#C94A65" />
+            <stop offset="80%" stopColor="#751528" />
+            <stop offset="100%" stopColor="#380610" />
+          </radialGradient>
+
+          {/* Realistic Petal Drop Shadows */}
+          <filter id="petalShadow" x="-15%" y="-15%" width="135%" height="135%">
+            <feDropShadow dx="-1" dy="2.5" stdDeviation="3" floodColor="#3D0B17" floodOpacity="0.16" />
+          </filter>
+
+          <filter id="foliageShadow" x="-15%" y="-15%" width="135%" height="135%">
+            <feDropShadow dx="1" dy="2" stdDeviation="2.5" floodColor="#1C210E" floodOpacity="0.12" />
+          </filter>
         </defs>
 
-        {/* Main Arching Olive & Vine Stems */}
+        {/* =================================================================
+            LAYER 1: BACKGROUND GOLDEN FILIGREE VINES & SWIRLING TENDRILS
+            ================================================================= */}
+        <g className="flower-gold-filigree" opacity="0.9">
+          {/* Main Gold Vine Arc */}
+          <path
+            d="M285 15 C255 45, 205 75, 155 135 C115 185, 75 235, 45 285"
+            stroke="url(#goldFiligreeGrad)"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          {/* Secondary Delicate Gold Tendril */}
+          <path
+            d="M290 40 C250 85, 195 125, 125 145 C85 155, 45 175, 25 210"
+            stroke="url(#goldFiligreeGrad)"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            opacity="0.75"
+          />
+          {/* Delicate Spiraling Gold Curls */}
+          <path
+            d="M175 60 C155 48, 145 35, 150 25 C155 15, 168 18, 165 28 C162 38, 150 42, 142 40"
+            stroke="url(#goldFiligreeGrad)"
+            strokeWidth="1.1"
+            fill="none"
+            strokeLinecap="round"
+          />
+          <path
+            d="M95 160 C75 165, 62 160, 60 150 C58 140, 70 135, 75 142 C80 150, 74 158, 66 160"
+            stroke="url(#goldFiligreeGrad)"
+            strokeWidth="1"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </g>
+
+        {/* =================================================================
+            LAYER 2: MAIN GREENERY (OLIVE & SAGE EUCALYPTUS BRANCHES)
+            ================================================================= */}
+        {/* Main Woody Olive Stem */}
         <path
-          d="M260 20 C230 45, 180 85, 130 140 C95 180, 60 230, 40 260"
-          stroke="#4D5230"
-          strokeWidth="2.5"
+          d="M280 20 C240 55, 185 100, 135 155 C100 195, 65 245, 40 280"
+          stroke="#444B22"
+          strokeWidth="2.8"
           strokeLinecap="round"
-          opacity="0.8"
         />
         <path
-          d="M270 35 C245 80, 195 130, 150 185"
-          stroke="#687042"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          opacity="0.65"
-        />
-        <path
-          d="M210 30 C175 60, 130 90, 80 120"
-          stroke="#5E6140"
-          strokeWidth="1.6"
+          d="M282 22 C242 57, 187 102, 137 157 C102 197, 67 247, 42 282"
+          stroke="#6E773E"
+          strokeWidth="1.2"
           strokeLinecap="round"
           opacity="0.6"
         />
 
-        {/* Large Olive & Sage Leaves - Outer Arc */}
-        <g className="flower-leaves-outer">
-          <path d="M245 42 C230 25, 205 28, 215 50 C228 65, 240 58, 245 42 Z" fill="url(#sageLeafGrad)" />
-          <path d="M225 35 Q225 50 238 45" stroke="#3A5648" strokeWidth="0.8" opacity="0.6" />
-
-          <path d="M215 70 C195 55, 175 68, 188 88 C202 98, 216 88, 215 70 Z" fill="url(#oliveLeafGrad)" />
-          <path d="M196 68 Q200 82 208 81" stroke="#2B2E18" strokeWidth="0.8" opacity="0.6" />
-
-          <path d="M185 45 C160 35, 142 52, 158 72 C170 82, 184 65, 185 45 Z" fill="url(#sageLeafGrad)" />
-          <path d="M166 48 Q168 64 176 66" stroke="#3A5648" strokeWidth="0.8" opacity="0.6" />
-
-          <path d="M150 95 C125 80, 110 100, 126 120 C140 132, 155 115, 150 95 Z" fill="url(#oliveLeafGrad)" />
-          <path d="M130 94 Q136 110 144 112" stroke="#2B2E18" strokeWidth="0.8" opacity="0.6" />
-
-          <path d="M125 60 C100 48, 85 70, 102 88 C116 98, 128 80, 125 60 Z" fill="url(#sageLeafGrad)" />
-          
-          <path d="M110 120 C85 110, 72 135, 92 150 C108 160, 120 140, 110 120 Z" fill="url(#oliveLeafGrad)" />
-
-          <path d="M85 90 C62 80, 50 102, 70 118 C85 128, 95 108, 85 90 Z" fill="url(#sageLeafGrad)" />
-
-          <path d="M75 145 C55 138, 45 160, 62 172 C78 180, 88 162, 75 145 Z" fill="url(#oliveLeafGrad)" />
-
-          <path d="M55 185 C38 180, 32 200, 48 210 C62 216, 70 200, 55 185 Z" fill="url(#sageLeafGrad)" />
-        </g>
-
-        {/* Small Golden & Burgundy Berries */}
-        <g className="flower-berries" opacity="0.85">
-          <circle cx="230" cy="25" r="3.5" fill="#D4AF37" />
-          <circle cx="242" cy="20" r="2.8" fill="#C97A84" />
-          <circle cx="195" cy="40" r="3.2" fill="#D4AF37" />
-          <circle cx="170" cy="35" r="2.8" fill="#C97A84" />
-          <circle cx="140" cy="80" r="3.5" fill="#D4AF37" />
-          <circle cx="105" cy="110" r="3" fill="#C97A84" />
-          <circle cx="70" cy="140" r="3.2" fill="#D4AF37" />
-        </g>
-
-        {/* Blossom Petals & Watercolor Flower Buds */}
-        <g className="flower-blooms">
-          {/* Main Top Corner Blossom Cluster */}
-          <g transform="translate(195, 80)">
-            <ellipse cx="0" cy="-12" rx="14" ry="9" transform="rotate(-20)" fill="url(#blushPetalGrad)" />
-            <ellipse cx="12" cy="-4" rx="13" ry="8" transform="rotate(25)" fill="url(#blushPetalGrad)" />
-            <ellipse cx="10" cy="12" rx="14" ry="9" transform="rotate(70)" fill="url(#blushPetalGrad)" />
-            <ellipse cx="-6" cy="12" rx="13" ry="8" transform="rotate(120)" fill="url(#blushPetalGrad)" />
-            <ellipse cx="-12" cy="-2" rx="14" ry="9" transform="rotate(-70)" fill="url(#blushPetalGrad)" />
-            {/* Center Rosebud Core */}
-            <circle cx="0" cy="0" r="8" fill="url(#rosebudGrad)" />
-            <circle cx="0" cy="0" r="4" fill="#6B1D2F" opacity="0.6" />
-            <circle cx="-1" cy="-1" r="1.5" fill="#FFF2F4" opacity="0.8" />
+        {/* Layered Foliage Group */}
+        <g className="flower-leaves" filter="url(#foliageShadow)">
+          {/* Leaf Cluster 1 - Top Far Corner */}
+          <g transform="translate(255, 30) rotate(-15)">
+            <path d="M0 0 C 15 -25, 40 -20, 48 5 C 38 25, 18 20, 0 0 Z" fill="url(#sageLeafGrad)" />
+            <path d="M0 0 C 20 -20, 38 -15, 48 5 C 35 10, 15 5, 0 0 Z" fill="url(#sageLeafLight)" opacity="0.65" />
+            <path d="M0 0 Q 25 -5 48 5" stroke="#3A5648" strokeWidth="0.8" opacity="0.6" />
           </g>
 
-          {/* Secondary Delicate Blossom */}
-          <g transform="translate(150, 145) scale(0.8)">
-            <ellipse cx="0" cy="-10" rx="12" ry="7" transform="rotate(-15)" fill="url(#blushPetalGrad)" />
-            <ellipse cx="10" cy="-3" rx="11" ry="7" transform="rotate(30)" fill="url(#blushPetalGrad)" />
-            <ellipse cx="8" cy="10" rx="12" ry="7" transform="rotate(75)" fill="url(#blushPetalGrad)" />
-            <ellipse cx="-5" cy="10" rx="11" ry="7" transform="rotate(130)" fill="url(#blushPetalGrad)" />
-            <ellipse cx="-10" cy="-2" rx="12" ry="7" transform="rotate(-65)" fill="url(#blushPetalGrad)" />
-            <circle cx="0" cy="0" r="6.5" fill="url(#rosebudGrad)" />
-            <circle cx="0" cy="0" r="3" fill="#6B1D2F" opacity="0.6" />
+          {/* Leaf Cluster 2 - Top Arching Olive */}
+          <g transform="translate(225, 25) rotate(-35)">
+            <path d="M0 0 C 18 -32, 42 -26, 52 0 C 38 22, 15 18, 0 0 Z" fill="url(#oliveLeafGrad)" />
+            <path d="M0 0 C 22 -28, 40 -20, 52 0 C 35 5, 15 2, 0 0 Z" fill="url(#oliveLeafLight)" opacity="0.6" />
+            <path d="M0 0 Q 26 -10 52 0" stroke="#2B2E18" strokeWidth="0.8" opacity="0.6" />
           </g>
 
-          {/* Small Bud Cluster along Lower Stem */}
-          <g transform="translate(95, 185) scale(0.65)">
-            <ellipse cx="0" cy="-8" rx="10" ry="6" fill="url(#blushPetalGrad)" />
-            <ellipse cx="6" cy="4" rx="9" ry="6" transform="rotate(60)" fill="url(#blushPetalGrad)" />
-            <ellipse cx="-6" cy="4" rx="9" ry="6" transform="rotate(-60)" fill="url(#blushPetalGrad)" />
-            <circle cx="0" cy="0" r="5" fill="url(#rosebudGrad)" />
+          {/* Leaf Cluster 3 - Upper Left Sage */}
+          <g transform="translate(180, 38) rotate(-55)">
+            <path d="M0 0 C 14 -28, 36 -24, 46 2 C 34 20, 12 16, 0 0 Z" fill="url(#sageLeafGrad)" />
+            <path d="M0 0 C 18 -24, 32 -18, 46 2 C 30 8, 12 4, 0 0 Z" fill="url(#sageLeafLight)" opacity="0.65" />
+            <path d="M0 0 Q 24 -8 46 2" stroke="#3A5648" strokeWidth="0.75" opacity="0.5" />
+          </g>
+
+          {/* Leaf Cluster 4 - Upper-Mid Olive */}
+          <g transform="translate(145, 65) rotate(-65)">
+            <path d="M0 0 C 16 -30, 38 -22, 48 0 C 35 18, 14 14, 0 0 Z" fill="url(#oliveLeafGrad)" />
+            <path d="M0 0 C 20 -25, 36 -18, 48 0 C 32 4, 12 2, 0 0 Z" fill="url(#oliveLeafLight)" opacity="0.6" />
+            <path d="M0 0 Q 24 -8 48 0" stroke="#2B2E18" strokeWidth="0.75" opacity="0.5" />
+          </g>
+
+          {/* Leaf Cluster 5 - Mid-Left Eucalyptus Pair */}
+          <g transform="translate(115, 105) rotate(-75)">
+            <path d="M0 0 C 18 -26, 38 -18, 44 6 C 30 22, 10 16, 0 0 Z" fill="url(#sageLeafGrad)" />
+            <path d="M0 0 C 20 -20, 35 -14, 44 6 C 28 8, 10 4, 0 0 Z" fill="url(#sageLeafLight)" opacity="0.65" />
+            <path d="M0 0 Q 22 -6 44 6" stroke="#3A5648" strokeWidth="0.7" opacity="0.5" />
+          </g>
+
+          {/* Leaf Cluster 6 - Mid-Lower Olive */}
+          <g transform="translate(95, 145) rotate(-90)">
+            <path d="M0 0 C 15 -28, 36 -20, 44 2 C 32 18, 12 14, 0 0 Z" fill="url(#oliveLeafGrad)" />
+            <path d="M0 0 C 18 -24, 32 -16, 44 2 C 28 5, 10 2, 0 0 Z" fill="url(#oliveLeafLight)" opacity="0.6" />
+            <path d="M0 0 Q 22 -8 44 2" stroke="#2B2E18" strokeWidth="0.7" opacity="0.5" />
+          </g>
+
+          {/* Leaf Cluster 7 - Lower Sage */}
+          <g transform="translate(70, 195) rotate(-110)">
+            <path d="M0 0 C 14 -24, 32 -16, 40 4 C 28 18, 10 14, 0 0 Z" fill="url(#sageLeafGrad)" />
+            <path d="M0 0 C 16 -20, 28 -12, 40 4 C 26 6, 8 3, 0 0 Z" fill="url(#sageLeafLight)" opacity="0.65" />
+            <path d="M0 0 Q 20 -6 40 4" stroke="#3A5648" strokeWidth="0.7" opacity="0.5" />
+          </g>
+
+          {/* Leaf Cluster 8 - Terminal Lower Olive Pair */}
+          <g transform="translate(48, 245) rotate(-125)">
+            <path d="M0 0 C 12 -22, 28 -14, 34 2 C 24 16, 8 12, 0 0 Z" fill="url(#oliveLeafGrad)" />
+            <path d="M0 0 C 14 -18, 24 -10, 34 2 C 22 4, 8 2, 0 0 Z" fill="url(#oliveLeafLight)" opacity="0.6" />
+          </g>
+        </g>
+
+        {/* =================================================================
+            LAYER 3: BABY'S BREATH (GYPSOPHILA) SPRAYS & LUXURY GOLD BERRIES
+            ================================================================= */}
+        <g className="flower-gypsophila-berries">
+          {/* Gypsophila Spray Top-Right */}
+          <g className="gyp-spray-1" stroke="#87957A" strokeWidth="0.9" strokeLinecap="round">
+            <path d="M245 48 Q 260 40 270 32" />
+            <path d="M255 42 Q 268 46 276 42" />
+            <path d="M248 46 Q 256 56 266 60" />
+            {/* White florets */}
+            <circle cx="270" cy="32" r="3.2" fill="#FFFFFF" stroke="#E8E0D2" strokeWidth="0.6" />
+            <circle cx="276" cy="42" r="2.8" fill="#FFFBF5" stroke="#E8E0D2" strokeWidth="0.6" />
+            <circle cx="266" cy="60" r="3" fill="#FFFFFF" stroke="#E8E0D2" strokeWidth="0.6" />
+            <circle cx="270" cy="32" r="1" fill="#D4AF37" />
+            <circle cx="276" cy="42" r="0.9" fill="#D4AF37" />
+            <circle cx="266" cy="60" r="0.9" fill="#D4AF37" />
+          </g>
+
+          {/* Gypsophila Spray Mid-Left */}
+          <g className="gyp-spray-2" stroke="#87957A" strokeWidth="0.9" strokeLinecap="round">
+            <path d="M125 120 Q 105 110 95 98" />
+            <path d="M115 114 Q 100 122 88 120" />
+            <path d="M110 118 Q 98 132 86 138" />
+            <circle cx="95" cy="98" r="3.2" fill="#FFFFFF" stroke="#E8E0D2" strokeWidth="0.6" />
+            <circle cx="88" cy="120" r="2.8" fill="#FFFBF5" stroke="#E8E0D2" strokeWidth="0.6" />
+            <circle cx="86" cy="138" r="3" fill="#FFFFFF" stroke="#E8E0D2" strokeWidth="0.6" />
+            <circle cx="95" cy="98" r="1" fill="#D4AF37" />
+            <circle cx="88" cy="120" r="0.9" fill="#D4AF37" />
+            <circle cx="86" cy="138" r="0.9" fill="#D4AF37" />
+          </g>
+
+          {/* Gypsophila Spray Lower */}
+          <g className="gyp-spray-3" stroke="#87957A" strokeWidth="0.9" strokeLinecap="round">
+            <path d="M68 215 Q 52 210 42 202" />
+            <path d="M60 212 Q 48 222 38 226" />
+            <circle cx="42" cy="202" r="3" fill="#FFFFFF" stroke="#E8E0D2" strokeWidth="0.6" />
+            <circle cx="38" cy="226" r="2.8" fill="#FFFBF5" stroke="#E8E0D2" strokeWidth="0.6" />
+            <circle cx="42" cy="202" r="0.9" fill="#D4AF37" />
+            <circle cx="38" cy="226" r="0.8" fill="#D4AF37" />
+          </g>
+
+          {/* Golden & Burgundy Pearl Berry Clusters */}
+          <g className="berry-clusters">
+            {/* Upper Cluster */}
+            <circle cx="238" cy="36" r="3.6" fill="url(#goldBerryGrad)" />
+            <circle cx="248" cy="28" r="2.8" fill="url(#burgundyBerryGrad)" />
+            <circle cx="254" cy="38" r="3.2" fill="url(#goldBerryGrad)" />
+
+            {/* Mid-Upper Cluster */}
+            <circle cx="168" cy="52" r="3.8" fill="url(#goldBerryGrad)" />
+            <circle cx="156" cy="46" r="3" fill="url(#burgundyBerryGrad)" />
+            <circle cx="158" cy="58" r="3.2" fill="url(#goldBerryGrad)" />
+
+            {/* Mid Cluster */}
+            <circle cx="124" cy="98" r="3.8" fill="url(#burgundyBerryGrad)" />
+            <circle cx="114" cy="92" r="3.2" fill="url(#goldBerryGrad)" />
+
+            {/* Lower Cluster */}
+            <circle cx="82" cy="172" r="3.6" fill="url(#goldBerryGrad)" />
+            <circle cx="72" cy="166" r="3" fill="url(#burgundyBerryGrad)" />
+            <circle cx="48" cy="228" r="3.4" fill="url(#goldBerryGrad)" />
+          </g>
+        </g>
+
+        {/* =================================================================
+            LAYER 4: ROSEBUDS & SIDE BLOOMS
+            ================================================================= */}
+        {/* Petite Rosebud 1 (Lower Branch, ~72, 225) */}
+        <g transform="translate(68, 222) rotate(-40)" filter="url(#petalShadow)">
+          {/* Green Calyx Sepals */}
+          <path d="M-8 8 C -4 -4, 0 -8, 2 -12 C 4 -8, 8 -4, 12 8 Z" fill="url(#oliveLeafGrad)" />
+          {/* Blush Petal Tip */}
+          <path d="M-4 -2 C -2 -14, 4 -16, 6 -6 C 5 2, -2 4, -4 -2 Z" fill="url(#blushPetalDeep)" />
+          <path d="M0 -4 C 1 -12, 5 -13, 6 -6 Z" fill="url(#blushPetalSoft)" />
+          {/* Calyx Embrace */}
+          <path d="M-6 4 C -4 -6, -2 -10, -1 -8" stroke="#444B22" strokeWidth="1.2" fill="none" />
+          <path d="M8 4 C 6 -6, 4 -10, 3 -8" stroke="#444B22" strokeWidth="1.2" fill="none" />
+        </g>
+
+        {/* Petite Rosebud 2 (Upper-Mid Branch, ~165, 78) */}
+        <g transform="translate(162, 75) rotate(25)" filter="url(#petalShadow)">
+          <path d="M-10 10 C -5 -6, 0 -10, 3 -16 C 6 -10, 11 -6, 15 10 Z" fill="url(#oliveLeafGrad)" />
+          <path d="M-5 -2 C -3 -18, 5 -20, 8 -8 C 6 2, -3 5, -5 -2 Z" fill="url(#blushPetalDeep)" />
+          <path d="M0 -6 C 2 -16, 6 -17, 8 -8 Z" fill="url(#blushPetalSoft)" />
+        </g>
+
+        {/* =================================================================
+            LAYER 5: SECONDARY GARDEN ROSE (Mid-Corner, ~140, 150)
+            ================================================================= */}
+        <g transform="translate(142, 152) scale(0.92)" filter="url(#petalShadow)">
+          {/* Outer Petals */}
+          <path
+            d="M0 -28 C 14 -34, 28 -24, 26 -10 C 24 2, 8 6, 0 -28 Z"
+            fill="url(#ivoryPeonyGrad)"
+            stroke="#F0D9DE"
+            strokeWidth="0.6"
+          />
+          <path
+            d="M24 -12 C 36 -6, 38 12, 24 22 C 12 18, 8 4, 24 -12 Z"
+            fill="url(#blushPetalSoft)"
+            stroke="#F0D9DE"
+            strokeWidth="0.6"
+          />
+          <path
+            d="M18 18 C 14 34, -8 36, -18 24 C -12 10, 4 8, 18 18 Z"
+            fill="url(#ivoryPeonyGrad)"
+            stroke="#F0D9DE"
+            strokeWidth="0.6"
+          />
+          <path
+            d="M-16 22 C -32 16, -34 -6, -20 -18 C -8 -8, -6 10, -16 22 Z"
+            fill="url(#blushPetalSoft)"
+            stroke="#F0D9DE"
+            strokeWidth="0.6"
+          />
+          <path
+            d="M-18 -16 C -14 -32, 6 -34, 14 -22 C 4 -10, -10 -8, -18 -16 Z"
+            fill="url(#ivoryPeonyGrad)"
+            stroke="#F0D9DE"
+            strokeWidth="0.6"
+          />
+
+          {/* Inner Cup Petals */}
+          <ellipse cx="0" cy="-6" rx="14" ry="10" transform="rotate(-15)" fill="url(#blushPetalDeep)" />
+          <ellipse cx="8" cy="2" rx="12" ry="9" transform="rotate(35)" fill="url(#blushPetalSoft)" />
+          <ellipse cx="-6" cy="4" rx="13" ry="9" transform="rotate(-40)" fill="url(#blushPetalDeep)" />
+
+          {/* Rosette Core */}
+          <circle cx="0" cy="0" r="9" fill="url(#roseCoreGlow)" />
+          <circle cx="0" cy="0" r="5" fill="url(#roseCenterDark)" />
+          <path d="M-3 -1 C -1 -4, 3 -4, 3 0 C 3 3, -1 3, -3 -1 Z" fill="#FFF2F4" opacity="0.9" />
+
+          {/* Gold Stamen Accents */}
+          <circle cx="-3" cy="-3" r="1.1" fill="#E8C762" />
+          <circle cx="3" cy="-2" r="1.1" fill="#E8C762" />
+          <circle cx="2" cy="3" r="1.1" fill="#E8C762" />
+          <circle cx="-2" cy="2" r="1.1" fill="#E8C762" />
+        </g>
+
+        {/* =================================================================
+            LAYER 6: PRIMARY MAGNIFICENT PEONY / ENGLISH GARDEN ROSE (~205, 95)
+            ================================================================= */}
+        <g transform="translate(202, 95)" filter="url(#petalShadow)">
+          {/* Back Outer Petals (Base Skirt) */}
+          <path
+            d="M0 -42 C 22 -50, 44 -36, 40 -14 C 36 2, 12 8, 0 -42 Z"
+            fill="url(#ivoryPeonyGrad)"
+            stroke="#F5E4E8"
+            strokeWidth="0.7"
+          />
+          <path
+            d="M34 -20 C 52 -10, 56 18, 36 34 C 18 28, 12 8, 34 -20 Z"
+            fill="url(#blushPetalSoft)"
+            stroke="#F5E4E8"
+            strokeWidth="0.7"
+          />
+          <path
+            d="M28 26 C 22 50, -12 54, -28 36 C -18 16, 6 12, 28 26 Z"
+            fill="url(#ivoryPeonyGrad)"
+            stroke="#F5E4E8"
+            strokeWidth="0.7"
+          />
+          <path
+            d="M-24 32 C -48 24, -52 -8, -32 -26 C -12 -12, -8 14, -24 32 Z"
+            fill="url(#blushPetalSoft)"
+            stroke="#F5E4E8"
+            strokeWidth="0.7"
+          />
+          <path
+            d="M-28 -22 C -22 -46, 8 -50, 20 -32 C 6 -14, -14 -12, -28 -22 Z"
+            fill="url(#ivoryPeonyGrad)"
+            stroke="#F5E4E8"
+            strokeWidth="0.7"
+          />
+
+          {/* Intermediate Layer Petals (Cupped Around Core) */}
+          <path
+            d="M-10 -30 C 12 -38, 30 -26, 26 -8 C 18 0, 0 -4, -10 -30 Z"
+            fill="url(#blushPetalDeep)"
+            stroke="#ECC5CE"
+            strokeWidth="0.6"
+          />
+          <path
+            d="M22 -12 C 36 -2, 38 20, 22 26 C 10 16, 6 2, 22 -12 Z"
+            fill="url(#blushPetalSoft)"
+            stroke="#ECC5CE"
+            strokeWidth="0.6"
+          />
+          <path
+            d="M16 18 C 8 34, -16 36, -24 20 C -12 8, 2 6, 16 18 Z"
+            fill="url(#blushPetalDeep)"
+            stroke="#ECC5CE"
+            strokeWidth="0.6"
+          />
+          <path
+            d="M-18 18 C -34 10, -34 -12, -18 -22 C -6 -8, -4 8, -18 18 Z"
+            fill="url(#blushPetalSoft)"
+            stroke="#ECC5CE"
+            strokeWidth="0.6"
+          />
+
+          {/* Inner Swirl Petal Layers */}
+          <ellipse cx="0" cy="-10" rx="18" ry="12" transform="rotate(-15)" fill="url(#blushPetalSoft)" />
+          <ellipse cx="12" cy="0" rx="16" ry="11" transform="rotate(35)" fill="url(#blushPetalDeep)" />
+          <ellipse cx="6" cy="12" rx="18" ry="12" transform="rotate(80)" fill="url(#blushPetalSoft)" />
+          <ellipse cx="-10" cy="6" rx="16" ry="11" transform="rotate(-45)" fill="url(#blushPetalDeep)" />
+          <ellipse cx="-10" cy="-8" rx="17" ry="11" transform="rotate(-85)" fill="url(#blushPetalSoft)" />
+
+          {/* Rosette Heart Core */}
+          <circle cx="0" cy="0" r="14" fill="url(#roseCoreGlow)" />
+          <circle cx="0" cy="0" r="8" fill="url(#roseCenterDark)" />
+
+          {/* Velvet Rosette Petal Folds */}
+          <path
+            d="M-5 -2 C -3 -7, 4 -7, 5 0 C 5 5, -2 6, -5 -2 Z"
+            fill="#FFF5F7"
+            opacity="0.95"
+          />
+          <path
+            d="M-2 -3 C 0 -6, 3 -5, 3 -1 C 2 2, -1 2, -2 -3 Z"
+            fill="#C94A65"
+            opacity="0.8"
+          />
+
+          {/* Radiating Luxury Gold Filigree Stamens & Pearl Dots */}
+          <g className="core-stamens" stroke="#E5C35E" strokeWidth="0.9" strokeLinecap="round">
+            <line x1="0" y1="0" x2="-6" y2="-7" />
+            <line x1="0" y1="0" x2="0" y2="-9" />
+            <line x1="0" y1="0" x2="6" y2="-7" />
+            <line x1="0" y1="0" x2="9" y2="-2" />
+            <line x1="0" y1="0" x2="8" y2="5" />
+            <line x1="0" y1="0" x2="3" y2="9" />
+            <line x1="0" y1="0" x2="-4" y2="8" />
+            <line x1="0" y1="0" x2="-8" y2="4" />
+            <line x1="0" y1="0" x2="-9" y2="-2" />
+
+            {/* Pearl Heads */}
+            <circle cx="-6" cy="-7" r="1.4" fill="url(#goldBerryGrad)" stroke="none" />
+            <circle cx="0" cy="-9" r="1.5" fill="url(#goldBerryGrad)" stroke="none" />
+            <circle cx="6" cy="-7" r="1.4" fill="url(#goldBerryGrad)" stroke="none" />
+            <circle cx="9" cy="-2" r="1.5" fill="url(#goldBerryGrad)" stroke="none" />
+            <circle cx="8" cy="5" r="1.4" fill="url(#goldBerryGrad)" stroke="none" />
+            <circle cx="3" cy="9" r="1.5" fill="url(#goldBerryGrad)" stroke="none" />
+            <circle cx="-4" cy="8" r="1.4" fill="url(#goldBerryGrad)" stroke="none" />
+            <circle cx="-8" cy="4" r="1.4" fill="url(#goldBerryGrad)" stroke="none" />
+            <circle cx="-9" cy="-2" r="1.5" fill="url(#goldBerryGrad)" stroke="none" />
           </g>
         </g>
       </svg>
@@ -365,32 +785,82 @@ export function SideTallBotanical({ className = '', style = {} }: { className?: 
   return (
     <div className={`side-tall-botanical ${className}`} style={style} aria-hidden="true">
       <svg
-        viewBox="0 0 160 380"
+        viewBox="0 0 160 400"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{ width: '100%', height: '100%', display: 'block' }}
       >
+        <defs>
+          <linearGradient id="tallStemGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stopColor="#3A401A" />
+            <stop offset="50%" stopColor="#5E6732" />
+            <stop offset="100%" stopColor="#87934E" />
+          </linearGradient>
+          <linearGradient id="tallSageGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#C4DDD2" />
+            <stop offset="60%" stopColor="#87B09F" />
+            <stop offset="100%" stopColor="#4A7060" />
+          </linearGradient>
+          <linearGradient id="tallOliveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#A3AC68" />
+            <stop offset="60%" stopColor="#677038" />
+            <stop offset="100%" stopColor="#3B421C" />
+          </linearGradient>
+          <radialGradient id="tallGoldBerry" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stopColor="#FFF9E0" />
+            <stop offset="45%" stopColor="#E5C158" />
+            <stop offset="100%" stopColor="#8C660B" />
+          </radialGradient>
+        </defs>
+
+        {/* Tall Arching Stem */}
         <path
-          d="M30 360 C 50 280, 70 190, 85 40"
-          stroke="#4D5230"
-          strokeWidth="2.2"
+          d="M25 385 C 45 295, 68 185, 82 25"
+          stroke="url(#tallStemGrad)"
+          strokeWidth="2.6"
           strokeLinecap="round"
-          opacity="0.8"
         />
-        {/* Branch 1 */}
-        <path d="M68 280 C 45 260, 38 230, 60 215 C 75 230, 75 265, 68 280 Z" fill="#7B9E8E" opacity="0.8" />
-        <path d="M72 260 C 95 240, 115 250, 105 275 C 88 280, 78 270, 72 260 Z" fill="#5E6140" opacity="0.75" />
-        
-        {/* Branch 2 */}
-        <path d="M76 200 C 48 185, 42 155, 66 142 C 82 155, 82 185, 76 200 Z" fill="#8FAFA0" opacity="0.8" />
-        <path d="M80 180 C 108 165, 126 175, 114 200 C 96 205, 86 190, 80 180 Z" fill="#5E6140" opacity="0.75" />
 
-        {/* Branch 3 */}
-        <path d="M82 120 C 58 105, 52 75, 74 65 C 90 78, 88 108, 82 120 Z" fill="#7B9E8E" opacity="0.8" />
-        <path d="M84 100 C 112 85, 128 98, 118 120 C 100 125, 90 110, 84 100 Z" fill="#5E6140" opacity="0.75" />
+        {/* Tier 1 (Base, ~320) */}
+        <g transform="translate(42, 320)">
+          <path d="M0 0 C -26 -18, -32 -46, -10 -60 C 5 -44, 4 -12, 0 0 Z" fill="url(#tallSageGrad)" />
+          <path d="M0 0 C 26 -18, 44 -10, 34 16 C 18 20, 8 10, 0 0 Z" fill="url(#tallOliveGrad)" />
+          <circle cx="2" cy="-10" r="3.2" fill="url(#tallGoldBerry)" />
+        </g>
 
-        {/* Top leaves */}
-        <path d="M85 40 C 72 20, 92 10, 102 25 C 100 38, 92 42, 85 40 Z" fill="#7B9E8E" opacity="0.85" />
+        {/* Tier 2 (~260) */}
+        <g transform="translate(56, 260)">
+          <path d="M0 0 C -30 -16, -34 -44, -12 -56 C 4 -40, 4 -10, 0 0 Z" fill="url(#tallSageGrad)" />
+          <path d="M0 0 C 28 -16, 46 -8, 36 18 C 18 22, 6 12, 0 0 Z" fill="url(#tallOliveGrad)" />
+          <circle cx="-4" cy="-12" r="3" fill="url(#tallGoldBerry)" />
+          <circle cx="12" cy="-6" r="2.6" fill="url(#tallGoldBerry)" />
+        </g>
+
+        {/* Tier 3 (~200) */}
+        <g transform="translate(68, 200)">
+          <path d="M0 0 C -28 -14, -32 -40, -10 -50 C 4 -36, 4 -8, 0 0 Z" fill="url(#tallSageGrad)" />
+          <path d="M0 0 C 26 -14, 42 -6, 32 16 C 16 20, 6 10, 0 0 Z" fill="url(#tallOliveGrad)" />
+          <circle cx="0" cy="-8" r="3" fill="url(#tallGoldBerry)" />
+        </g>
+
+        {/* Tier 4 (~140) */}
+        <g transform="translate(76, 140)">
+          <path d="M0 0 C -24 -12, -28 -34, -8 -44 C 4 -30, 4 -6, 0 0 Z" fill="url(#tallSageGrad)" />
+          <path d="M0 0 C 24 -12, 38 -4, 28 14 C 14 18, 4 8, 0 0 Z" fill="url(#tallOliveGrad)" />
+          <circle cx="-6" cy="-8" r="2.8" fill="url(#tallGoldBerry)" />
+        </g>
+
+        {/* Tier 5 (~80) */}
+        <g transform="translate(80, 80)">
+          <path d="M0 0 C -20 -10, -22 -28, -6 -36 C 4 -24, 2 -4, 0 0 Z" fill="url(#tallSageGrad)" />
+          <path d="M0 0 C 20 -10, 32 -2, 24 12 C 12 14, 4 6, 0 0 Z" fill="url(#tallOliveGrad)" />
+        </g>
+
+        {/* Terminal Crown (~25) */}
+        <g transform="translate(82, 25)">
+          <path d="M0 0 C -12 -18, 8 -26, 18 -10 C 16 4, 8 6, 0 0 Z" fill="url(#tallSageGrad)" />
+          <circle cx="6" cy="-8" r="2.5" fill="url(#tallGoldBerry)" />
+        </g>
       </svg>
     </div>
   )
@@ -399,23 +869,53 @@ export function SideTallBotanical({ className = '', style = {} }: { className?: 
 export function CardCornerBotanical({ className = '', style = {} }: { className?: string; style?: React.CSSProperties }) {
   return (
     <svg
-      viewBox="0 0 70 70"
+      viewBox="0 0 80 80"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`card-corner-botanical ${className}`}
       style={style}
+      aria-hidden="true"
     >
+      <defs>
+        <linearGradient id="cardCornerStem" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#4A5228" />
+          <stop offset="100%" stopColor="#7E8850" />
+        </linearGradient>
+        <linearGradient id="cardCornerSage" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#C4DDD2" />
+          <stop offset="100%" stopColor="#547A6A" />
+        </linearGradient>
+        <linearGradient id="cardCornerOlive" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#A3AC68" />
+          <stop offset="100%" stopColor="#3E4420" />
+        </linearGradient>
+        <radialGradient id="cardCornerGold" cx="35%" cy="35%" r="65%">
+          <stop offset="0%" stopColor="#FFF9E0" />
+          <stop offset="50%" stopColor="#E5C158" />
+          <stop offset="100%" stopColor="#8C660B" />
+        </radialGradient>
+      </defs>
+
+      {/* Curved Branch */}
       <path
-        d="M10 60 C 25 45, 45 30, 60 10"
-        stroke="#5E6140"
-        strokeWidth="1.4"
+        d="M10 70 C 26 50, 48 32, 70 10"
+        stroke="url(#cardCornerStem)"
+        strokeWidth="1.8"
         strokeLinecap="round"
-        opacity="0.75"
       />
-      <path d="M26 48 C 18 42, 22 34, 30 36 C 29 42, 27 46, 26 48 Z" fill="#7B9E8E" opacity="0.8" />
-      <path d="M34 42 C 40 36, 46 42, 40 48 C 36 47, 34 44, 34 42 Z" fill="#5E6140" opacity="0.75" />
-      <path d="M42 30 C 35 24, 38 16, 46 18 C 45 24, 43 28, 42 30 Z" fill="#8FAFA0" opacity="0.8" />
-      <path d="M50 24 C 56 18, 62 24, 56 30 C 52 29, 50 26, 50 24 Z" fill="#5E6140" opacity="0.75" />
+
+      {/* Leaf Pair 1 */}
+      <path d="M28 56 C 18 50, 22 40, 32 42 C 31 48, 29 53, 28 56 Z" fill="url(#cardCornerSage)" />
+      <path d="M36 48 C 44 40, 52 46, 46 54 C 40 53, 37 50, 36 48 Z" fill="url(#cardCornerOlive)" />
+      <circle cx="32" cy="50" r="2.2" fill="url(#cardCornerGold)" />
+
+      {/* Leaf Pair 2 */}
+      <path d="M48 34 C 38 26, 42 16, 52 18 C 51 24, 49 30, 48 34 Z" fill="url(#cardCornerSage)" />
+      <path d="M56 26 C 64 18, 72 24, 66 32 C 60 31, 57 28, 56 26 Z" fill="url(#cardCornerOlive)" />
+      <circle cx="52" cy="28" r="2" fill="url(#cardCornerGold)" />
+
+      {/* Terminal bud */}
+      <circle cx="68" cy="12" r="2.4" fill="url(#cardCornerGold)" />
     </svg>
   )
 }
