@@ -51,6 +51,7 @@ export interface FAQItem {
 
 export const navLinks = [
   { label: 'Home', href: '/' },
+  { label: 'Our Story', href: '/story' },
   { label: 'Wishlist', href: '/wishlist' },
   { label: 'RSVP', href: '/rsvp' },
 ]

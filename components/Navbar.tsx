@@ -21,16 +21,16 @@ export function Navbar() {
       const deltaY = currentScrollY - lastScrollY
 
       // Elevation styling when scrolled beyond top
-      setIsScrolled(currentScrollY > 20)
+      setIsScrolled(currentScrollY > 15)
 
       // Always show when near top or if mobile menu is open
-      if (currentScrollY <= 60 || isMobileMenuOpen) {
+      if (currentScrollY <= 80 || isMobileMenuOpen) {
         setIsVisible(true)
-      } else if (deltaY > 6 && currentScrollY > 100) {
-        // Scrolling down -> hide smoothly
+      } else if (deltaY > 8 && currentScrollY > 120) {
+        // Scrolling down -> hide smoothly to give full content focus
         setIsVisible(false)
-      } else if (deltaY < -6) {
-        // Scrolling up -> show immediately
+      } else if (deltaY < -3) {
+        // Scrolling up -> show immediately so navigation is right at hand
         setIsVisible(true)
       }
 
