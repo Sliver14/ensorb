@@ -611,3 +611,446 @@ export async function sendUniqueInviteEmail(
   }
 }
 
+/**
+ * Generates the luxury Admin Notification HTML email for new RSVP registrations
+ */
+export function generateAdminRsvpNotificationHtml(invite: Invite, siteUrl: string): string {
+  const adminUrl = `${siteUrl}/admin`
+  const guestName = invite.guestName || invite.targetName || 'Anonymous Guest'
+  const guestCount = invite.actualGuestCount || invite.maxGuests || 1
+  const attendance = invite.attendance || 'attending'
+  const isPending = invite.approvalStatus === 'pending'
+  const accessCode = invite.accessCode || invite.passId || invite.code || 'N/A'
+  const tableNumber = invite.tableNumber || 'Unassigned'
+  const category = invite.category || 'General'
+  const guestEmail = invite.guestEmail || (invite as any).targetEmail || 'Not provided'
+  const guestPhone = invite.guestPhone || 'Not provided'
+  const dietaryOrNotes = invite.dietaryOrNotes || invite.customNote || ''
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New RSVP Registration Notification</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #1A1416;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #383431;
+    }
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+      background-color: #1A1416;
+      padding: 32px 12px;
+    }
+    .card {
+      background: #FAF7F2;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 520px;
+      border-radius: 14px;
+      border: 2px solid #D4AF37;
+      overflow: hidden;
+      box-shadow: 0 16px 45px rgba(0,0,0,0.4);
+      text-align: left;
+    }
+    .header {
+      background: linear-gradient(135deg, #4A1525 0%, #330D19 100%);
+      padding: 28px 24px;
+      text-align: center;
+      color: #FAF7F2;
+      border-bottom: 2px solid #D4AF37;
+    }
+    .header h1 {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      margin: 6px 0 0;
+      font-weight: 700;
+      color: #FAF7F2;
+    }
+    .body-content {
+      padding: 24px 24px 30px;
+    }
+    .info-box {
+      background: #FFFFFF;
+      border: 1.5px solid #E5D5AA;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 22px;
+    }
+    .row {
+      margin-bottom: 10px;
+      font-size: 13.5px;
+      border-bottom: 1px dashed #F0EAE1;
+      padding-bottom: 8px;
+    }
+    .row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .lbl {
+      font-weight: 700;
+      color: #4A1525;
+      display: inline-block;
+      width: 130px;
+    }
+    .val {
+      font-weight: 600;
+      color: #2B2725;
+    }
+    .cta-container {
+      text-align: center;
+      margin: 24px 0 14px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #4A1525 0%, #330D19 100%);
+      color: #FAF7F2 !important;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid #D4AF37;
+      box-shadow: 0 6px 18px rgba(74,21,37,0.35);
+    }
+    .url-text {
+      font-size: 12px;
+      color: #7D6B64;
+      word-break: break-all;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td align="center">
+          <div class="card">
+            <div class="header">
+              <div style="font-size: 26px;">💍</div>
+              <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #E5A1A8;">RSVP NOTIFICATION</div>
+              <h1>New RSVP Registration</h1>
+            </div>
+            <div class="body-content">
+              <p style="font-size: 14px; color: #59534E; margin: 0 0 18px; line-height: 1.5;">
+                A guest has submitted their RSVP for the wedding celebration. Please review the details below and log in to the admin dashboard to approve or decline their reservation.
+              </p>
+
+              <div class="info-box">
+                <div class="row"><span class="lbl">Guest Name:</span><span class="val">${guestName}</span></div>
+                <div class="row"><span class="lbl">Attendance:</span><span class="val" style="color: ${attendance === 'attending' ? '#2E7D32' : '#C62828'}; font-weight: 700;">${attendance === 'attending' ? '🎉 Joyfully Attending' : '✕ Regretfully Declined'}</span></div>
+                <div class="row"><span class="lbl">Seats / Guests:</span><span class="val">${guestCount} Guest(s)</span></div>
+                <div class="row"><span class="lbl">Email Address:</span><span class="val">${guestEmail}</span></div>
+                <div class="row"><span class="lbl">Phone / WhatsApp:</span><span class="val">${guestPhone}</span></div>
+                <div class="row"><span class="lbl">Approval Status:</span><span class="val" style="color: ${isPending ? '#B87333' : '#2E7D32'}; font-weight: 700;">${isPending ? '⏳ Pending Couple Approval' : '✓ Auto-Confirmed'}</span></div>
+                <div class="row"><span class="lbl">Assigned Table:</span><span class="val">${tableNumber} (${category})</span></div>
+                <div class="row"><span class="lbl">Access Code:</span><span class="val" style="font-family: monospace; font-weight: 700;">${accessCode}</span></div>
+                ${dietaryOrNotes ? `<div class="row"><span class="lbl">Wishes / Note:</span><span class="val" style="font-style: italic;">&ldquo;${dietaryOrNotes}&rdquo;</span></div>` : ''}
+              </div>
+
+              <div class="cta-container">
+                <a href="${adminUrl}" class="cta-btn" target="_blank">
+                  Open Admin Dashboard to Review ↗
+                </a>
+                <div class="url-text">
+                  Direct Link: <a href="${adminUrl}" style="color: #4A1525; text-decoration: underline;">${adminUrl}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
+`
+}
+
+/**
+ * Generates the luxury Admin Notification HTML email for new gift contributions
+ */
+export function generateAdminGiftNotificationHtml(contribution: any, siteUrl: string): string {
+  const adminUrl = `${siteUrl}/admin`
+  const giftTitle = contribution.giftTitle || 'Wedding Cash Blessing'
+  const contributorName = contribution.contributorName || 'Anonymous Guest'
+  const amount = Number(contribution.amount) || 0
+  const contributorEmail = contribution.contributorEmail || 'Not provided'
+  const contributorPhone = contribution.contributorPhone || 'Not provided'
+  const paymentReference = contribution.paymentReference || 'N/A'
+  const customNote = contribution.customNote || ''
+
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Gift Contribution Notification</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #1A1416;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #383431;
+    }
+    .wrapper {
+      width: 100%;
+      table-layout: fixed;
+      background-color: #1A1416;
+      padding: 32px 12px;
+    }
+    .card {
+      background: #FAF7F2;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 520px;
+      border-radius: 14px;
+      border: 2px solid #D4AF37;
+      overflow: hidden;
+      box-shadow: 0 16px 45px rgba(0,0,0,0.4);
+      text-align: left;
+    }
+    .header {
+      background: linear-gradient(135deg, #4A1525 0%, #330D19 100%);
+      padding: 28px 24px;
+      text-align: center;
+      color: #FAF7F2;
+      border-bottom: 2px solid #D4AF37;
+    }
+    .header h1 {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      margin: 6px 0 0;
+      font-weight: 700;
+      color: #FAF7F2;
+    }
+    .body-content {
+      padding: 24px 24px 30px;
+    }
+    .info-box {
+      background: #FFFFFF;
+      border: 1.5px solid #E5D5AA;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 22px;
+    }
+    .row {
+      margin-bottom: 10px;
+      font-size: 13.5px;
+      border-bottom: 1px dashed #F0EAE1;
+      padding-bottom: 8px;
+    }
+    .row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .lbl {
+      font-weight: 700;
+      color: #4A1525;
+      display: inline-block;
+      width: 140px;
+    }
+    .val {
+      font-weight: 600;
+      color: #2B2725;
+    }
+    .cta-container {
+      text-align: center;
+      margin: 24px 0 14px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #4A1525 0%, #330D19 100%);
+      color: #FAF7F2 !important;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid #D4AF37;
+      box-shadow: 0 6px 18px rgba(74,21,37,0.35);
+    }
+    .url-text {
+      font-size: 12px;
+      color: #7D6B64;
+      word-break: break-all;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td align="center">
+          <div class="card">
+            <div class="header">
+              <div style="font-size: 26px;">🎁</div>
+              <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #E5A1A8;">GIFT BLESSING NOTIFICATION</div>
+              <h1>New Gift Contribution</h1>
+            </div>
+            <div class="body-content">
+              <p style="font-size: 14px; color: #59534E; margin: 0 0 18px; line-height: 1.5;">
+                A guest has submitted a new wedding gift / bank transfer contribution. Please verify the deposit in your account and log in to the admin dashboard to approve or decline the contribution.
+              </p>
+
+              <div class="info-box">
+                <div class="row"><span class="lbl">Gift Item:</span><span class="val">${giftTitle}</span></div>
+                <div class="row"><span class="lbl">Contribution Amount:</span><span class="val" style="color: #4A1525; font-size: 16px; font-weight: 800;">₦${amount.toLocaleString()}</span></div>
+                <div class="row"><span class="lbl">Contributor Name:</span><span class="val">${contributorName}</span></div>
+                <div class="row"><span class="lbl">Phone / WhatsApp:</span><span class="val">${contributorPhone}</span></div>
+                <div class="row"><span class="lbl">Email Address:</span><span class="val">${contributorEmail}</span></div>
+                <div class="row"><span class="lbl">Payment Reference:</span><span class="val" style="font-family: monospace; font-weight: 700;">${paymentReference}</span></div>
+                <div class="row"><span class="lbl">Status:</span><span class="val" style="color: #B87333; font-weight: 700;">⏳ Pending Bank Verification</span></div>
+                ${customNote ? `<div class="row"><span class="lbl">Personal Note:</span><span class="val" style="font-style: italic;">&ldquo;${customNote}&rdquo;</span></div>` : ''}
+              </div>
+
+              <div class="cta-container">
+                <a href="${adminUrl}" class="cta-btn" target="_blank">
+                  Open Admin Dashboard to Verify / Approve ↗
+                </a>
+                <div class="url-text">
+                  Direct Link: <a href="${adminUrl}" style="color: #4A1525; text-decoration: underline;">${adminUrl}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
+`
+}
+
+/**
+ * Sends an email notification to the couple (engysorbari@gmail.com) when a new RSVP registration is received
+ */
+export async function sendAdminRsvpNotificationEmail(
+  invite: Invite,
+  siteUrl: string
+): Promise<EmailSendResult> {
+  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'engysorbari@gmail.com'
+  const resendApiKey = process.env.RESEND_API_KEY
+  const fromEmail = process.env.EMAIL_FROM || 'Ngozi & Sorbari Wedding <invites@ensorb.com>'
+  const guestName = invite.guestName || invite.targetName || 'A Guest'
+  const isPending = invite.approvalStatus === 'pending'
+  const subject = `🔔 New RSVP Registration: ${guestName} (${invite.attendance === 'attending' ? 'Attending - ' + (invite.actualGuestCount || 1) + ' Seat(s)' : 'Declined'}) - ${isPending ? 'Action Required' : 'Confirmed'}`
+  const html = generateAdminRsvpNotificationHtml(invite, siteUrl)
+
+  if (resendApiKey) {
+    try {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: fromEmail,
+          to: [adminEmail],
+          subject: subject,
+          html: html,
+        }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        console.log(`[RESEND SUCCESS] Admin RSVP notification sent to ${adminEmail}, messageId: ${data.id}`)
+        return {
+          success: true,
+          provider: 'resend',
+          messageId: data.id,
+        }
+      } else {
+        const err = await response.text()
+        console.warn('Resend API call error for admin RSVP notification:', err)
+      }
+    } catch (err) {
+      console.error('Error contacting Resend API for admin RSVP notification:', err)
+    }
+  }
+
+  console.log(`[SIMULATED DISPATCH] Admin RSVP notification delivered to ${adminEmail}`)
+  return {
+    success: true,
+    provider: 'simulated',
+    messageId: `sim-admin-rsvp-${Date.now()}`,
+  }
+}
+
+/**
+ * Sends an email notification to the couple (engysorbari@gmail.com) when a new gift contribution is submitted
+ */
+export async function sendAdminGiftNotificationEmail(
+  contribution: any,
+  siteUrl: string
+): Promise<EmailSendResult> {
+  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'engysorbari@gmail.com'
+  const resendApiKey = process.env.RESEND_API_KEY
+  const fromEmail = process.env.EMAIL_FROM || 'Ngozi & Sorbari Wedding <invites@ensorb.com>'
+  const contributorName = contribution.contributorName || 'A Guest'
+  const amount = Number(contribution.amount) || 0
+  const giftTitle = contribution.giftTitle || 'Wedding Blessing'
+  const subject = `🎁 New Gift Contribution: ₦${amount.toLocaleString()} from ${contributorName} (${giftTitle}) - Verification Needed`
+  const html = generateAdminGiftNotificationHtml(contribution, siteUrl)
+
+  if (resendApiKey) {
+    try {
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: fromEmail,
+          to: [adminEmail],
+          subject: subject,
+          html: html,
+        }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        console.log(`[RESEND SUCCESS] Admin Gift notification sent to ${adminEmail}, messageId: ${data.id}`)
+        return {
+          success: true,
+          provider: 'resend',
+          messageId: data.id,
+        }
+      } else {
+        const err = await response.text()
+        console.warn('Resend API call error for admin Gift notification:', err)
+      }
+    } catch (err) {
+      console.error('Error contacting Resend API for admin Gift notification:', err)
+    }
+  }
+
+  console.log(`[SIMULATED DISPATCH] Admin Gift notification delivered to ${adminEmail}`)
+  return {
+    success: true,
+    provider: 'simulated',
+    messageId: `sim-admin-gift-${Date.now()}`,
+  }
+}
+

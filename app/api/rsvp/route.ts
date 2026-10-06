@@ -6,9 +6,11 @@ import {
   getAllInvites,
   updateInvite,
 } from '@/lib/invites-store'
+import { sendAdminRsvpNotificationEmail } from '@/lib/email'
 
 export async function POST(req: NextRequest) {
   try {
+    const siteUrl = req.nextUrl.origin || process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.com'
     const body = await req.json()
     const {
       fullName,
@@ -71,6 +73,13 @@ export async function POST(req: NextRequest) {
         )
       }
 
+      // Send admin email notification to engysorbari@gmail.com
+      try {
+        await sendAdminRsvpNotificationEmail(registered, siteUrl)
+      } catch (notifyErr) {
+        console.warn('Failed to send admin RSVP notification email:', notifyErr)
+      }
+
       return NextResponse.json({
         success: true,
         invite: registered,
@@ -119,9 +128,18 @@ export async function POST(req: NextRequest) {
       approvalStatus: 'pending',
     })
 
+    const finalInvite = updated || newPendingInvite
+
+    // Send admin email notification to engysorbari@gmail.com
+    try {
+      await sendAdminRsvpNotificationEmail(finalInvite, siteUrl)
+    } catch (notifyErr) {
+      console.warn('Failed to send admin RSVP notification email:', notifyErr)
+    }
+
     return NextResponse.json({
       success: true,
-      invite: updated || newPendingInvite,
+      invite: finalInvite,
       isPending: true,
       message:
         'Thank you! Your RSVP has been submitted and is awaiting approval by Ngozi & Sorbari. Your official Access Card and table assignment will be delivered directly to your email upon confirmation.',

@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { recordGiftContribution } from '@/lib/gifts-store'
+import { sendAdminGiftNotificationEmail } from '@/lib/email'
 
 export async function POST(req: NextRequest) {
   try {
+    const siteUrl = req.nextUrl.origin || process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.com'
     const body = await req.json()
     const {
       giftId,
@@ -32,6 +34,13 @@ export async function POST(req: NextRequest) {
       paymentReference,
       customNote,
     })
+
+    // Send admin email notification to engysorbari@gmail.com
+    try {
+      await sendAdminGiftNotificationEmail(contribution, siteUrl)
+    } catch (notifyErr) {
+      console.warn('Failed to send admin gift notification email:', notifyErr)
+    }
 
     return NextResponse.json({
       success: true,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { registerInvite, getInviteByCode } from '@/lib/invites-store'
-import { sendWeddingPassEmail } from '@/lib/email'
+import { sendWeddingPassEmail, sendAdminRsvpNotificationEmail } from '@/lib/email'
 
 interface RouteContext {
   params: Promise<{ code: string }>
@@ -73,14 +73,22 @@ export async function POST(req: NextRequest, context: RouteContext) {
       )
     }
 
+    const siteUrl = req.nextUrl.origin || process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.com'
+
     // Send wedding pass email if guest is attending
-    const siteUrl = req.nextUrl.origin || 'https://ensorb.com'
     if (registeredInvite.attendance === 'attending' && registeredInvite.guestEmail) {
       try {
         await sendWeddingPassEmail(registeredInvite, siteUrl)
       } catch (emailErr) {
         console.warn('Failed to send instant pass email:', emailErr)
       }
+    }
+
+    // Send admin notification email to engysorbari@gmail.com
+    try {
+      await sendAdminRsvpNotificationEmail(registeredInvite, siteUrl)
+    } catch (adminErr) {
+      console.warn('Failed to send admin RSVP notification email:', adminErr)
     }
 
     return NextResponse.json({
