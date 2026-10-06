@@ -2,6 +2,7 @@ export interface Invite {
   id: string
   code: string
   targetName?: string
+  targetEmail?: string
   maxGuests: number
   tableNumber: string
   category: 'VIP' | 'Family' | 'Friends' | 'Colleagues' | 'General'

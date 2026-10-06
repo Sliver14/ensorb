@@ -24,7 +24,7 @@ export default function WishlistPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortBy, setSortBy] = useState<SortOption>('featured')
-  
+
   // Traditional bank details reveal state
   const [showBankDetails, setShowBankDetails] = useState(false)
 
@@ -44,6 +44,7 @@ export default function WishlistPage() {
   const [successDetails, setSuccessDetails] = useState<{ amount: number; reference: string; itemTitle: string } | null>(null)
   const [copiedAccount, setCopiedAccount] = useState(false)
   const [copiedRef, setCopiedRef] = useState(false)
+  const [copiedTraditionalAccount, setCopiedTraditionalAccount] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   // Fetch live gifts from backend
@@ -79,20 +80,23 @@ export default function WishlistPage() {
     }
   }, [selectedItem])
 
-  const handleCopy = (text: string, type: 'account' | 'ref') => {
+  const handleCopy = (text: string, type: 'account' | 'ref' | 'traditional') => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       navigator.clipboard.writeText(text)
       if (type === 'account') {
         setCopiedAccount(true)
         setTimeout(() => setCopiedAccount(false), 2500)
-      } else {
+      } else if (type === 'ref') {
         setCopiedRef(true)
         setTimeout(() => setCopiedRef(false), 2500)
+      } else if (type === 'traditional') {
+        setCopiedTraditionalAccount(true)
+        setTimeout(() => setCopiedTraditionalAccount(false), 2500)
       }
     }
   }
 
-  // Calculate high-level stats
+  // Calculate stats
   const stats = useMemo(() => {
     const totalItems = items.length
     const fullyGifted = items.filter(
@@ -129,7 +133,7 @@ export default function WishlistPage() {
       result = result.filter((item) => item.category === selectedCategory)
     }
 
-    // Search filter
+    // Search query filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase()
       result = result.filter(
@@ -213,7 +217,7 @@ export default function WishlistPage() {
     return `GIFT-${cleanId}`
   }, [selectedItem])
 
-  // Handle submitting the contribution
+  // Handle submitting contribution
   const handleConfirmTransferSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!selectedItem) return
@@ -278,11 +282,11 @@ export default function WishlistPage() {
   const faqList = [
     {
       q: 'How does item gifting & contribution work?',
-      a: 'You can choose to gift the entire remaining balance of an item or contribute any partial amount of your choice. Once your bank transfer is verified by the couple, the progress bar updates automatically.',
+      a: 'You can choose to gift the entire remaining balance of an item or contribute any partial amount of your choice. Once your bank transfer is made, you can submit the confirmation form with your transfer reference.',
     },
     {
       q: 'Can I send a general cash blessing instead of a specific item?',
-      a: 'Yes, absolutely! You can use the "Direct Wedding Cash Blessings" section above to make a transfer of any amount directly to the couple\'s designated wedding account.',
+      a: 'Yes, absolutely! You can use the "Traditional Cash Blessings" section below to make a direct transfer of any amount to the couple\'s designated joint wedding account.',
     },
     {
       q: 'Is there a minimum or maximum contribution amount?',
@@ -295,365 +299,537 @@ export default function WishlistPage() {
   ]
 
   return (
-    <main className="wedding-site wishlist-page-refined">
-      {/* ----------------------------------------------------------------------
-          HERO SECTION
-          ---------------------------------------------------------------------- */}
-      <section className="wishlist-hero-refined section-shell">
-        <SideTallBotanical className="side-botanical-left" />
-        <SideTallBotanical className="side-botanical-right" />
+    <main className="elegant-burgundy-theme wishlist-page-layout">
+      {/* ====================================================================
+          SECTION 1: HERO
+         ==================================================================== */}
+      <section className="wishlist-hero-section">
+        <SideTallBotanical className="wishlist-hero-tall-sprig floating-botanical-sway" />
 
-        <div className="wishlist-hero-content reveal-fade-up">
-          <div className="badge-luxury">
-            <BotanicalSprig className="sprig-icon-left" />
-            <span>Celebration &amp; Registry</span>
-            <BotanicalSprig className="sprig-icon-right" />
-          </div>
+        <div className="wishlist-hero-container">
+          {/* Left Text Block */}
+          <div className="wishlist-hero-copy reveal-fade-left">
+            <span className="eyebrow-spaced">— CELEBRATION &amp; REGISTRY —</span>
 
-          <h1 className="wishlist-hero-title">Wedding Registry &amp; Blessings</h1>
+            <h1 className="wishlist-hero-title">
+              A Little Something
+              <span className="wishlist-script-subtitle">From You to Us</span>
+            </h1>
 
-          <p className="wishlist-hero-subtitle">
-            Your presence, prayers, and warm love are our greatest gifts. For friends and
-            family who wish to celebrate us with a gift or home contribution, we have curated
-            items to help us build our new home together.
-          </p>
-
-          <div className="hero-button-group">
-            <a href="#registry-grid" className="btn-primary-burgundy">
-              <span>Browse Registry Items</span>
-              <span className="arrow-icon">↓</span>
-            </a>
-            <button
-              type="button"
-              className="btn-secondary-outline"
-              onClick={() => setShowBankDetails(!showBankDetails)}
-            >
-              <span>{showBankDetails ? 'Hide Bank Details' : 'Direct Cash Blessing'}</span>
-            </button>
-          </div>
-        </div>
-
-        <HeroBottomTornWithWash className="hero-bottom-torn" />
-      </section>
-
-      {/* ----------------------------------------------------------------------
-          TRADITIONAL CASH BLESSING SECTION (Collapsible & Direct)
-          ---------------------------------------------------------------------- */}
-      <section
-        className={`cash-blessing-section section-shell ${showBankDetails ? 'is-open' : ''}`}
-        id="bank-details"
-      >
-        <div className="cash-blessing-card card-luxury-border">
-          <CardCornerBotanical className="corner-botanical top-left" />
-          <CardCornerBotanical className="corner-botanical top-right" />
-
-          <div className="cash-card-header">
-            <div className="icon-badge-gold">
-              <BankBuildingIcon />
-            </div>
-            <span className="eyebrow-accent">Direct Celebration Transfer</span>
-            <h2>Wedding Cash Account</h2>
-            <p className="cash-card-desc">
-              For general monetary blessings, traditional cash gifts, or monetary support
-              towards our wedding celebrations and future together.
+            <p className="wishlist-hero-desc">
+              Your presence, prayers, and warm love are our greatest gifts. For friends and
+              family who wish to celebrate us with a home contribution or blessing, we have
+              curated items to help us build our new beginning together.
             </p>
+
+            <div style={{ display: 'flex', gap: '14px', marginTop: '28px', flexWrap: 'wrap' }}>
+              <a
+                href="#registry-grid"
+                className="btn-ribbon-view-registry"
+                style={{
+                  background: '#4A1525',
+                  color: '#FAF7F2',
+                  boxShadow: '0 4px 14px rgba(74, 21, 37, 0.25)',
+                }}
+              >
+                <span>Browse Registry</span>
+                <span>↓</span>
+              </a>
+              <a
+                href="#traditional-gifts"
+                className="btn-ribbon-view-registry"
+                style={{
+                  background: '#FAF7F2',
+                  color: '#4A1525',
+                  border: '1px solid #D5CDC0',
+                }}
+              >
+                <span>Direct Cash Blessing</span>
+                <span>→</span>
+              </a>
+            </div>
           </div>
 
-          <div className="cash-card-body">
-            <div className="bank-account-box">
-              <div className="bank-account-row">
-                <span className="bank-row-label">Bank Name</span>
-                <strong className="bank-row-value">{bankDetails.bankName}</strong>
-              </div>
-
-              <div className="bank-account-row highlight-row">
-                <span className="bank-row-label">Account Number</span>
-                <div className="account-number-copy-wrap">
-                  <span className="account-number-digits font-mono">{bankDetails.accountNumber}</span>
-                  <button
-                    type="button"
-                    className="btn-copy-account"
-                    onClick={() => handleCopy(bankDetails.accountNumber, 'account')}
-                  >
-                    {copiedAccount ? '✓ Copied' : 'Copy Number'}
-                  </button>
+          {/* Right Visual Block: Polaroid Frame */}
+          <div className="wishlist-hero-visual reveal-fade-right">
+            <div className="wishlist-polaroid-wrap">
+              <div className="washi-polaroid-frame wishlist-hero-polaroid">
+                <div className="washi-tape-strip" />
+                <div className="polaroid-photo-inner">
+                  <img
+                    src="/couple/quote-portrait.jpg"
+                    alt="Ngozi & Sorbari loving portrait"
+                    className="polaroid-img"
+                  />
+                  <CardCornerBotanical className="polaroid-botanical-corner" />
                 </div>
               </div>
 
-              <div className="bank-account-row">
-                <span className="bank-row-label">Account Name</span>
-                <strong className="bank-row-value text-burgundy">{bankDetails.accountName}</strong>
+              {/* Names Stamp Badge */}
+              <div className="wishlist-names-stamp">
+                <span>NGOZI &amp; SORBARI</span>
+                <span className="stamp-heart">♡</span>
+                <span>2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <HeroBottomTornWithWash />
+      </section>
+
+      {/* ====================================================================
+          SECTION 2: RIBBON BANNER
+         ==================================================================== */}
+      <section className="wishlist-ribbon-section">
+        <TornBannerEdge position="top" color="#FAF7F2" />
+
+        <div className="wishlist-ribbon-bar">
+          <div className="ribbon-inner-grid">
+            <div className="ribbon-icon-col">
+              <div className="ribbon-gift-box">
+                <GiftBoxIcon />
               </div>
             </div>
 
-            <div className="cash-card-footer-notes">
-              <p>
-                💡 <em>Tip: Please use your name or phone number as the transfer narration so we can send our warmest personal thank you!</em>
+            <div className="ribbon-copy-col">
+              <h2 className="ribbon-title">Building Our Home With Love</h2>
+              <p className="ribbon-desc">
+                Every contribution brings us one step closer to setting up our new beginning together.
+                You can contribute any amount towards our wishlist or gift an entire item.
               </p>
             </div>
+
+            <div className="ribbon-action-col">
+              <a href="#registry-grid" className="btn-ribbon-view-registry">
+                <span>View Wishlist</span>
+                <span>↓</span>
+              </a>
+              <BotanicalSprig className="ribbon-botanical-right" />
+            </div>
           </div>
         </div>
+
+        <TornBannerEdge position="bottom" color="#FAF7F2" />
       </section>
 
-      {/* ----------------------------------------------------------------------
-          REGISTRY CONTROLS & FILTER BAR
-          ---------------------------------------------------------------------- */}
-      <section className="wishlist-controls-section section-shell" id="registry-grid">
+      {/* ====================================================================
+          SECTION 3: OUR WISHLIST GRID
+         ==================================================================== */}
+      <section className="wishlist-grid-section" id="registry-grid">
+        {/* Section Header */}
+        <div className="wishlist-section-header reveal-fade-up">
+          <span className="eyebrow-spaced">— OUR CURATED REGISTRY —</span>
+          <h2
+            className="font-serif"
+            style={{
+              fontSize: 'clamp(32px, 4.5vw, 46px)',
+              margin: '0 0 12px',
+              color: '#3D101C',
+              fontWeight: 500,
+            }}
+          >
+            Wedding Registry Items
+          </h2>
+          <p
+            style={{
+              maxWidth: '600px',
+              margin: '0 auto',
+              color: '#6B6056',
+              fontSize: '15px',
+              lineHeight: 1.7,
+            }}
+          >
+            Select an item to gift in full, contribute any portion of your choice, or help complete a goal in progress.
+          </p>
+        </div>
+
+        {/* Controls Bar: Status Tabs + Search */}
         <div className="wishlist-controls-bar reveal-fade-up">
-          {/* Top Row: Search & Stats */}
-          <div className="controls-top-row">
-            <div className="search-input-wrapper">
-              <span className="search-icon">🔍</span>
-              <input
-                type="text"
-                placeholder="Search registry (e.g. Solar, Inverter, Pots, Blender)..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-field"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  className="clear-search-btn"
-                  onClick={() => setSearchQuery('')}
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-
-            <div className="registry-stats-badge">
-              <div className="stat-pill">
-                <span className="stat-num">{stats.totalItems}</span>
-                <span className="stat-text">Items</span>
-              </div>
-              <div className="stat-pill">
-                <span className="stat-num text-green">{stats.fullyGifted}</span>
-                <span className="stat-text">Gifted</span>
-              </div>
-              <div className="stat-pill">
-                <span className="stat-num text-gold">{stats.inProgress}</span>
-                <span className="stat-text">In Progress</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Row: Filter Pills & Sorting */}
-          <div className="controls-bottom-row">
-            {/* Status Pills */}
-            <div className="filter-pill-group">
-              <button
-                type="button"
-                className={`filter-pill ${statusFilter === 'all' ? 'active' : ''}`}
-                onClick={() => setStatusFilter('all')}
-              >
-                All Items
-              </button>
-              <button
-                type="button"
-                className={`filter-pill ${statusFilter === 'needed' ? 'active' : ''}`}
-                onClick={() => setStatusFilter('needed')}
-              >
-                Needs Gifting ({stats.openItems})
-              </button>
-              <button
-                type="button"
-                className={`filter-pill ${statusFilter === 'gifted' ? 'active' : ''}`}
-                onClick={() => setStatusFilter('gifted')}
-              >
-                Fully Gifted ({stats.fullyGifted})
-              </button>
-            </div>
-
-            {/* Category Dropdown & Sort */}
-            <div className="dropdowns-group">
-              <div className="select-wrapper">
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="custom-select"
-                >
-                  <option value="all">All Categories</option>
-                  <option value="appliances">Home Power &amp; Appliances</option>
-                  <option value="kitchen">Kitchen Essentials</option>
-                  <option value="tableware">Dining &amp; Tableware</option>
-                </select>
-              </div>
-
-              <div className="select-wrapper">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="custom-select"
-                >
-                  <option value="featured">Featured First</option>
-                  <option value="progress-desc">Highest Progress</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ----------------------------------------------------------------------
-          REGISTRY GRID
-          ---------------------------------------------------------------------- */}
-      <section className="wishlist-grid-section section-shell">
-        {filteredAndSortedItems.length === 0 ? (
-          <div className="no-items-placeholder">
-            <div className="placeholder-icon">🎁</div>
-            <h3>No matching items found</h3>
-            <p>Try clearing your search query or selecting a different category filter.</p>
+          {/* Status Tabs */}
+          <div className="wishlist-status-tabs">
             <button
               type="button"
-              className="btn-primary-burgundy"
-              onClick={() => {
-                setSearchQuery('')
-                setStatusFilter('all')
-                setSelectedCategory('all')
-              }}
+              className={`status-tab-btn ${statusFilter === 'all' ? 'active' : ''}`}
+              onClick={() => setStatusFilter('all')}
             >
-              Reset Filters
+              <span className="status-tab-text">
+                <span className="tab-full-label">All Items</span>
+                <span className="tab-short-label">All</span>
+              </span>
+              <span className="status-tab-count">{stats.totalItems}</span>
+            </button>
+
+            <button
+              type="button"
+              className={`status-tab-btn ${statusFilter === 'needed' ? 'active' : ''}`}
+              onClick={() => setStatusFilter('needed')}
+            >
+              <span className="status-tab-text">
+                <span className="tab-full-label">Needs Gifting</span>
+                <span className="tab-short-label">Open</span>
+              </span>
+              <span className="status-tab-count">{stats.openItems}</span>
+            </button>
+
+            <button
+              type="button"
+              className={`status-tab-btn ${statusFilter === 'gifted' ? 'active' : ''}`}
+              onClick={() => setStatusFilter('gifted')}
+            >
+              <span className="tab-check-icon">✓</span>
+              <span className="status-tab-text">
+                <span className="tab-full-label">Fully Gifted</span>
+                <span className="tab-short-label">Gifted</span>
+              </span>
+              <span className="status-tab-count">{stats.fullyGifted}</span>
             </button>
           </div>
-        ) : (
-          <div className="wishlist-items-grid">
-            {filteredAndSortedItems.map((item) => {
-              const remaining = Math.max(0, item.numericPrice - item.contributedAmount)
-              const percentage = Math.min(
-                100,
-                Math.round((item.contributedAmount / item.numericPrice) * 100)
-              )
-              const isCompleted = item.isFullyGifted || percentage >= 100
 
-              return (
-                <article
-                  key={item.id}
-                  className={`gift-card card-luxury-border ${isCompleted ? 'is-completed' : ''} ${item.featured ? 'is-featured' : ''}`}
-                >
-                  {/* Card Image Wrap */}
-                  <div className="gift-card-media">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="gift-card-img"
-                      loading="lazy"
-                    />
-                    
-                    {/* Category & Status Badges */}
-                    <div className="gift-card-badges">
-                      <span className="category-badge">{item.categoryLabel}</span>
-                      {isCompleted ? (
-                        <span className="status-badge-completed">✓ Fully Gifted</span>
-                      ) : percentage > 0 ? (
-                        <span className="status-badge-progress">{percentage}% Funded</span>
-                      ) : null}
-                    </div>
+          {/* Search Box */}
+          <div className="wishlist-search-wrap">
+            <span className="search-icon">🔍</span>
+            <input
+              type="text"
+              placeholder="Search items (e.g. Inverter, Blender)..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="wishlist-search-input"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                className="search-clear-btn"
+                onClick={() => setSearchQuery('')}
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        </div>
 
-                    {item.featured && (
-                      <div className="featured-ribbon">
-                        <span>★ Priority</span>
+        {/* Category Pills & Sort Bar */}
+        <div className="category-filter-row reveal-fade-up">
+          <div className="category-pills-wrap">
+            <button
+              type="button"
+              className={`category-pill-btn ${selectedCategory === 'all' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('all')}
+            >
+              All Categories
+            </button>
+            <button
+              type="button"
+              className={`category-pill-btn ${selectedCategory === 'appliances' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('appliances')}
+            >
+              ⚡ Appliances &amp; Power
+            </button>
+            <button
+              type="button"
+              className={`category-pill-btn ${selectedCategory === 'kitchen' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('kitchen')}
+            >
+              🍳 Kitchen Essentials
+            </button>
+            <button
+              type="button"
+              className={`category-pill-btn ${selectedCategory === 'tableware' ? 'active' : ''}`}
+              onClick={() => setSelectedCategory('tableware')}
+            >
+              🍽️ Dining &amp; Tableware
+            </button>
+          </div>
+
+          <div className="sort-dropdown-wrap">
+            <span style={{ fontSize: '11.5px', color: '#7A6F64', fontWeight: 600 }}>Sort By:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="sort-select-input"
+            >
+              <option value="featured">Featured First</option>
+              <option value="progress-desc">Highest Progress</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+
+        {/* 3-Column Card Grid */}
+        <div style={{ marginTop: '28px' }}>
+          {filteredAndSortedItems.length === 0 ? (
+            <div className="no-gifts-found">
+              <p style={{ fontSize: '16px', fontWeight: 600, color: '#3D101C', marginBottom: '6px' }}>
+                No matching wishlist items found.
+              </p>
+              <p style={{ fontSize: '13.5px', color: '#7A6F64', margin: 0 }}>
+                Try adjusting your search query or selecting a different category.
+              </p>
+              <button
+                type="button"
+                className="reset-search-btn"
+                onClick={() => {
+                  setSearchQuery('')
+                  setStatusFilter('all')
+                  setSelectedCategory('all')
+                }}
+              >
+                Reset All Filters
+              </button>
+            </div>
+          ) : (
+            <div className="wishlist-cards-grid">
+              {filteredAndSortedItems.map((item) => {
+                const remaining = Math.max(0, item.numericPrice - item.contributedAmount)
+                const percentage = Math.min(
+                  100,
+                  Math.round((item.contributedAmount / item.numericPrice) * 100)
+                )
+                const isCompleted = item.isFullyGifted || percentage >= 100
+
+                return (
+                  <article
+                    key={item.id}
+                    className={`wishlist-fund-card ${isCompleted ? 'is-complete' : ''}`}
+                  >
+                    {/* Media Wrap */}
+                    <div
+                      className="fund-card-image-wrap"
+                      onClick={() => handleOpenModal(item)}
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        loading="lazy"
+                      />
+
+                      {/* Top Badges */}
+                      <div className="fund-card-badges">
+                        <span className="category-badge-tag">{item.categoryLabel}</span>
+                        {isCompleted ? (
+                          <span className="status-badge-chip funded">✓ Fully Gifted</span>
+                        ) : percentage > 0 ? (
+                          <span className="status-badge-chip progress">{percentage}% Funded</span>
+                        ) : null}
                       </div>
-                    )}
-                  </div>
 
-                  {/* Card Body */}
-                  <div className="gift-card-content">
-                    <div className="gift-card-header">
-                      <h3 className="gift-card-title">{item.title}</h3>
-                      <p className="gift-card-desc">{item.description}</p>
-                    </div>
-
-                    <div className="gift-card-pricing">
-                      <div className="price-tag-wrap">
-                        <span className="price-label">Target Goal</span>
-                        <strong className="price-amount">{item.price}</strong>
-                      </div>
-
-                      {item.contributorCount > 0 && (
-                        <span className="contributors-count">
-                          👥 {item.contributorCount} {item.contributorCount === 1 ? 'gift' : 'gifts'}
-                        </span>
+                      {item.featured && (
+                        <div className="featured-priority-ribbon">
+                          ★ Priority
+                        </div>
                       )}
                     </div>
 
-                    {/* Progress Bar */}
-                    <div className="progress-bar-container">
-                      <div className="progress-bar-header">
-                        <span className="progress-raised">
-                          ₦{item.contributedAmount.toLocaleString()} raised
-                        </span>
-                        <span className="progress-remaining">
-                          {isCompleted
-                            ? 'Goal Reached!'
-                            : `₦${remaining.toLocaleString()} left`}
+                    {/* Body */}
+                    <div className="fund-card-body">
+                      <div className="fund-card-header-row">
+                        <h3 className="fund-card-title">{item.title}</h3>
+                        <span className="fund-card-icon" title={item.categoryLabel}>
+                          {item.category === 'kitchen' ? '🍳' : item.category === 'tableware' ? '🍽️' : '⚡'}
                         </span>
                       </div>
-                      <div className="progress-track">
+
+                      <p className="fund-card-desc">{item.description}</p>
+
+                      {/* Pricing & Progress Header */}
+                      <div className="fund-card-price-row">
+                        <span className="fund-target-price">{item.price}</span>
+                        <span className="fund-percent-label">
+                          {isCompleted
+                            ? '✓ 100% Goal Reached'
+                            : `₦${item.contributedAmount.toLocaleString()} raised (${percentage}%)`}
+                        </span>
+                      </div>
+
+                      {/* Progress Track */}
+                      <div className="fund-progress-track">
                         <div
-                          className={`progress-fill ${isCompleted ? 'completed-fill' : ''}`}
+                          className="fund-progress-fill"
                           style={{ width: `${percentage}%` }}
                         />
                       </div>
-                    </div>
 
-                    {/* Action Button */}
-                    <div className="gift-card-action">
+                      {/* Action Button */}
                       <button
                         type="button"
-                        className={`btn-gift-action ${isCompleted ? 'btn-gifted-view' : 'btn-gift-contribute'}`}
+                        className={`btn-gift-this-card ${isCompleted ? 'btn-complete' : ''}`}
                         onClick={() => handleOpenModal(item)}
                       >
-                        {isCompleted ? (
-                          <>
-                            <span>View Details / Extra Blessing</span>
-                            <span className="btn-icon">→</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>Contribute or Gift Item</span>
-                            <span className="btn-icon">🎁</span>
-                          </>
-                        )}
+                        {isCompleted ? 'View Details / Extra Blessing →' : 'Contribute or Gift Item 🎁'}
                       </button>
+
+                      {/* Corner Botanical Accent */}
+                      <CardCornerBotanical className="fund-card-corner-botanical" />
                     </div>
-                  </div>
-                </article>
-              )
-            })}
-          </div>
-        )}
+                  </article>
+                )
+              })}
+            </div>
+          )}
+        </div>
       </section>
 
-      {/* ----------------------------------------------------------------------
-          REGISTRY FAQ SECTION
-          ---------------------------------------------------------------------- */}
-      <section className="wishlist-faq-section section-shell">
-        <div className="faq-container card-luxury-border">
-          <div className="faq-header">
-            <span className="eyebrow-accent">Questions &amp; Answers</span>
-            <h2>Wishlist &amp; Gifting FAQ</h2>
-            <p>Everything you need to know about celebrating Ngozi &amp; Sorbari</p>
+      {/* ====================================================================
+          SECTION 4: YOUR LOVE IS THE GREATEST GIFT
+         ==================================================================== */}
+      <section className="wishlist-love-section">
+        <div className="wishlist-love-wash-bg" />
+
+        <div className="wishlist-love-container">
+          <div className="wishlist-love-copy reveal-fade-left">
+            <span className="eyebrow-spaced">— A HEARTFELT NOTE —</span>
+            <h2 className="wishlist-love-title">
+              Your Love is the Greatest Gift{' '}
+              <span className="script-heart">of All</span>
+            </h2>
+            <p className="wishlist-love-desc">
+              From serving together in campus fellowship to stepping into God&apos;s beautiful plan
+              for our lives, your love, prayers, and presence in our journey mean everything to us.
+              Thank you for celebrating our union and being a vital part of our story!
+            </p>
           </div>
 
-          <div className="faq-accordion-list">
+          <div className="wishlist-love-visual reveal-fade-right">
+            <div className="washi-polaroid-frame wishlist-love-polaroid">
+              <div className="washi-tape-strip" />
+              <div className="polaroid-photo-inner">
+                <img
+                  src="/couple/hero-portrait.png"
+                  alt="Ngozi & Sorbari heartfelt portrait"
+                  className="polaroid-img"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          SECTION 5: TRADITIONAL CASH BLESSINGS (BANK TRANSFER)
+         ==================================================================== */}
+      <section className="wishlist-traditional-section" id="traditional-gifts">
+        <div className="traditional-section-inner reveal-fade-up">
+          <span className="eyebrow-spaced">— TRADITIONAL CASH BLESSINGS —</span>
+
+          <div className="traditional-bank-card">
+            {/* Left Column: Icon & Intro */}
+            <div className="bank-intro-col">
+              <div className="bank-icon-wrap">
+                <BankBuildingIcon />
+              </div>
+              <div className="bank-intro-text">
+                <h3 className="bank-card-heading">Direct Wedding Cash Account</h3>
+                <p className="bank-card-desc">
+                  For general monetary blessings, traditional cash gifts, or direct support towards
+                  our wedding celebrations and future together.
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column: Interactive Reveal / Account Box */}
+            <div className="bank-reveal-col">
+              {!showBankDetails ? (
+                <div className="bank-locked-box">
+                  <div className="lock-icon-circle">🎁</div>
+                  <div className="locked-copy">
+                    <strong>Direct Bank Transfer Details</strong>
+                    <p>Click below to view the official wedding bank account for transfers</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-show-bank-details"
+                    onClick={() => setShowBankDetails(true)}
+                  >
+                    View Account Details
+                  </button>
+                </div>
+              ) : (
+                <div className="bank-unlocked-box">
+                  <div className="unlocked-header">
+                    <span className="secure-badge">✓ Official Wedding Account</span>
+                    <button
+                      type="button"
+                      className="btn-hide-bank-details"
+                      onClick={() => setShowBankDetails(false)}
+                    >
+                      Hide
+                    </button>
+                  </div>
+
+                  <div className="bank-details-grid">
+                    <div className="bank-detail-item">
+                      <span className="lbl">Bank Name:</span>
+                      <strong>{bankDetails.bankName}</strong>
+                    </div>
+
+                    <div className="bank-detail-item">
+                      <span className="lbl">Account Number:</span>
+                      <div className="acct-copy-row">
+                        <strong className="acct-num font-mono">{bankDetails.accountNumber}</strong>
+                        <button
+                          type="button"
+                          className="btn-copy-num"
+                          onClick={() => handleCopy(bankDetails.accountNumber, 'traditional')}
+                        >
+                          {copiedTraditionalAccount ? '✓ Copied' : 'Copy'}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="bank-detail-item">
+                      <span className="lbl">Account Name:</span>
+                      <strong style={{ fontSize: '12px', textAlign: 'right' }}>
+                        {bankDetails.accountName}
+                      </strong>
+                    </div>
+                  </div>
+
+                  <p style={{ fontSize: '11px', color: '#7A6F64', margin: '4px 0 0 0' }}>
+                    💡 <em>Tip: Please include your name in the transfer remark so we can send our warmest personal thank you!</em>
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          SECTION 6: FAQ ACCORDION
+         ==================================================================== */}
+      <section className="wishlist-faq-section">
+        <div className="wishlist-faq-inner reveal-fade-up">
+          <span className="eyebrow-spaced">— QUESTIONS &amp; ANSWERS —</span>
+          <h2
+            className="font-serif"
+            style={{
+              fontSize: 'clamp(28px, 4vw, 38px)',
+              margin: '0 0 24px',
+              color: '#3D101C',
+              fontWeight: 500,
+            }}
+          >
+            Wishlist &amp; Gifting FAQ
+          </h2>
+
+          <div className="faq-accordions-list">
             {faqList.map((faq, idx) => {
               const isOpen = openFaqIndex === idx
               return (
-                <div key={idx} className={`faq-accordion-item ${isOpen ? 'is-open' : ''}`}>
+                <div key={idx} className={`wishlist-faq-item ${isOpen ? 'is-open' : ''}`}>
                   <button
                     type="button"
-                    className="faq-accordion-trigger"
+                    className="wishlist-faq-btn"
                     onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
                     aria-expanded={isOpen}
                   >
-                    <span className="faq-question-text">{faq.q}</span>
-                    <span className="faq-accordion-icon">{isOpen ? '−' : '+'}</span>
+                    <span className="faq-q-text">{faq.q}</span>
+                    <span className="faq-chevron">{isOpen ? '−' : '+'}</span>
                   </button>
                   {isOpen && (
-                    <div className="faq-accordion-body">
+                    <div className="wishlist-faq-body">
                       <p>{faq.a}</p>
                     </div>
                   )}
@@ -664,9 +840,9 @@ export default function WishlistPage() {
         </div>
       </section>
 
-      {/* ----------------------------------------------------------------------
-          INTERACTIVE CONTRIBUTION & GIFT MODAL (React Portal directly to body)
-          ---------------------------------------------------------------------- */}
+      {/* ====================================================================
+          INTERACTIVE CONTRIBUTION MODAL (React Portal)
+         ==================================================================== */}
       {selectedItem && mounted && createPortal(
         <div className="gift-modal-backdrop" onClick={() => setSelectedItem(null)}>
           <div
@@ -676,7 +852,7 @@ export default function WishlistPage() {
             aria-modal="true"
             aria-labelledby="modal-title"
           >
-            {/* Modal Close Button */}
+            {/* Close Button */}
             <button
               type="button"
               className="modal-close-btn"
@@ -686,50 +862,51 @@ export default function WishlistPage() {
               ✕
             </button>
 
-            {/* Modal Header Media */}
-            <div className="modal-header-hero">
-              <img
-                src={selectedItem.image}
-                alt={selectedItem.title}
-                className="modal-header-img"
-              />
-              <div className="modal-header-overlay">
-                <span className="modal-cat-tag">{selectedItem.categoryLabel}</span>
-                <h2 id="modal-title" className="modal-item-title">
-                  {selectedItem.title}
-                </h2>
-                <div className="modal-price-strip">
-                  <span className="target-label">Target: {selectedItem.price}</span>
+            <div className="modal-grid">
+              {/* Left Column: Product Photo */}
+              <div className="modal-photo">
+                <img
+                  src={selectedItem.image}
+                  alt={selectedItem.title}
+                />
+                {modalContributionDetails.isComplete && (
+                  <div className="modal-complete-overlay">
+                    <span>✓ Fully Funded</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Right Column: Scrollable Content / Form */}
+              <div className="modal-info">
+                {/* Header Tag Row */}
+                <div className="modal-header-tag-row">
+                  <span className="modal-tag">{selectedItem.categoryLabel}</span>
                   {modalContributionDetails.isComplete ? (
-                    <span className="badge-complete">✓ Goal Fully Funded</span>
+                    <span className="badge-gifted-100-modal">✓ 100% Funded</span>
                   ) : (
-                    <span className="badge-remaining">
+                    <span className="badge-in-progress-modal">
                       ₦{modalContributionDetails.remaining.toLocaleString()} needed
                     </span>
                   )}
                 </div>
-              </div>
-            </div>
 
-            {/* Modal Scrollable Body */}
-            <div className="modal-body-scroll">
-              <div className="modal-inner-content">
-                {/* Progress Visual in Modal */}
+                <h2 id="modal-title">{selectedItem.title}</h2>
+                <div className="modal-price-tag">Target: {selectedItem.price}</div>
+                <p className="modal-summary">{selectedItem.description}</p>
+
+                {/* Progress Bar */}
                 <div className="modal-progress-box">
-                  <div className="progress-labels-row">
-                    <span>
-                      <strong>₦{selectedItem.contributedAmount.toLocaleString()}</strong> raised (
-                      {modalContributionDetails.percentage}%)
-                    </span>
-                    <span>
-                      Goal: <strong>{selectedItem.price}</strong>
-                    </span>
-                  </div>
-                  <div className="progress-track modal-track">
+                  <div className="modal-progress-bar-wrap">
                     <div
-                      className="progress-fill modal-fill"
+                      className={`wishlist-progress-fill ${modalContributionDetails.isComplete ? 'fill-complete' : ''}`}
                       style={{ width: `${modalContributionDetails.percentage}%` }}
                     />
+                  </div>
+                  <div className="modal-progress-stats">
+                    <span>
+                      Raised: <strong>₦{selectedItem.contributedAmount.toLocaleString()}</strong> ({modalContributionDetails.percentage}%)
+                    </span>
+                    <span>Goal: <strong>{selectedItem.price}</strong></span>
                   </div>
                 </div>
 
@@ -740,27 +917,28 @@ export default function WishlistPage() {
                     <h3 className="success-heading">Thank You for Your Blessing!</h3>
                     <p className="success-subtext">
                       Your gift contribution of{' '}
-                      <strong className="text-burgundy">
+                      <strong style={{ color: '#4A1525' }}>
                         ₦{successDetails?.amount.toLocaleString()}
                       </strong>{' '}
                       towards <em>&quot;{successDetails?.itemTitle}&quot;</em> has been submitted.
                     </p>
+
                     <div className="success-ref-card">
                       <span className="ref-title">Transfer Reference</span>
-                      <strong className="ref-val font-mono">{successDetails?.reference}</strong>
+                      <div className="ref-val">{successDetails?.reference}</div>
                       <p className="ref-note">
-                        Once verified by Ngozi &amp; Sorbari from the admin dashboard, the progress bar will update automatically!
+                        Once verified by Ngozi &amp; Sorbari, the progress bar will update automatically!
                       </p>
                     </div>
 
-                    <div className="modal-actions-grid mt-4">
+                    <div className="modal-actions-grid" style={{ width: '100%' }}>
                       <a
                         href={`https://wa.me/?text=${whatsappText}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn-whatsapp-notify"
                       >
-                        <span>💬</span> Notify Couple via WhatsApp
+                        <span>💬</span> Notify via WhatsApp
                       </a>
                       <a
                         href={`mailto:hello@ensorb.com?subject=${emailSubject}&body=${emailBody}`}
@@ -772,7 +950,7 @@ export default function WishlistPage() {
 
                     <button
                       type="button"
-                      className="btn-primary-burgundy w-full mt-4"
+                      className="btn-back-to-wishlist"
                       onClick={() => setSelectedItem(null)}
                     >
                       Back to Wishlist
@@ -781,17 +959,17 @@ export default function WishlistPage() {
                 ) : (
                   /* Standard Contribution Form */
                   <form onSubmit={handleConfirmTransferSubmit}>
-                    {/* Amount Selector Chips */}
+                    {/* Amount Chips Selection */}
                     {!modalContributionDetails.isComplete && (
-                      <div className="contribution-selector-box">
-                        <label className="selector-title">Select Contribution Amount:</label>
-                        <div className="amount-chips-grid">
+                      <div className="modal-contribution-selector">
+                        <label className="selector-label">Select Contribution Amount:</label>
+                        <div className="contribution-chips-grid">
                           <button
                             type="button"
                             className={`chip-btn ${contributionMode === 'full' ? 'active' : ''}`}
                             onClick={() => setContributionMode('full')}
                           >
-                            <span className="chip-title">Gift Full Balance</span>
+                            <span className="chip-title">Full Balance</span>
                             <span className="chip-amt">
                               ₦{modalContributionDetails.remaining.toLocaleString()}
                             </span>
@@ -837,8 +1015,8 @@ export default function WishlistPage() {
                             className={`chip-btn ${contributionMode === 'custom' ? 'active' : ''}`}
                             onClick={() => setContributionMode('custom')}
                           >
-                            <span className="chip-title">Custom Amount</span>
-                            <span className="chip-amt">Enter value</span>
+                            <span className="chip-title">Custom</span>
+                            <span className="chip-amt">Enter Amount</span>
                           </button>
                         </div>
 
@@ -860,11 +1038,11 @@ export default function WishlistPage() {
                       </div>
                     )}
 
-                    {/* Bank Account Transfer Box */}
+                    {/* Bank Transfer Box */}
                     <div className="modal-bank-transfer-card">
                       <div className="transfer-header">
                         <span className="transfer-badge">Direct Bank Transfer</span>
-                        <span className="transfer-note">Instant Confirmation</span>
+                        <span className="transfer-note">Instant Narration</span>
                       </div>
 
                       <div className="transfer-details">
@@ -876,7 +1054,7 @@ export default function WishlistPage() {
                         <div className="transfer-row">
                           <span className="transfer-label">Account Number:</span>
                           <div className="copy-num-group">
-                            <strong className="font-mono text-burgundy">
+                            <strong className="font-mono" style={{ color: '#4A1525', fontSize: '13px' }}>
                               {bankDetails.accountNumber}
                             </strong>
                             <button
@@ -891,13 +1069,15 @@ export default function WishlistPage() {
 
                         <div className="transfer-row">
                           <span className="transfer-label">Account Name:</span>
-                          <strong className="account-name-text">{bankDetails.accountName}</strong>
+                          <strong style={{ fontSize: '11px', textAlign: 'right' }}>
+                            {bankDetails.accountName}
+                          </strong>
                         </div>
 
-                        <div className="transfer-row reference-row">
-                          <span className="transfer-label">Transfer Ref / Narration:</span>
+                        <div className="transfer-row">
+                          <span className="transfer-label">Narration Ref:</span>
                           <div className="copy-num-group">
-                            <code className="font-mono ref-code">{referenceCode}</code>
+                            <code className="ref-code font-mono">{referenceCode}</code>
                             <button
                               type="button"
                               className="copy-btn-sm"
@@ -910,7 +1090,7 @@ export default function WishlistPage() {
                       </div>
                     </div>
 
-                    {/* Contributor Details Input Box */}
+                    {/* Contributor Details */}
                     <div className="contributor-name-input-box">
                       <label htmlFor="contributorName">Your Name / Family Name *</label>
                       <input
@@ -922,9 +1102,9 @@ export default function WishlistPage() {
                         required
                       />
 
-                      <div className="grid-2-col mt-2">
+                      <div className="modal-form-grid-2col">
                         <div>
-                          <label htmlFor="contributorEmail" className="text-xs text-muted">Email (Optional)</label>
+                          <label htmlFor="contributorEmail">Email (Optional)</label>
                           <input
                             id="contributorEmail"
                             type="email"
@@ -934,7 +1114,7 @@ export default function WishlistPage() {
                           />
                         </div>
                         <div>
-                          <label htmlFor="contributorPhone" className="text-xs text-muted">Phone / WhatsApp (Optional)</label>
+                          <label htmlFor="contributorPhone">Phone (Optional)</label>
                           <input
                             id="contributorPhone"
                             type="tel"
@@ -945,47 +1125,44 @@ export default function WishlistPage() {
                         </div>
                       </div>
 
-                      <div className="mt-2">
-                        <label htmlFor="customNote" className="text-xs text-muted">Personal Blessing Message (Optional)</label>
+                      <div style={{ marginTop: '8px' }}>
+                        <label htmlFor="customNote">Personal Blessing Note (Optional)</label>
                         <textarea
                           id="customNote"
                           rows={2}
-                          placeholder="Warmest congratulations to Ngozi &amp; Sorbari on your union!"
+                          placeholder="Warmest congratulations to Ngozi &amp; Sorbari!"
                           value={customNote}
                           onChange={(e) => setCustomNote(e.target.value)}
-                          className="w-full text-sm"
+                          className="modal-textarea"
                         />
                       </div>
                     </div>
 
-                    {/* Primary Confirmation Submit Button */}
-                    <div className="modal-submit-wrap">
-                      <button
-                        type="submit"
-                        className="btn-primary-burgundy w-full btn-confirm-gift"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          <span>Submitting Contribution...</span>
-                        ) : (
-                          <span>
-                            ✓ I Have Transferred ₦{modalContributionDetails.amount.toLocaleString()} — Confirm Gift
-                          </span>
-                        )}
-                      </button>
-                    </div>
+                    {/* Submit Button */}
+                    <button
+                      type="submit"
+                      className="btn-confirm-gift-modal"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <span>Submitting Contribution...</span>
+                      ) : (
+                        <span>
+                          ✓ I Have Transferred ₦{modalContributionDetails.amount.toLocaleString()} — Confirm Gift
+                        </span>
+                      )}
+                    </button>
 
-                    {/* Direct Action Notification Buttons */}
-                    <div className="modal-actions-grid mt-3">
+                    {/* WhatsApp & Email Quick Links */}
+                    <div className="modal-actions-grid" style={{ marginTop: '10px' }}>
                       <a
                         href={`https://wa.me/?text=${whatsappText}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn-whatsapp-notify"
                       >
-                        <span>💬</span> Notify Couple via WhatsApp
+                        <span>💬</span> Notify via WhatsApp
                       </a>
-
                       <a
                         href={`mailto:hello@ensorb.com?subject=${emailSubject}&body=${emailBody}`}
                         className="btn-email-notify"

@@ -7,13 +7,11 @@ import {
   ApproveInviteInput,
   AdminStats,
 } from './types'
+import { getDb, ensureAllTables, INITIAL_SEED_INVITES } from './db'
 import { sendWeddingPassEmail, sendUniqueInviteEmail } from './email'
 
 const DATA_DIR = path.join(process.cwd(), 'data')
 const DATA_FILE = path.join(DATA_DIR, 'invites.json')
-
-// In-memory cache for fast reads
-let invitesCache: Invite[] | null = null
 
 // Curated list of beautifully named tables for automatic rotation
 export const WEDDING_TABLES = [
@@ -35,100 +33,6 @@ export function getAutoAssignedTable(indexOffset: number = 0): string {
   return WEDDING_TABLES[Math.abs(indexOffset) % WEDDING_TABLES.length]
 }
 
-// Initial seed data so the dashboard is immediately functional on first launch
-const INITIAL_INVITES: Invite[] = [
-  {
-    id: 'inv-seed-001',
-    code: 'NS-VIP-001',
-    accessCode: 'NXYS26001G',
-    targetName: 'Chief & Mrs. Emeka Kalu',
-    maxGuests: 2,
-    tableNumber: 'Table 01 - Emerald VIP',
-    category: 'VIP',
-    customNote: 'Bridal Family Honor Guest',
-    createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-    source: 'admin_direct',
-    approvalStatus: 'approved',
-    approvedAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-    isRegistered: true,
-    registeredAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-    guestName: 'Chief Emeka & Lolo Kalu',
-    guestEmail: 'emeka.kalu@example.com',
-    guestPhone: '+234 802 345 6789',
-    attendance: 'attending',
-    actualGuestCount: 2,
-    guestPhoto: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80',
-    dietaryOrNotes: 'No seafood please. Warmest congratulations to Ngozi & Sorbari!',
-    passId: 'PASS-NS-2026-001',
-    emailSent: true,
-    emailSentAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-    checkedIn: false,
-  },
-  {
-    id: 'inv-seed-002',
-    code: 'NS-FAM-002',
-    accessCode: 'NXYS26002G',
-    targetName: 'Pastor & Mrs. Godwin Uebari',
-    maxGuests: 2,
-    tableNumber: 'Table 02 - Royal Gold',
-    category: 'Family',
-    customNote: 'Groom Parents & Family Table',
-    createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-    source: 'admin_direct',
-    approvalStatus: 'approved',
-    approvedAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-    isRegistered: true,
-    registeredAt: new Date(Date.now() - 86400000).toISOString(),
-    guestName: 'Pastor Godwin & Deaconess Uebari',
-    guestEmail: 'pastor.uebari@example.com',
-    guestPhone: '+234 803 456 7890',
-    attendance: 'attending',
-    actualGuestCount: 2,
-    guestPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80',
-    dietaryOrNotes: 'Special VIP blessings for our children.',
-    passId: 'PASS-NS-2026-002',
-    emailSent: true,
-    emailSentAt: new Date(Date.now() - 86400000).toISOString(),
-    checkedIn: true,
-    checkedInAt: new Date().toISOString(),
-  },
-  {
-    id: 'inv-seed-003',
-    code: 'NS-7X82',
-    accessCode: 'NXYS26003G',
-    targetName: 'Dr. Chinedu & Dr. Amara Eze',
-    maxGuests: 2,
-    tableNumber: 'Table 03 - Sapphire',
-    category: 'Friends',
-    createdAt: new Date(Date.now() - 86400000).toISOString(),
-    source: 'rsvp_form',
-    approvalStatus: 'pending',
-    isRegistered: true,
-    registeredAt: new Date(Date.now() - 86400000).toISOString(),
-    guestName: 'Dr. Chinedu & Dr. Amara Eze',
-    guestEmail: 'chinedu.eze@example.com',
-    guestPhone: '+234 809 123 4567',
-    attendance: 'attending',
-    actualGuestCount: 2,
-    dietaryOrNotes: 'Cannot wait to celebrate our dear brother and sister!',
-    checkedIn: false,
-  },
-  {
-    id: 'inv-seed-004',
-    code: 'NS-4K9P',
-    accessCode: 'NXYS26004G',
-    targetName: '',
-    maxGuests: 2,
-    tableNumber: 'Table 04 - Ruby VIP',
-    category: 'VIP',
-    createdAt: new Date().toISOString(),
-    source: 'admin_link',
-    approvalStatus: 'approved',
-    isRegistered: false,
-    checkedIn: false,
-  },
-]
-
 // Generate a random clean alphanumeric invite code (e.g. NS-7K4X or NS-VIP-102)
 export function generateInviteCode(prefix: string = 'NS'): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
@@ -140,7 +44,7 @@ export function generateInviteCode(prefix: string = 'NS'): string {
   return `${cleanPrefix}-${result}`
 }
 
-// Generate unique luxury access code matching the access card sample (e.g. NXYS26001G)
+// Generate unique luxury access code (e.g. NXYS26001G)
 export function generateAccessCode(): string {
   const num = Math.floor(1000 + Math.random() * 9000)
   const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ'
@@ -154,478 +58,582 @@ export function generatePassId(): string {
   return `PASS-NS-2026-${num}`
 }
 
-// Ensure data directory and file exist
-async function ensureDataFile(): Promise<void> {
+// Map database row (snake_case) to TypeScript Invite (camelCase)
+function mapRowToInvite(row: any): Invite {
+  return {
+    id: row.id,
+    code: row.code,
+    accessCode: row.access_code || row.accessCode || undefined,
+    targetName: row.target_name || row.targetName || undefined,
+    targetEmail: row.target_email || row.targetEmail || undefined,
+    maxGuests: Number(row.max_guests ?? row.maxGuests ?? 1),
+    tableNumber: row.table_number || row.tableNumber || 'Table 01 - Emerald VIP',
+    category: row.category || 'General',
+    customNote: row.custom_note || row.customNote || undefined,
+    createdAt: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
+    source: row.source || 'rsvp_form',
+    approvalStatus: row.approval_status || row.approvalStatus || 'pending',
+    declineReason: row.decline_reason || row.declineReason || undefined,
+    approvedAt: row.approved_at ? new Date(row.approved_at).toISOString() : undefined,
+    isRegistered: Boolean(row.is_registered ?? row.isRegistered ?? false),
+    registeredAt: row.registered_at ? new Date(row.registered_at).toISOString() : undefined,
+    guestName: row.guest_name || row.guestName || undefined,
+    guestEmail: row.guest_email || row.guestEmail || undefined,
+    guestPhone: row.guest_phone || row.guestPhone || undefined,
+    attendance: row.attendance || 'attending',
+    actualGuestCount: Number(row.actual_guest_count ?? row.actualGuestCount ?? 1),
+    guestPhoto: row.guest_photo || row.guestPhoto || undefined,
+    dietaryOrNotes: row.dietary_or_notes || row.dietaryOrNotes || undefined,
+    passId: row.pass_id || row.passId || undefined,
+    emailSent: Boolean(row.email_sent ?? row.emailSent ?? false),
+    emailSentAt: row.email_sent_at ? new Date(row.email_sent_at).toISOString() : undefined,
+    inviteEmailSent: Boolean(row.invite_email_sent ?? row.inviteEmailSent ?? false),
+    inviteEmailSentAt: row.invite_email_sent_at ? new Date(row.invite_email_sent_at).toISOString() : undefined,
+  }
+}
+
+// File fallback storage helpers
+async function getLocalInvites(): Promise<Invite[]> {
   try {
     await fs.mkdir(DATA_DIR, { recursive: true })
-    try {
-      await fs.access(DATA_FILE)
-    } catch {
-      await fs.writeFile(DATA_FILE, JSON.stringify(INITIAL_INVITES, null, 2), 'utf-8')
-      invitesCache = [...INITIAL_INVITES]
-    }
-  } catch (err) {
-    console.error('Error initializing data directory:', err)
+    const data = await fs.readFile(DATA_FILE, 'utf-8')
+    return JSON.parse(data)
+  } catch {
+    const initial = INITIAL_SEED_INVITES.map((inv) => ({
+      ...inv,
+      maxGuests: inv.maxGuests || 1,
+      tableNumber: inv.tableNumber || 'Table 01 - Emerald VIP',
+      category: (inv.category as any) || 'General',
+      isRegistered: !!inv.isRegistered,
+      createdAt: new Date().toISOString(),
+    })) as Invite[]
+    await fs.writeFile(DATA_FILE, JSON.stringify(initial, null, 2), 'utf-8')
+    return initial
   }
 }
 
-// Load all invites
+async function saveLocalInvites(invites: Invite[]): Promise<void> {
+  await fs.mkdir(DATA_DIR, { recursive: true })
+  await fs.writeFile(DATA_FILE, JSON.stringify(invites, null, 2), 'utf-8')
+}
+
+// ----------------------------------------------------------------------------
+// Public Database API Methods
+// ----------------------------------------------------------------------------
+
 export async function getAllInvites(): Promise<Invite[]> {
-  if (invitesCache) {
-    return invitesCache
+  const sql = getDb()
+  if (sql) {
+    try {
+      await ensureAllTables()
+      const rows = await sql`
+        SELECT * FROM invites
+        ORDER BY created_at DESC;
+      `
+      return rows.map(mapRowToInvite)
+    } catch (err) {
+      console.error('Error fetching invites from Postgres DB:', err)
+    }
   }
-  await ensureDataFile()
-  try {
-    const raw = await fs.readFile(DATA_FILE, 'utf-8')
-    invitesCache = JSON.parse(raw) as Invite[]
-    return invitesCache
-  } catch (err) {
-    console.error('Error reading invites file:', err)
-    invitesCache = [...INITIAL_INVITES]
-    return invitesCache
-  }
+
+  return getLocalInvites()
 }
 
-// Save all invites to disk and update cache
-async function saveAllInvites(invites: Invite[]): Promise<void> {
-  invitesCache = invites
-  await ensureDataFile()
-  try {
-    await fs.writeFile(DATA_FILE, JSON.stringify(invites, null, 2), 'utf-8')
-  } catch (err) {
-    console.error('Error writing invites file:', err)
-  }
-}
+export async function getInviteByCode(codeOrId: string): Promise<Invite | null> {
+  if (!codeOrId) return null
+  const clean = codeOrId.trim()
 
-// Find single invite by unique code or ID (case-insensitive)
-export async function getInviteByCode(code: string): Promise<Invite | null> {
-  if (!code) return null
-  const invites = await getAllInvites()
-  const normalized = code.trim().toUpperCase()
-  return (
-    invites.find(
-      (inv) =>
-        inv.code.toUpperCase() === normalized ||
-        inv.id.toUpperCase() === normalized ||
-        (inv.accessCode && inv.accessCode.toUpperCase() === normalized) ||
-        (inv.passId && inv.passId.toUpperCase() === normalized)
-    ) || null
+  const sql = getDb()
+  if (sql) {
+    try {
+      await ensureAllTables()
+      const rows = await sql`
+        SELECT * FROM invites 
+        WHERE LOWER(code) = LOWER(${clean}) 
+           OR LOWER(id) = LOWER(${clean})
+           OR LOWER(access_code) = LOWER(${clean})
+        LIMIT 1;
+      `
+      if (rows && rows.length > 0) {
+        return mapRowToInvite(rows[0])
+      }
+      return null
+    } catch (err) {
+      console.error('Error fetching invite by code from Postgres DB:', err)
+    }
+  }
+
+  const invites = await getLocalInvites()
+  const found = invites.find(
+    (inv) =>
+      inv.code.toLowerCase() === clean.toLowerCase() ||
+      inv.id.toLowerCase() === clean.toLowerCase() ||
+      (inv.accessCode && inv.accessCode.toLowerCase() === clean.toLowerCase())
   )
+  return found || null
 }
 
-// Create single invite
-export async function createInvite(
-  input: CreateInviteInput = {},
-  siteUrl: string = 'https://ensorb.com'
-): Promise<Invite> {
-  const invites = await getAllInvites()
-
-  let code = input.customCode ? input.customCode.trim().toUpperCase() : ''
-  if (!code) {
-    let attempts = 0
-    do {
-      code = generateInviteCode(input.category === 'VIP' ? 'NS-VIP' : 'NS')
-      attempts++
-    } while (invites.some((inv) => inv.code.toUpperCase() === code) && attempts < 10)
-  }
-
-  // Ensure uniqueness
-  if (invites.some((inv) => inv.code.toUpperCase() === code)) {
-    code = `${code}-${Math.floor(10 + Math.random() * 90)}`
-  }
-
-  const tableNumber = input.tableNumber?.trim() || getAutoAssignedTable(invites.length)
+export async function createInvite(input: CreateInviteInput): Promise<Invite> {
+  const id = `inv-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`
+  const code = input.customCode?.trim().toUpperCase() || generateInviteCode(input.category === 'VIP' ? 'NS-VIP' : 'NS')
   const accessCode = generateAccessCode()
   const passId = generatePassId()
-  const now = new Date().toISOString()
+  const maxGuests = input.maxGuests || 1
+  const category = input.category || 'General'
+  const source = input.source || 'admin_direct'
+  const customNote = input.customNote || ''
+  const targetName = input.targetName || ''
+  const targetEmail = input.targetEmail || ''
+  const tableNumber = input.tableNumber || getAutoAssignedTable()
+  const approvalStatus = source === 'admin_direct' || source === 'admin_link' ? 'approved' : 'pending'
+  const approvedAt = approvalStatus === 'approved' ? new Date().toISOString() : null
+  const createdAt = new Date().toISOString()
 
-  const isRsvpForm = input.source === 'rsvp_form'
+  let inviteEmailSent = false
+  let inviteEmailSentAt: string | undefined = undefined
+
+  // Optionally send invitation email immediately if email is provided
+  if (input.sendEmailNow && targetEmail) {
+    try {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.com'
+      const emailRes = await sendUniqueInviteEmail(
+        {
+          id,
+          code,
+          accessCode,
+          passId,
+          targetName,
+          targetEmail,
+          maxGuests,
+          tableNumber,
+          category,
+          customNote,
+          source,
+          approvalStatus,
+          isRegistered: false,
+          createdAt,
+        },
+        targetEmail,
+        siteUrl
+      )
+      if (emailRes.success) {
+        inviteEmailSent = true
+        inviteEmailSentAt = new Date().toISOString()
+      }
+    } catch (e) {
+      console.error('Error sending invite email:', e)
+    }
+  }
 
   const newInvite: Invite = {
-    id: `inv-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    id,
     code,
     accessCode,
     passId,
-    targetName: input.targetName?.trim() || '',
-    maxGuests: Number(input.maxGuests) || 2,
+    targetName,
+    targetEmail,
+    maxGuests,
     tableNumber,
-    category: input.category || 'General',
-    customNote: input.customNote?.trim() || '',
-    createdAt: now,
-    source: input.source || 'admin_link',
-    approvalStatus: isRsvpForm ? 'pending' : 'approved',
-    approvedAt: isRsvpForm ? undefined : now,
-    isRegistered: isRsvpForm ? true : false,
-    checkedIn: false,
+    category,
+    customNote,
+    source,
+    approvalStatus,
+    approvedAt: approvedAt || undefined,
+    isRegistered: false,
+    createdAt,
+    inviteEmailSent,
+    inviteEmailSentAt,
   }
 
-  // If sendEmailNow is requested and targetEmail provided, send unique invite link email via Resend
-  if (input.sendEmailNow && input.targetEmail) {
+  const sql = getDb()
+  if (sql) {
     try {
-      const emailResult = await sendUniqueInviteEmail(newInvite, input.targetEmail.trim(), siteUrl)
-      if (emailResult.success) {
-        newInvite.inviteEmailSent = true
-        newInvite.inviteEmailSentAt = now
-      }
-    } catch (emailErr) {
-      console.warn('Failed to send initial unique invite email:', emailErr)
+      await ensureAllTables()
+      await sql`
+        INSERT INTO invites (
+          id, code, access_code, target_name, target_email, max_guests, table_number,
+          category, custom_note, source, approval_status, approved_at, is_registered,
+          pass_id, invite_email_sent, invite_email_sent_at, created_at, updated_at
+        ) VALUES (
+          ${id}, ${code}, ${accessCode}, ${targetName || null}, ${targetEmail || null},
+          ${maxGuests}, ${tableNumber}, ${category}, ${customNote || null}, ${source},
+          ${approvalStatus}, ${approvedAt}, false, ${passId}, ${inviteEmailSent},
+          ${inviteEmailSentAt || null}, NOW(), NOW()
+        );
+      `
+      return newInvite
+    } catch (err) {
+      console.error('Error creating invite in Postgres DB:', err)
     }
   }
 
-  invites.unshift(newInvite)
-  await saveAllInvites(invites)
+  const local = await getLocalInvites()
+  local.unshift(newInvite)
+  await saveLocalInvites(local)
   return newInvite
 }
 
-// Generate multiple bare invite links instantly
 export async function generateBareInvites(
-  count: number = 1,
-  defaults: {
-    maxGuests?: number
-    tableNumber?: string
-    category?: 'VIP' | 'Family' | 'Friends' | 'Colleagues' | 'General'
-  } = {}
+  count: number = 5,
+  optionsOrCategory: any = 'General',
+  prefix: string = 'NS'
 ): Promise<Invite[]> {
-  const invites = await getAllInvites()
-  const safeCount = Math.max(1, Math.min(count, 50))
+  const isObj = typeof optionsOrCategory === 'object' && optionsOrCategory !== null
+  const category = isObj ? (optionsOrCategory.category || 'General') : optionsOrCategory
+  const maxGuests = isObj ? (optionsOrCategory.maxGuests || 2) : 2
+  const tableNumber = isObj ? optionsOrCategory.tableNumber : undefined
+
   const created: Invite[] = []
-  const now = new Date().toISOString()
-
-  for (let i = 0; i < safeCount; i++) {
-    const tableNumber = defaults.tableNumber?.trim() || getAutoAssignedTable(invites.length + i)
-
-    let code = generateInviteCode(defaults.category === 'VIP' ? 'NS-VIP' : 'NS')
-    while (
-      invites.some((inv) => inv.code.toUpperCase() === code) ||
-      created.some((inv) => inv.code.toUpperCase() === code)
-    ) {
-      code = `${code}-${Math.floor(10 + Math.random() * 90)}`
-    }
-
-    const newInv: Invite = {
-      id: `inv-${Date.now()}-${i}-${Math.random().toString(36).substring(2, 7)}`,
-      code,
-      accessCode: generateAccessCode(),
-      passId: generatePassId(),
-      targetName: '',
-      maxGuests: Number(defaults.maxGuests) || 2,
+  for (let i = 0; i < count; i++) {
+    const invite = await createInvite({
+      category,
+      maxGuests,
       tableNumber,
-      category: defaults.category || 'General',
-      createdAt: now,
-      source: 'admin_link',
-      approvalStatus: 'approved',
-      isRegistered: false,
-      checkedIn: false,
-    }
-
-    created.push(newInv)
-  }
-
-  const updatedInvites = [...created, ...invites]
-  await saveAllInvites(updatedInvites)
-  return created
-}
-
-// Batch create invites from a list of names
-export async function batchCreateInvites(
-  names: string[],
-  defaults: {
-    maxGuests?: number
-    tableNumber?: string
-    category?: 'VIP' | 'Family' | 'Friends' | 'Colleagues' | 'General'
-  }
-): Promise<Invite[]> {
-  const created: Invite[] = []
-  for (let i = 0; i < names.length; i++) {
-    const rawName = names[i]
-    const trimmed = rawName.trim()
-    if (!trimmed) continue
-
-    const autoTable = defaults.tableNumber || getAutoAssignedTable(i)
-    const inv = await createInvite({
-      targetName: trimmed,
-      maxGuests: defaults.maxGuests || 2,
-      tableNumber: autoTable,
-      category: defaults.category || 'General',
+      customCode: generateInviteCode(prefix),
       source: 'admin_link',
     })
-    created.push(inv)
+    created.push(invite)
   }
   return created
 }
 
-// Approve a pending or registered guest, assign table, and send official Access Card via Resend
-export async function approveInvite(
-  codeOrId: string,
-  options: ApproveInviteInput = {},
-  siteUrl: string = 'https://ensorb.com'
-): Promise<{ success: boolean; invite?: Invite; error?: string }> {
-  const invites = await getAllInvites()
-  const normalized = codeOrId.trim().toUpperCase()
-  const index = invites.findIndex(
-    (inv) => inv.code.toUpperCase() === normalized || inv.id.toUpperCase() === normalized
-  )
-
-  if (index === -1) {
-    return { success: false, error: 'Guest reservation not found.' }
-  }
-
-  const current = invites[index]
-  const now = new Date().toISOString()
-  const accessCode = current.accessCode || generateAccessCode()
-  const passId = current.passId || generatePassId()
-
-  const updated: Invite = {
-    ...current,
-    approvalStatus: 'approved',
-    approvedAt: now,
-    tableNumber: options.tableNumber?.trim() || current.tableNumber,
-    maxGuests: options.maxGuests ? Number(options.maxGuests) : current.maxGuests,
-    category: options.category || current.category,
-    accessCode,
-    passId,
-  }
-
-  // Send Access Card email via Resend if requested (default true) and guest email is available
-  if (options.sendAccessCardEmail !== false && updated.guestEmail) {
-    try {
-      const emailResult = await sendWeddingPassEmail(updated, siteUrl)
-      if (emailResult.success) {
-        updated.emailSent = true
-        updated.emailSentAt = now
+export async function batchCreateInvites(
+  inputsOrNames: string[] | CreateInviteInput[],
+  options: any = {}
+): Promise<Invite[]> {
+  const results: Invite[] = []
+  if (Array.isArray(inputsOrNames) && inputsOrNames.length > 0) {
+    for (const item of inputsOrNames) {
+      if (typeof item === 'string') {
+        const inv = await createInvite({
+          targetName: item.trim(),
+          maxGuests: options.maxGuests || 2,
+          tableNumber: options.tableNumber,
+          category: options.category || 'General',
+          source: 'admin_direct',
+        })
+        results.push(inv)
+      } else {
+        const inv = await createInvite(item)
+        results.push(inv)
       }
-    } catch (err) {
-      console.warn('Failed to send access card email during approval:', err)
     }
   }
-
-  invites[index] = updated
-  await saveAllInvites(invites)
-  return { success: true, invite: updated }
+  return results
 }
 
-// Decline a guest reservation
-export async function declineInvite(
-  codeOrId: string,
-  reason: string = 'Capacity limit reached'
-): Promise<{ success: boolean; invite?: Invite; error?: string }> {
-  const invites = await getAllInvites()
-  const normalized = codeOrId.trim().toUpperCase()
-  const index = invites.findIndex(
-    (inv) => inv.code.toUpperCase() === normalized || inv.id.toUpperCase() === normalized
-  )
-
-  if (index === -1) {
-    return { success: false, error: 'Guest reservation not found.' }
-  }
-
-  const current = invites[index]
-  const updated: Invite = {
-    ...current,
-    approvalStatus: 'declined',
-    declineReason: reason,
-  }
-
-  invites[index] = updated
-  await saveAllInvites(invites)
-  return { success: true, invite: updated }
-}
-
-// Register an invite when a guest accesses their unique link
-export async function registerInvite(
-  code: string,
-  registration: RegisterInviteInput,
-  siteUrl: string = 'https://ensorb.com'
-): Promise<{ success: boolean; invite?: Invite; error?: string }> {
-  const invites = await getAllInvites()
-  const normalized = code.trim().toUpperCase()
-  const index = invites.findIndex((inv) => inv.code.toUpperCase() === normalized)
-
-  if (index === -1) {
-    return { success: false, error: 'Invitation not found or invalid code.' }
-  }
-
-  const existing = invites[index]
-
-  // If already registered, don't allow overwriting with another person
-  if (existing.isRegistered) {
-    return {
-      success: false,
-      error: 'This invitation has already been registered and cannot be used for a new person.',
-      invite: existing,
-    }
-  }
-
-  const passId = existing.passId || generatePassId()
-  const accessCode = existing.accessCode || generateAccessCode()
-  const now = new Date().toISOString()
-
-  const updated: Invite = {
-    ...existing,
-    isRegistered: true,
-    registeredAt: now,
-    approvalStatus: 'approved', // Auto-approved because they used an authentic unique invite link
-    approvedAt: now,
-    targetName: existing.targetName || registration.guestName.trim(),
-    guestName: registration.guestName.trim(),
-    guestEmail: registration.guestEmail.trim(),
-    guestPhone: registration.guestPhone.trim(),
-    attendance: registration.attendance,
-    actualGuestCount: Math.min(Number(registration.actualGuestCount) || 1, existing.maxGuests),
-    guestPhoto: registration.guestPhoto || '',
-    dietaryOrNotes: registration.dietaryOrNotes?.trim() || '',
-    passId,
-    accessCode,
-    emailSent: true,
-    emailSentAt: now,
-  }
-
-  // Automatically deliver Access Card email via Resend
-  if (updated.attendance === 'attending' && updated.guestEmail) {
-    try {
-      await sendWeddingPassEmail(updated, siteUrl)
-    } catch (err) {
-      console.warn('Failed to send automated access card email upon unique registration:', err)
-    }
-  }
-
-  invites[index] = updated
-  await saveAllInvites(invites)
-  return { success: true, invite: updated }
-}
-
-// Update invite (admin editing table, note, max guests)
-export async function updateInvite(
-  code: string,
-  updates: Partial<Invite>
+export async function approveInvite(
+  inviteId: string,
+  input: ApproveInviteInput = {}
 ): Promise<Invite | null> {
-  const invites = await getAllInvites()
-  const normalized = code.trim().toUpperCase()
-  const index = invites.findIndex(
-    (inv) => inv.code.toUpperCase() === normalized || inv.id === code
-  )
+  const existing = await getInviteByCode(inviteId)
+  if (!existing) return null
 
-  if (index === -1) return null
+  const tableNumber = input.tableNumber || existing.tableNumber || getAutoAssignedTable()
+  const maxGuests = input.maxGuests || existing.maxGuests || 1
+  const category = input.category || existing.category || 'General'
+  const accessCode = existing.accessCode || generateAccessCode()
+  const passId = existing.passId || generatePassId()
+  const approvedAt = new Date().toISOString()
 
-  const current = invites[index]
-  const updated: Invite = {
-    ...current,
-    ...updates,
-    id: current.id,
-    code: current.code,
+  let emailSent = existing.emailSent || false
+  let emailSentAt = existing.emailSentAt
+
+  // Send wedding pass email if guest email is available and requested
+  const guestEmail = existing.guestEmail || existing.targetEmail
+  if (input.sendAccessCardEmail && guestEmail) {
+    try {
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.com'
+      const updatedPassInvite: Invite = {
+        ...existing,
+        tableNumber,
+        maxGuests,
+        category,
+        accessCode,
+        passId,
+        approvalStatus: 'approved',
+      }
+      const emailRes = await sendWeddingPassEmail(updatedPassInvite, siteUrl)
+      if (emailRes.success) {
+        emailSent = true
+        emailSentAt = new Date().toISOString()
+      }
+    } catch (e) {
+      console.error('Error sending pass email:', e)
+    }
   }
 
-  invites[index] = updated
-  await saveAllInvites(invites)
-  return updated
+  const sql = getDb()
+  if (sql) {
+    try {
+      await ensureAllTables()
+      await sql`
+        UPDATE invites SET
+          approval_status = 'approved',
+          approved_at = NOW(),
+          table_number = ${tableNumber},
+          max_guests = ${maxGuests},
+          category = ${category},
+          access_code = ${accessCode},
+          pass_id = ${passId},
+          email_sent = ${emailSent},
+          email_sent_at = ${emailSentAt || null},
+          updated_at = NOW()
+        WHERE id = ${existing.id} OR code = ${existing.code};
+      `
+      return getInviteByCode(existing.id)
+    } catch (err) {
+      console.error('Error approving invite in Postgres DB:', err)
+    }
+  }
+
+  const local = await getLocalInvites()
+  const idx = local.findIndex((inv) => inv.id === existing.id || inv.code === existing.code)
+  if (idx !== -1) {
+    local[idx] = {
+      ...local[idx],
+      approvalStatus: 'approved',
+      approvedAt,
+      tableNumber,
+      maxGuests,
+      category,
+      accessCode,
+      passId,
+      emailSent,
+      emailSentAt,
+    }
+    await saveLocalInvites(local)
+    return local[idx]
+  }
+
+  return null
 }
 
-// Delete invite
-export async function deleteInvite(code: string): Promise<boolean> {
-  const invites = await getAllInvites()
-  const normalized = code.trim().toUpperCase()
-  const initialLength = invites.length
-  const filtered = invites.filter(
-    (inv) => inv.code.toUpperCase() !== normalized && inv.id !== code
-  )
+export async function declineInvite(
+  inviteId: string,
+  reason: string = 'Capacity limits reached'
+): Promise<Invite | null> {
+  const existing = await getInviteByCode(inviteId)
+  if (!existing) return null
 
-  if (filtered.length !== initialLength) {
-    await saveAllInvites(filtered)
+  const sql = getDb()
+  if (sql) {
+    try {
+      await ensureAllTables()
+      await sql`
+        UPDATE invites SET
+          approval_status = 'declined',
+          attendance = 'declined',
+          decline_reason = ${reason},
+          updated_at = NOW()
+        WHERE id = ${existing.id} OR code = ${existing.code};
+      `
+      return getInviteByCode(existing.id)
+    } catch (err) {
+      console.error('Error declining invite in Postgres DB:', err)
+    }
+  }
+
+  const local = await getLocalInvites()
+  const idx = local.findIndex((inv) => inv.id === existing.id || inv.code === existing.code)
+  if (idx !== -1) {
+    local[idx] = {
+      ...local[idx],
+      approvalStatus: 'declined',
+      attendance: 'declined',
+      declineReason: reason,
+    }
+    await saveLocalInvites(local)
+    return local[idx]
+  }
+
+  return null
+}
+
+export async function registerInvite(
+  codeOrId: string,
+  input: RegisterInviteInput
+): Promise<Invite | null> {
+  const existing = await getInviteByCode(codeOrId)
+  if (!existing) return null
+
+  const accessCode = existing.accessCode || generateAccessCode()
+  const passId = existing.passId || generatePassId()
+  const isAttending = input.attendance === 'attending'
+  const actualGuestCount = isAttending ? Math.min(input.actualGuestCount, existing.maxGuests || 2) : 0
+  const registeredAt = new Date().toISOString()
+
+  const sql = getDb()
+  if (sql) {
+    try {
+      await ensureAllTables()
+      await sql`
+        UPDATE invites SET
+          is_registered = true,
+          registered_at = NOW(),
+          guest_name = ${input.guestName},
+          guest_email = ${input.guestEmail},
+          guest_phone = ${input.guestPhone},
+          attendance = ${input.attendance},
+          actual_guest_count = ${actualGuestCount},
+          dietary_or_notes = ${input.dietaryOrNotes || null},
+          access_code = ${accessCode},
+          pass_id = ${passId},
+          updated_at = NOW()
+        WHERE id = ${existing.id} OR code = ${existing.code};
+      `
+      return getInviteByCode(existing.id)
+    } catch (err) {
+      console.error('Error registering invite in Postgres DB:', err)
+    }
+  }
+
+  const local = await getLocalInvites()
+  const idx = local.findIndex((inv) => inv.id === existing.id || inv.code === existing.code)
+  if (idx !== -1) {
+    local[idx] = {
+      ...local[idx],
+      isRegistered: true,
+      registeredAt,
+      guestName: input.guestName,
+      guestEmail: input.guestEmail,
+      guestPhone: input.guestPhone,
+      attendance: input.attendance,
+      actualGuestCount,
+      dietaryOrNotes: input.dietaryOrNotes,
+      accessCode,
+      passId,
+    }
+    await saveLocalInvites(local)
+    return local[idx]
+  }
+
+  return null
+}
+
+export async function updateInvite(id: string, updates: Partial<Invite>): Promise<Invite | null> {
+  const existing = await getInviteByCode(id)
+  if (!existing) return null
+
+  const updated: Invite = { ...existing, ...updates }
+
+  const sql = getDb()
+  if (sql) {
+    try {
+      await ensureAllTables()
+      await sql`
+        UPDATE invites SET
+          target_name = ${updated.targetName || null},
+          target_email = ${updated.targetEmail || null},
+          max_guests = ${updated.maxGuests},
+          table_number = ${updated.tableNumber},
+          category = ${updated.category},
+          custom_note = ${updated.customNote || null},
+          guest_name = ${updated.guestName || null},
+          guest_email = ${updated.guestEmail || null},
+          guest_phone = ${updated.guestPhone || null},
+          attendance = ${updated.attendance || 'attending'},
+          actual_guest_count = ${updated.actualGuestCount || 1},
+          dietary_or_notes = ${updated.dietaryOrNotes || null},
+          approval_status = ${updated.approvalStatus || 'pending'},
+          updated_at = NOW()
+        WHERE id = ${existing.id} OR code = ${existing.code};
+      `
+      return getInviteByCode(existing.id)
+    } catch (err) {
+      console.error('Error updating invite in Postgres DB:', err)
+    }
+  }
+
+  const local = await getLocalInvites()
+  const idx = local.findIndex((inv) => inv.id === existing.id || inv.code === existing.code)
+  if (idx !== -1) {
+    local[idx] = updated
+    await saveLocalInvites(local)
+    return updated
+  }
+
+  return null
+}
+
+export async function deleteInvite(id: string): Promise<boolean> {
+  const sql = getDb()
+  if (sql) {
+    try {
+      await ensureAllTables()
+      await sql`
+        DELETE FROM invites 
+        WHERE id = ${id} OR code = ${id};
+      `
+      return true
+    } catch (err) {
+      console.error('Error deleting invite in Postgres DB:', err)
+    }
+  }
+
+  const local = await getLocalInvites()
+  const filtered = local.filter((inv) => inv.id !== id && inv.code !== id)
+  if (filtered.length !== local.length) {
+    await saveLocalInvites(filtered)
     return true
   }
   return false
 }
 
-// Resend email record tracker
-export async function recordEmailResend(
-  code: string,
-  siteUrl: string = 'https://ensorb.com'
-): Promise<{ success: boolean; invite?: Invite; error?: string }> {
-  const invites = await getAllInvites()
-  const normalized = code.trim().toUpperCase()
-  const index = invites.findIndex((inv) => inv.code.toUpperCase() === normalized)
+export async function recordEmailResend(inviteId: string): Promise<boolean> {
+  const existing = await getInviteByCode(inviteId)
+  if (!existing) return false
 
-  if (index === -1) return { success: false, error: 'Invitation not found' }
+  const guestEmail = existing.guestEmail || existing.targetEmail
+  if (!guestEmail) return false
 
-  const current = invites[index]
-  const emailResult = await sendWeddingPassEmail(current, siteUrl)
+  try {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.com'
+    const emailRes = await sendWeddingPassEmail(existing, siteUrl)
 
-  const updated: Invite = {
-    ...current,
-    emailSent: emailResult.success,
-    emailSentAt: new Date().toISOString(),
+    if (emailRes.success) {
+      const sql = getDb()
+      if (sql) {
+        await sql`
+          UPDATE invites SET
+            email_sent = true,
+            email_sent_at = NOW(),
+            updated_at = NOW()
+          WHERE id = ${existing.id} OR code = ${existing.code};
+        `
+      }
+      return true
+    }
+  } catch (err) {
+    console.error('Error in recordEmailResend:', err)
   }
-
-  invites[index] = updated
-  await saveAllInvites(invites)
-  return { success: emailResult.success, invite: updated, error: emailResult.error }
+  return false
 }
 
-// Toggle door check-in
-export async function toggleCheckIn(code: string): Promise<Invite | null> {
-  const invites = await getAllInvites()
-  const normalized = code.trim().toUpperCase()
-  const index = invites.findIndex(
-    (inv) =>
-      inv.code.toUpperCase() === normalized ||
-      inv.id.toUpperCase() === normalized ||
-      (inv.accessCode && inv.accessCode.toUpperCase() === normalized) ||
-      (inv.passId && inv.passId.toUpperCase() === normalized)
-  )
-
-  if (index === -1) return null
-
-  const current = invites[index]
-  const nextCheckedIn = !current.checkedIn
-  const updated: Invite = {
-    ...current,
-    checkedIn: nextCheckedIn,
-    checkedInAt: nextCheckedIn ? new Date().toISOString() : undefined,
-  }
-
-  invites[index] = updated
-  await saveAllInvites(invites)
-  return updated
-}
-
-// Calculate Admin Stats
 export async function getAdminStats(): Promise<AdminStats> {
   const invites = await getAllInvites()
 
-  let registeredCount = 0
-  let pendingCount = 0
-  let approvedCount = 0
-  let attendingCount = 0
-  let declinedCount = 0
-  let totalSeatsAllocated = 0
-  let totalGuestsAttending = 0
-  let checkedInCount = 0
+  const totalInvites = invites.length
+  const registeredCount = invites.filter((inv) => inv.isRegistered).length
+  const pendingCount = invites.filter((inv) => inv.approvalStatus === 'pending').length
+  const approvedCount = invites.filter((inv) => inv.approvalStatus === 'approved').length
+  const attendingCount = invites.filter(
+    (inv) => inv.attendance === 'attending' && inv.approvalStatus === 'approved'
+  ).length
+  const declinedCount = invites.filter(
+    (inv) => inv.attendance === 'declined' || inv.approvalStatus === 'declined'
+  ).length
 
-  for (const inv of invites) {
-    totalSeatsAllocated += inv.maxGuests || 1
-
-    if (inv.approvalStatus === 'pending') {
-      pendingCount++
-    } else if (inv.approvalStatus === 'approved') {
-      approvedCount++
+  const totalSeatsAllocated = invites.reduce((acc, inv) => acc + (inv.maxGuests || 0), 0)
+  const totalGuestsAttending = invites.reduce((acc, inv) => {
+    if (inv.attendance === 'attending' && inv.approvalStatus === 'approved') {
+      return acc + (inv.actualGuestCount || inv.maxGuests || 1)
     }
-
-    if (inv.isRegistered) {
-      registeredCount++
-      if (inv.attendance === 'attending') {
-        attendingCount++
-        totalGuestsAttending += inv.actualGuestCount || inv.maxGuests || 1
-      } else {
-        declinedCount++
-      }
-      if (inv.checkedIn) {
-        checkedInCount++
-      }
-    }
-  }
+    return acc
+  }, 0)
 
   return {
-    totalInvites: invites.length,
+    totalInvites,
     registeredCount,
     pendingCount,
     approvedCount,
@@ -633,7 +641,6 @@ export async function getAdminStats(): Promise<AdminStats> {
     declinedCount,
     totalSeatsAllocated,
     totalGuestsAttending,
-    checkedInCount,
+    checkedInCount: 0,
   }
 }
-

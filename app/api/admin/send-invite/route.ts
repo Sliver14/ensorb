@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       sendEmailNow: Boolean(sendEmailNow && targetEmail),
     }
 
-    const newInvite = await createInvite(input, siteUrl)
+    const newInvite = await createInvite(input)
     const stats = await getAdminStats()
 
     return NextResponse.json({

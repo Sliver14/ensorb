@@ -19,10 +19,10 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const result = await declineInvite(target, reason)
-    if (!result.success || !result.invite) {
+    const updated = await declineInvite(target, reason)
+    if (!updated) {
       return NextResponse.json(
-        { success: false, error: result.error || 'Failed to decline guest' },
+        { success: false, error: 'Failed to decline guest' },
         { status: 400 }
       )
     }
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Guest reservation declined.',
-      invite: result.invite,
+      invite: updated,
       stats,
     })
   } catch (err) {

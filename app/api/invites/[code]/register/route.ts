@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { registerInvite, getInviteByCode } from '@/lib/invites-store'
-import { uploadToCloudinary } from '@/lib/cloudinary'
 import { sendWeddingPassEmail } from '@/lib/email'
 
 interface RouteContext {
@@ -27,7 +26,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
         {
           success: false,
           error:
-            'This invitation link is already registered and cannot register a new person. You can view your wedding pass below.',
+            'This invitation link is already registered. You can view your digital pass below.',
           invite: existing,
         },
         { status: 400 }
@@ -40,7 +39,6 @@ export async function POST(req: NextRequest, context: RouteContext) {
       guestPhone,
       attendance,
       actualGuestCount,
-      photoDataUrl,
       dietaryOrNotes,
     } = body
 
@@ -58,38 +56,28 @@ export async function POST(req: NextRequest, context: RouteContext) {
       )
     }
 
-    // Process photo upload to Cloudinary (or fallback)
-    let uploadedPhotoUrl = ''
-    if (photoDataUrl && photoDataUrl.startsWith('data:image')) {
-      const uploadRes = await uploadToCloudinary(photoDataUrl, 'ensorb-wedding/guests')
-      uploadedPhotoUrl = uploadRes.secureUrl || uploadRes.url
-    } else if (photoDataUrl && typeof photoDataUrl === 'string') {
-      uploadedPhotoUrl = photoDataUrl
-    }
-
-    // Complete registration in database / storage
-    const regResult = await registerInvite(code, {
-      guestName,
-      guestEmail,
-      guestPhone: guestPhone || '',
+    // Complete registration in database
+    const registeredInvite = await registerInvite(code, {
+      guestName: guestName.trim(),
+      guestEmail: guestEmail.trim(),
+      guestPhone: guestPhone?.trim() || '',
       attendance: attendance === 'declined' ? 'declined' : 'attending',
       actualGuestCount: Number(actualGuestCount) || 1,
-      guestPhoto: uploadedPhotoUrl,
-      dietaryOrNotes,
+      dietaryOrNotes: dietaryOrNotes?.trim() || '',
     })
 
-    if (!regResult.success || !regResult.invite) {
+    if (!registeredInvite) {
       return NextResponse.json(
-        { success: false, error: regResult.error || 'Registration failed' },
+        { success: false, error: 'Registration failed.' },
         { status: 400 }
       )
     }
 
-    // Automatically send wedding pass email
+    // Send wedding pass email if guest is attending
     const siteUrl = req.nextUrl.origin || 'https://ensorb.com'
-    if (regResult.invite.attendance === 'attending' && regResult.invite.guestEmail) {
+    if (registeredInvite.attendance === 'attending' && registeredInvite.guestEmail) {
       try {
-        await sendWeddingPassEmail(regResult.invite, siteUrl)
+        await sendWeddingPassEmail(registeredInvite, siteUrl)
       } catch (emailErr) {
         console.warn('Failed to send instant pass email:', emailErr)
       }
@@ -97,8 +85,8 @@ export async function POST(req: NextRequest, context: RouteContext) {
 
     return NextResponse.json({
       success: true,
-      message: 'Registration successful! Your wedding pass is ready.',
-      invite: regResult.invite,
+      message: 'Registration successful! Your digital wedding pass is ready.',
+      invite: registeredInvite,
     })
   } catch (err) {
     console.error('Error in POST /api/invites/[code]/register:', err)

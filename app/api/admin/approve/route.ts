@@ -19,21 +19,16 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const siteUrl = req.nextUrl.origin || 'https://ensorb.com'
-    const result = await approveInvite(
-      target,
-      {
-        tableNumber,
-        maxGuests,
-        category,
-        sendAccessCardEmail,
-      },
-      siteUrl
-    )
+    const updated = await approveInvite(target, {
+      tableNumber,
+      maxGuests,
+      category,
+      sendAccessCardEmail,
+    })
 
-    if (!result.success || !result.invite) {
+    if (!updated) {
       return NextResponse.json(
-        { success: false, error: result.error || 'Failed to approve guest' },
+        { success: false, error: 'Failed to approve guest' },
         { status: 400 }
       )
     }
@@ -42,8 +37,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: `Guest ${result.invite.guestName || result.invite.targetName} approved successfully! Access Card sent.`,
-      invite: result.invite,
+      message: `Guest ${updated.guestName || updated.targetName || 'Guest'} approved successfully! Access Card issued.`,
+      invite: updated,
       stats,
     })
   } catch (err) {

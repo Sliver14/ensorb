@@ -34,8 +34,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const siteUrl = req.nextUrl.origin || 'https://ensorb.com'
-    let targetCode = inviteCode ? inviteCode.trim().toUpperCase() : ''
+    const targetCode = inviteCode ? inviteCode.trim().toUpperCase() : ''
 
     // Case 1: Guest provided an authorized unique invite code
     if (targetCode) {
@@ -55,31 +54,27 @@ export async function POST(req: NextRequest) {
         })
       }
 
-      // Complete registration with auto-approval
-      const registrationResult = await registerInvite(
-        targetCode,
-        {
-          guestName: fullName.trim(),
-          guestEmail: email.trim(),
-          guestPhone: phone?.trim() || '',
-          attendance: attending === 'declined' ? 'declined' : 'attending',
-          actualGuestCount: Math.max(1, Number(guestCount) || 1),
-          dietaryOrNotes: message?.trim() || '',
-        },
-        siteUrl
-      )
+      // Complete registration
+      const registered = await registerInvite(targetCode, {
+        guestName: fullName.trim(),
+        guestEmail: email.trim(),
+        guestPhone: phone?.trim() || '',
+        attendance: attending === 'declined' ? 'declined' : 'attending',
+        actualGuestCount: Math.max(1, Number(guestCount) || 1),
+        dietaryOrNotes: message?.trim() || '',
+      })
 
-      if (!registrationResult.success) {
+      if (!registered) {
         return NextResponse.json(
-          { success: false, error: registrationResult.error || 'Failed to submit RSVP.' },
+          { success: false, error: 'Failed to submit RSVP.' },
           { status: 400 }
         )
       }
 
       return NextResponse.json({
         success: true,
-        invite: registrationResult.invite,
-        message: 'RSVP confirmed and Access Card sent successfully!',
+        invite: registered,
+        message: 'RSVP confirmed and Access Card registered successfully!',
       })
     }
 
@@ -103,18 +98,16 @@ export async function POST(req: NextRequest) {
     }
 
     // Create new pending RSVP record
-    const newPendingInvite = await createInvite(
-      {
-        targetName: fullName.trim(),
-        maxGuests: Math.max(1, Number(guestCount) || 1),
-        category: 'General',
-        source: 'rsvp_form',
-      },
-      siteUrl
-    )
+    const newPendingInvite = await createInvite({
+      targetName: fullName.trim(),
+      targetEmail: email.trim(),
+      maxGuests: Math.max(1, Number(guestCount) || 1),
+      category: 'General',
+      source: 'rsvp_form',
+    })
 
     // Fill in the guest details
-    const updated = await updateInvite(newPendingInvite.code, {
+    const updated = await updateInvite(newPendingInvite.id, {
       guestName: fullName.trim(),
       guestEmail: email.trim(),
       guestPhone: phone?.trim() || '',
@@ -128,7 +121,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      invite: updated,
+      invite: updated || newPendingInvite,
       isPending: true,
       message:
         'Thank you! Your RSVP has been submitted and is awaiting approval by Ngozi & Sorbari. Your official Access Card and table assignment will be delivered directly to your email upon confirmation.',
@@ -141,4 +134,3 @@ export async function POST(req: NextRequest) {
     )
   }
 }
-
