@@ -7154,7 +7154,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 38%;
+  object-position: center 20%;
   display: block;
 }
 
@@ -13314,8 +13314,606 @@ body {
 }
 
 /* ==========================================================================
+   RSVP PAGE DEDICATED STYLES ("WE CAN'T WAIT TO CELEBRATE WITH YOU")
+   ========================================================================== */
+
+.rsvp-page-layout {
+  background-color: #FAF7F2;
+  color: #3D101C;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: clip;
+}
+
+/* --------------------------------------------------------------------------
+   SECTION 1: HERO SPLIT (COUPLE PHOTO + TORN DECKLED EDGE + TYPOGRAPHY CARD)
+   -------------------------------------------------------------------------- */
+.rsvp-hero-split-section {
+  padding: 40px 6% 30px;
+  background: #FAF7F2;
+  position: relative;
+}
+
+.rsvp-hero-split-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1160px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 50px rgba(74, 21, 37, 0.08);
+  border: 1px solid #EAE3D2;
+  min-height: 440px;
+}
+
+.rsvp-hero-photo-col {
+  position: relative;
+  min-height: 440px;
+  background: #EAE5DC;
+  overflow: hidden;
+}
+
+.rsvp-hero-couple-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 12%;
+  display: block;
+}
+
+.rsvp-hero-torn-divider {
+  position: absolute;
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  width: 36px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.torn-edge-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.rsvp-hero-copy-col {
+  padding: clamp(36px, 5vw, 64px) clamp(28px, 4vw, 52px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  background: #FAF7F2;
+}
+
+.rsvp-hero-corner-botanical {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 80px;
+  height: 80px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.rsvp-hero-copy-inner {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.rsvp-hero-headline {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(30px, 4vw, 42px);
+  color: #4A1525;
+  line-height: 1.15;
+  margin: 10px 0 14px;
+  font-weight: 700;
+}
+
+.rsvp-hero-headline span {
+  font-family: var(--font-alex-brush), 'Alex Brush', cursive;
+  font-size: clamp(34px, 4.5vw, 50px);
+  color: #6B1D2F;
+  font-weight: 400;
+  display: block;
+  margin-top: 4px;
+}
+
+.rsvp-hero-script-desc {
+  font-size: 14.5px;
+  color: #6B6258;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.rsvp-heart-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #D4AF37;
+}
+
+.rsvp-heart-divider .divider-line {
+  width: 40px;
+  height: 1px;
+  background: #D4AF37;
+  opacity: 0.6;
+}
+
+.rsvp-heart-divider .divider-heart {
+  font-size: 14px;
+  color: #4A1525;
+}
+
+/* --------------------------------------------------------------------------
+   SECTION 2: MAIN CONTENT (RSVP FORM + POLAROID & EVENT DETAILS)
+   -------------------------------------------------------------------------- */
+.rsvp-content-section {
+  padding: 50px 6% 90px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.rsvp-content-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: clamp(28px, 4vw, 48px);
+  align-items: start;
+}
+
+.rsvp-form-column {
+  position: relative;
+}
+
+.rsvp-form-card {
+  background: #FFFFFF;
+  border: 1.5px solid #D4AF37;
+  border-radius: 16px;
+  padding: clamp(28px, 4vw, 44px);
+  box-shadow: 0 16px 45px rgba(74, 21, 37, 0.08);
+}
+
+.rsvp-form-title {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #4A1525;
+  text-align: center;
+  margin: 0 0 6px;
+}
+
+.rsvp-form-instruction {
+  font-size: 13.5px;
+  color: #6B6258;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0 0 24px;
+}
+
+.rsvp-alert-box {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rsvp-alert-box.error {
+  background: #FFEBEE;
+  border: 1px solid #FFCDD2;
+  color: #C62828;
+}
+
+/* Success Confirmation State */
+.rsvp-success-box {
+  text-align: center;
+  padding: 20px 8px;
+}
+
+.success-badge-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #E8F5E9;
+  color: #2E7D32;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  border: 2px solid #A5D6A7;
+}
+
+.success-heading {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 24px;
+  color: #4A1525;
+  margin: 0 0 10px;
+}
+
+.success-desc {
+  font-size: 14px;
+  color: #554D46;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.rsvp-pass-summary-card {
+  background: #FAF7F2;
+  border: 1px solid #E5DFD3;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 22px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rsvp-pass-summary-card .summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 13px;
+  border-bottom: 1px dashed #E5DFD3;
+  padding-bottom: 6px;
+}
+
+.rsvp-pass-summary-card .summary-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.rsvp-pass-summary-card .lbl {
+  color: #7A7067;
+  font-weight: 600;
+}
+
+.success-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-view-pass {
+  background: #4A1525;
+  color: #FAF7F2;
+  border: 1px solid #D4AF37;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-view-pass:hover {
+  background: #380E1B;
+  color: #FFFFFF;
+}
+
+.btn-reset-form {
+  background: transparent;
+  border: 1px solid #D4CEBF;
+  color: #6B6258;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-reset-form:hover {
+  background: #F5EFE6;
+  color: #191919;
+}
+
+/* Active RSVP Form */
+.rsvp-actual-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #4A1525;
+  text-transform: uppercase;
+}
+
+.form-group label .req {
+  color: #C62828;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #D4CEBF;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2B2725;
+  background: #FAF7F2;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.form-control:focus {
+  border-color: #4A1525;
+  background: #FFFFFF;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 21, 37, 0.1);
+}
+
+.attending-toggle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.attending-pill-btn {
+  padding: 12px 14px;
+  border: 1.5px solid #D4CEBF;
+  border-radius: 8px;
+  background: #FAF7F2;
+  color: #554D46;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.attending-pill-btn:hover {
+  border-color: #4A1525;
+  background: #FFFFFF;
+}
+
+.attending-pill-btn.selected {
+  border-color: #4A1525;
+  background: #4A1525;
+  color: #FAF7F2;
+  box-shadow: 0 4px 12px rgba(74, 21, 37, 0.2);
+}
+
+.select-wrap {
+  position: relative;
+}
+
+.select-control {
+  cursor: pointer;
+}
+
+.textarea-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.btn-rsvp-submit {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #4A1525 0%, #681B32 100%);
+  border: 1px solid #D4AF37;
+  border-radius: 10px;
+  color: #FAF7F2;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(74, 21, 37, 0.25);
+  transition: all 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-rsvp-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(74, 21, 37, 0.35);
+}
+
+.btn-rsvp-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.form-bottom-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #D4AF37;
+  margin-top: 24px;
+}
+
+.form-bottom-divider .line {
+  width: 32px;
+  height: 1px;
+  background: #D4AF37;
+  opacity: 0.6;
+}
+
+.form-bottom-divider .heart {
+  font-size: 13px;
+  color: #4A1525;
+}
+
+.rsvp-bottom-left-botanical {
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Right Details Column */
+.rsvp-details-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.rsvp-polaroid-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.washi-polaroid-frame.rsvp-table-polaroid {
+  max-width: 360px;
+  width: 100%;
+}
+
+.washi-polaroid-frame.rsvp-table-polaroid .polaroid-photo-inner {
+  height: 300px;
+}
+
+.rsvp-event-details-block {
+  background: #FFFFFF;
+  border: 1px solid #E5DFD3;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.event-detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.event-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(74, 21, 37, 0.08);
+  color: #4A1525;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid #E5D5AA;
+}
+
+.event-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detail-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #8C847E;
+  letter-spacing: 0.06em;
+}
+
+.detail-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: #191919;
+}
+
+.detail-sub {
+  font-size: 12px;
+  color: #6B6258;
+}
+
+.event-details-divider-line {
+  height: 1px;
+  background: #F0EAE1;
+  margin-top: 18px;
+}
+
+/* Gentle Reminder Card */
+.rsvp-gentle-reminder-card {
+  background: linear-gradient(135deg, #FAF4E8 0%, #F5ECDD 100%);
+  border: 1.5px dashed #D4AF37;
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+}
+
+.reminder-heart-top {
+  font-size: 20px;
+  color: #4A1525;
+  margin-bottom: 6px;
+}
+
+.reminder-cursive-title {
+  font-family: var(--font-alex-brush), 'Alex Brush', cursive;
+  font-size: 28px;
+  color: #4A1525;
+  margin: 0 0 8px;
+  font-weight: 400;
+}
+
+.reminder-body-text {
+  font-size: 13px;
+  color: #554D46;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+
+.reminder-signature {
+  font-family: var(--font-alex-brush), cursive;
+  font-size: 22px;
+  color: #4A1525;
+}
+
+.reminder-names-stamp {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #D4AF37;
+  margin-top: 2px;
+}
+
+@media (max-width: 900px) {
+  .rsvp-hero-split-container {
+    grid-template-columns: 1fr;
+  }
+
+  .rsvp-hero-photo-col {
+    min-height: 320px;
+    max-height: 380px;
+  }
+
+  .rsvp-hero-torn-divider {
+    display: none;
+  }
+
+  .rsvp-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
    LUXURY ACCESS CARD PASS & LANYARD BADGE (SAMPLE EXACT MATCH)
    ========================================================================== */
+
 .access-card-lanyard-wrapper {
   display: flex;
   flex-direction: column;
