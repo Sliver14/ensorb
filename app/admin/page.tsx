@@ -630,7 +630,7 @@ export default function AdminPage() {
               <div className="admin-field-group">
                 <input
                   type="password"
-                  placeholder="Enter Security PIN (e.g. ensorb2026)"
+                  placeholder="Enter Admin Security PIN"
                   value={pinInput}
                   onChange={(e) => setPinInput(e.target.value)}
                   className="admin-pin-field"
