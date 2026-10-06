@@ -16,7 +16,6 @@ import {
   Sparkles,
   Camera,
   UserCheck,
-  QrCode,
   ShieldCheck,
   Lock,
 } from 'lucide-react'
@@ -258,9 +257,9 @@ export default function UniqueInvitePage({ params }: PageProps) {
             {/* Registration Form Card */}
             <div className="rsvp-form-container invite-form-card">
               <div className="rsvp-form-header">
-                <h3>Confirm Attendance &amp; Receive Your Digital Pass</h3>
+                <h3>Confirm Attendance &amp; Receive Your Official Invitation</h3>
                 <p>
-                  Please fill in your details below. Your custom pass card with table assignment ({invite.tableNumber}) will generate instantly and be emailed to you.
+                  Please fill in your details below. Your custom invitation card with table assignment ({invite.tableNumber}) will generate instantly and be emailed to you.
                 </p>
               </div>
 
@@ -292,7 +291,7 @@ export default function UniqueInvitePage({ params }: PageProps) {
                       value={formData.guestEmail}
                       onChange={(e) => setFormData({ ...formData, guestEmail: e.target.value })}
                     />
-                    <small className="field-hint">Your official digital card &amp; QR pass will be emailed here.</small>
+                    <small className="field-hint">Your official invitation card &amp; access code will be emailed here.</small>
                   </div>
 
                   <div className="form-group">
@@ -439,10 +438,10 @@ export default function UniqueInvitePage({ params }: PageProps) {
                 >
                   {isSubmitting ? (
                     <span className="btn-loading-content">
-                      <span className="spinner-mini" /> Activating Pass &amp; Sending Email...
+                      <span className="spinner-mini" /> Activating Invitation &amp; Sending Email...
                     </span>
                   ) : (
-                    'Activate RSVP & Generate Official Wedding Pass ↗'
+                    'Activate RSVP & Generate Official Wedding Invitation ↗'
                   )}
                 </button>
               </form>

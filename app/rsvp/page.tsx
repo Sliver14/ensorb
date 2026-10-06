@@ -172,8 +172,8 @@ export default function RsvpPage() {
                     {submittedData.attendance === 'declined'
                       ? `Dear ${submittedData.guestName}, thank you for your warm wishes. You will be dearly missed on our special day!`
                       : submittedData.approvalStatus === 'pending'
-                      ? `Dear ${submittedData.guestName}, thank you for submitting your RSVP! Your reservation is currently being reviewed by Ngozi & Sorbari. Once approved by the couple, your Official Wedding Invitation Card, assigned table, and entry QR code pass will be emailed directly to ${submittedData.guestEmail}.`
-                      : `Dear ${submittedData.guestName}, we are overjoyed that you will be celebrating with us! Your official wedding Access Card has been activated.`}
+                      ? `Dear ${submittedData.guestName}, thank you for submitting your RSVP! Your reservation is currently being reviewed by Ngozi & Sorbari. Once approved by the couple, your Official Wedding Invitation Card and assigned table details will be emailed directly to ${submittedData.guestEmail}.`
+                      : `Dear ${submittedData.guestName}, we are overjoyed that you will be celebrating with us! Your official wedding invitation card has been activated.`}
                   </p>
 
                   {submittedData.attendance !== 'declined' && (
@@ -190,7 +190,7 @@ export default function RsvpPage() {
                         >
                           {submittedData.approvalStatus === 'pending'
                             ? '⏳ Pending Couple Approval'
-                            : '✓ Approved & Access Pass Active'}
+                            : '✓ Approved & Official Invitation Ready'}
                         </strong>
                       </div>
                       <div className="summary-row">
@@ -220,7 +220,7 @@ export default function RsvpPage() {
                   <div className="success-actions">
                     {submittedData.approvalStatus !== 'pending' && (
                       <Link href={`/invite/${submittedData.code}`} className="btn-view-pass">
-                        View Digital Pass <span>→</span>
+                        View Official Invitation <span>→</span>
                       </Link>
                     )}
                     <button
@@ -432,7 +432,7 @@ export default function RsvpPage() {
               <div className="reminder-heart-top">💌</div>
               <h3 className="reminder-cursive-title">Invitation &amp; Access Cards</h3>
               <p className="reminder-body-text">
-                This celebration is strictly by invitation. Once your RSVP is approved by the couple, your Official Wedding Invitation Card &amp; Personalized Access Pass with QR Code will be dispatched directly to your email address.
+                This celebration is strictly by invitation. Once your RSVP is approved by the couple, your Official Wedding Invitation Card &amp; Access Card with celebration details will be dispatched directly to your email address.
               </p>
               <div className="reminder-signature">With Warm Love</div>
               <div className="reminder-names-stamp">— Ngozi &amp; Sorbari —</div>

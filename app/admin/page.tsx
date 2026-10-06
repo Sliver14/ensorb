@@ -385,10 +385,10 @@ export default function AdminPage() {
       })
       const data = await res.json()
       if (res.ok && data.success) {
-        showToast(`✓ Digital pass emailed to ${email}!`, 'success')
+        showToast(`✓ Official invitation emailed to ${email}!`, 'success')
         loadDashboardData()
       } else {
-        showToast(data.error || 'Failed to send pass email', 'error')
+        showToast(data.error || 'Failed to send invitation email', 'error')
       }
     } catch {
       showToast('Error sending email', 'error')
@@ -1184,7 +1184,7 @@ export default function AdminPage() {
                                         type="button"
                                         className="btn-table-icon email"
                                         onClick={() => handleResendEmail(inv)}
-                                        title="Email Digital Pass to Guest"
+                                        title="Email Official Invitation to Guest"
                                       >
                                         <Mail size={14} />
                                       </button>
@@ -1637,7 +1637,7 @@ export default function AdminPage() {
 
               <div className="admin-two-col-grid" style={{ marginTop: '12px' }}>
                 <div className="admin-form-group">
-                  <label className="admin-label">Email (Optional for digital pass)</label>
+                  <label className="admin-label">Email (Optional for invitation dispatch)</label>
                   <input
                     type="email"
                     placeholder="okafor@example.com"

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useRef, useState } from 'react'
+import Link from 'next/link'
 import { Invite } from '@/lib/types'
 import {
   Download,
@@ -9,9 +10,10 @@ import {
   Mail,
   Check,
   Sparkles,
+  Gift,
+  Copy,
   ShieldCheck,
   Lock,
-  QrCode as QrCodeIcon,
 } from 'lucide-react'
 
 interface AccessCardPassProps {
@@ -29,16 +31,21 @@ export function AccessCardPass({
 }: AccessCardPassProps) {
   const [isGeneratingImage, setIsGeneratingImage] = useState(false)
   const [copiedLink, setCopiedLink] = useState(false)
+  const [copiedAccount, setCopiedAccount] = useState(false)
 
   const guestName = (invite.guestName || invite.targetName || 'Valued Guest').toUpperCase()
   const guestCount = invite.actualGuestCount || invite.maxGuests || 1
   const accessCode = invite.accessCode || invite.passId || invite.code
   const passUrl = typeof window !== 'undefined' ? `${window.location.origin}/invite/${invite.code}` : `https://ensorb.com/invite/${invite.code}`
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-    passUrl
-  )}`
 
-  // Download high-resolution PNG pass card directly onto HTML5 Canvas
+  const handleCopyAccount = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    navigator.clipboard.writeText('2003361527')
+    setCopiedAccount(true)
+    setTimeout(() => setCopiedAccount(false), 2500)
+  }
+
+  // Download high-resolution PNG invitation card directly onto HTML5 Canvas
   const handleDownloadCard = async () => {
     try {
       setIsGeneratingImage(true)
@@ -75,23 +82,23 @@ export function AccessCardPass({
       ctx.lineWidth = 4
       ctx.stroke()
 
-      // 4. Header Rings Emblem & ACCESS CARD
+      // 4. Header Rings Emblem & OFFICIAL INVITATION
       ctx.fillStyle = '#4A1525'
       ctx.textAlign = 'center'
-      ctx.font = 'bold 44px "Cinzel", Georgia, serif'
-      ctx.letterSpacing = '12px'
-      ctx.fillText('ACCESS CARD', 540, 260)
+      ctx.font = 'bold 42px "Cinzel", Georgia, serif'
+      ctx.letterSpacing = '10px'
+      ctx.fillText('OFFICIAL INVITATION', 540, 260)
 
       // 5. Couple Headline
       ctx.font = '800 62px "Cinzel", Georgia, serif'
       ctx.letterSpacing = '4px'
       ctx.fillStyle = '#4A1525'
-      ctx.fillText('NGOZI & SORBARIS', 540, 370)
+      ctx.fillText('NGOZI & SORBARI', 540, 370)
 
       ctx.font = '600 30px "Montserrat", sans-serif'
       ctx.letterSpacing = '8px'
       ctx.fillStyle = '#7D6B64'
-      ctx.fillText('WEDDING CEREMONY PASS', 540, 430)
+      ctx.fillText('WEDDING CEREMONY & ACCESS CARD', 540, 430)
 
       // 6. Gold Divider Bar
       ctx.strokeStyle = '#D4AF37'
@@ -120,7 +127,7 @@ export function AccessCardPass({
       // 7. GUEST DETAILS Box
       ctx.fillStyle = '#FFFFFF'
       ctx.beginPath()
-      ctx.roundRect(120, 650, 840, 530, 20)
+      ctx.roundRect(120, 640, 840, 490, 20)
       ctx.fill()
       ctx.strokeStyle = '#D4AF37'
       ctx.lineWidth = 6
@@ -129,11 +136,11 @@ export function AccessCardPass({
       ctx.font = 'bold 36px "Cinzel", Georgia, serif'
       ctx.letterSpacing = '8px'
       ctx.fillStyle = '#4A1525'
-      ctx.fillText('— GUEST DETAILS —', 540, 725)
+      ctx.fillText('— GUEST DETAILS —', 540, 715)
 
       ctx.textAlign = 'left'
       const startX = 170
-      let curY = 810
+      let curY = 795
 
       ctx.font = 'bold 30px "Montserrat", sans-serif'
       ctx.fillStyle = '#4A1525'
@@ -142,7 +149,7 @@ export function AccessCardPass({
       ctx.fillStyle = '#2B2725'
       ctx.fillText(guestName, startX + 130, curY)
 
-      curY += 75
+      curY += 72
       ctx.font = 'bold 30px "Montserrat", sans-serif'
       ctx.fillStyle = '#4A1525'
       ctx.fillText('Seat Number:', startX, curY)
@@ -150,7 +157,7 @@ export function AccessCardPass({
       ctx.fillStyle = '#2B2725'
       ctx.fillText(`${invite.tableNumber} (${invite.category})`, startX + 240, curY)
 
-      curY += 75
+      curY += 72
       ctx.font = 'bold 30px "Montserrat", sans-serif'
       ctx.fillStyle = '#4A1525'
       ctx.fillText('Number of Guests:', startX, curY)
@@ -158,7 +165,7 @@ export function AccessCardPass({
       ctx.fillStyle = '#2B2725'
       ctx.fillText(`${guestCount} ${guestCount === 1 ? 'Guest (1 Seat)' : 'Guests'}`, startX + 310, curY)
 
-      curY += 75
+      curY += 72
       ctx.font = 'bold 30px "Montserrat", sans-serif'
       ctx.fillStyle = '#4A1525'
       ctx.fillText('Access Code:', startX, curY)
@@ -166,37 +173,66 @@ export function AccessCardPass({
       ctx.fillStyle = '#4A1525'
       ctx.fillText(accessCode, startX + 230, curY)
 
-      // 8. Load & Draw QR Code
-      const qrImg = new Image()
-      qrImg.crossOrigin = 'anonymous'
-      qrImg.src = qrCodeUrl
+      // 8. Draw Wedding Gift & Blessing Section (replacing QR code)
+      ctx.fillStyle = '#FFFFFF'
+      ctx.beginPath()
+      ctx.roundRect(120, 1160, 840, 390, 20)
+      ctx.fill()
+      ctx.strokeStyle = '#D4AF37'
+      ctx.lineWidth = 6
+      ctx.stroke()
 
-      await new Promise<void>((resolve) => {
-        qrImg.onload = () => {
-          ctx.fillStyle = '#FFFFFF'
-          ctx.beginPath()
-          ctx.roundRect(390, 1220, 300, 300, 16)
-          ctx.fill()
-          ctx.strokeStyle = '#D4AF37'
-          ctx.lineWidth = 6
-          ctx.stroke()
-          ctx.drawImage(qrImg, 410, 1240, 260, 260)
-          resolve()
-        }
-        qrImg.onerror = () => resolve()
-      })
+      ctx.textAlign = 'center'
+      ctx.font = 'bold 34px "Cinzel", Georgia, serif'
+      ctx.letterSpacing = '4px'
+      ctx.fillStyle = '#4A1525'
+      ctx.fillText('🎁 HAVE YOU GIFTED THE COUPLE YET?', 540, 1225)
+
+      ctx.font = '600 24px "Montserrat", sans-serif'
+      ctx.letterSpacing = '1px'
+      ctx.fillStyle = '#7D6B64'
+      ctx.fillText('Bless Ngozi & Sorbari with a wedding gift or financial support', 540, 1270)
+
+      // Bank Details Pill inside Canvas
+      ctx.fillStyle = '#FAF7F2'
+      ctx.beginPath()
+      ctx.roundRect(160, 1300, 760, 140, 14)
+      ctx.fill()
+      ctx.strokeStyle = '#E5D5AA'
+      ctx.lineWidth = 3
+      ctx.stroke()
+
+      ctx.textAlign = 'left'
+      ctx.font = 'bold 22px "Montserrat", sans-serif'
+      ctx.fillStyle = '#7D6B64'
+      ctx.fillText('DIRECT BANK TRANSFER:', 190, 1340)
+
+      ctx.font = 'bold 30px "Montserrat", sans-serif'
+      ctx.fillStyle = '#4A1525'
+      ctx.fillText('Parallex Bank • 2003361527', 190, 1380)
+
+      ctx.font = '600 21px "Montserrat", sans-serif'
+      ctx.fillStyle = '#2B2725'
+      ctx.fillText('SORBARI GODWIN UEBARI AND NGOZI EMELE KALU', 190, 1418)
+
+      // Wishlist Link Notice
+      ctx.textAlign = 'center'
+      ctx.font = 'bold 23px "Montserrat", sans-serif'
+      ctx.letterSpacing = '2px'
+      ctx.fillStyle = '#4A1525'
+      ctx.fillText('EXPLORE WEDDING WISHLIST & REGISTRY: ENSORB.COM/WISHLIST', 540, 1515)
 
       // 9. Bottom Prompts & Invitation Pill
       ctx.textAlign = 'center'
       ctx.font = 'bold 28px "Montserrat", sans-serif'
       ctx.letterSpacing = '6px'
       ctx.fillStyle = '#4A1525'
-      ctx.fillText('PLEASE PRESENT THIS CARD AT ENTRY', 540, 1590)
+      ctx.fillText('PLEASE PRESENT THIS INVITATION AT ENTRY', 540, 1610)
 
       // Strictly by invitation pill
       ctx.fillStyle = '#4A1525'
       ctx.beginPath()
-      ctx.roundRect(310, 1640, 460, 70, 12)
+      ctx.roundRect(310, 1660, 460, 70, 12)
       ctx.fill()
       ctx.strokeStyle = '#D4AF37'
       ctx.lineWidth = 4
@@ -205,17 +241,17 @@ export function AccessCardPass({
       ctx.font = 'bold 26px "Cinzel", Georgia, serif'
       ctx.letterSpacing = '8px'
       ctx.fillStyle = '#FAF7F2'
-      ctx.fillText('STRICTLY BY INVITATION', 540, 1686)
+      ctx.fillText('STRICTLY BY INVITATION', 540, 1706)
 
       // Trigger Download
       const dataUrl = canvas.toDataURL('image/png')
       const link = document.createElement('a')
-      link.download = `Ngozi-Sorbari-Wedding-Pass-${accessCode}.png`
+      link.download = `Ngozi-Sorbari-Wedding-Invitation-${accessCode}.png`
       link.href = dataUrl
       link.click()
     } catch (err) {
-      console.error('Error downloading card pass image:', err)
-      alert('Could not generate pass image automatically. You can take a screenshot or view via email.')
+      console.error('Error downloading card image:', err)
+      alert('Could not generate card image automatically. You can take a screenshot or view via email.')
     } finally {
       setIsGeneratingImage(false)
     }
@@ -229,8 +265,8 @@ export function AccessCardPass({
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Ngozi & Sorbari Wedding Pass',
-        text: `Here is my official Access Card pass for Ngozi & Sorbari's Wedding Celebration! Access Code: ${accessCode}`,
+        title: 'Ngozi & Sorbari Wedding Invitation',
+        text: `Here is my official Wedding Invitation for Ngozi & Sorbari's Wedding Celebration! Access Code: ${accessCode}`,
         url: passUrl,
       })
     } else {
@@ -265,9 +301,9 @@ export function AccessCardPass({
               <polygon points="40,8 44,14 36,14" fill="#D4AF37" />
             </svg>
           </div>
-          <h2 className="access-card-title">ACCESS CARD</h2>
-          <h1 className="access-card-couple">NGOZI &amp; SORBARIS</h1>
-          <p className="access-card-subtitle">WEDDING CEREMONY PASS</p>
+          <h2 className="access-card-title">OFFICIAL INVITATION</h2>
+          <h1 className="access-card-couple">NGOZI &amp; SORBARI</h1>
+          <p className="access-card-subtitle">WEDDING CEREMONY &amp; ACCESS CARD</p>
         </div>
 
         {/* Date & Venue Bar */}
@@ -299,22 +335,45 @@ export function AccessCardPass({
           </div>
         </div>
 
-        {/* QR Code Section */}
-        <div className="access-card-qr-section">
-          <div className="qr-frame">
-            <img
-              src={qrCodeUrl}
-              alt={`Access QR Code for ${accessCode}`}
-              className="qr-image"
-              loading="eager"
-            />
+        {/* Have You Gifted The Couple Yet? Section */}
+        <div className="access-card-gift-section">
+          <div className="card-gift-header">
+            <span className="gift-emoji">🎁</span>
+            <h4 className="gift-heading">HAVE YOU GIFTED THE COUPLE YET?</h4>
+            <p className="gift-subheading">
+              Bless Ngozi &amp; Sorbari with a wedding gift or financial support to celebrate their new beginning.
+            </p>
           </div>
-          <span className="qr-caption">Scan for entry verification</span>
+
+          <div className="card-gift-bank-box">
+            <div className="bank-meta">
+              <span className="bank-tag">Direct Bank Transfer</span>
+              <div className="bank-details-line">
+                <strong className="bank-title">Parallex Bank</strong>
+                <span className="bank-acc-num">2003361527</span>
+              </div>
+              <span className="bank-acc-name">SORBARI GODWIN UEBARI AND NGOZI EMELE KALU</span>
+            </div>
+            <button
+              type="button"
+              className="bank-copy-action-btn"
+              onClick={handleCopyAccount}
+              title="Copy Account Number"
+            >
+              {copiedAccount ? <Check size={14} /> : <Copy size={14} />}
+              <span>{copiedAccount ? 'Copied' : 'Copy'}</span>
+            </button>
+          </div>
+
+          <Link href="/wishlist" className="card-gift-wishlist-btn">
+            <Gift size={16} />
+            <span>Explore Wedding Wishlist &amp; Registry →</span>
+          </Link>
         </div>
 
         {/* Bottom Banner */}
         <div className="access-card-footer">
-          <p className="entry-notice">PLEASE PRESENT THIS CARD AT ENTRY</p>
+          <p className="entry-notice">PLEASE PRESENT THIS INVITATION AT ENTRY</p>
           <div className="strictly-by-invitation-badge">
             <span>STRICTLY BY INVITATION</span>
           </div>
@@ -330,7 +389,7 @@ export function AccessCardPass({
           disabled={isGeneratingImage}
         >
           <Download size={18} />
-          <span>{isGeneratingImage ? 'Generating High-Res Image...' : 'Save Pass Image (PNG)'}</span>
+          <span>{isGeneratingImage ? 'Generating Image...' : 'Save Invitation Card (PNG)'}</span>
         </button>
 
         <a
@@ -357,7 +416,7 @@ export function AccessCardPass({
 
         <button type="button" className="pass-btn outline-btn" onClick={handleShare}>
           {copiedLink ? <Check size={18} /> : <Share2 size={18} />}
-          <span>{copiedLink ? 'Link Copied!' : 'Share Pass'}</span>
+          <span>{copiedLink ? 'Link Copied!' : 'Share Invitation'}</span>
         </button>
       </div>
 

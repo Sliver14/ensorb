@@ -8,16 +8,13 @@ export interface EmailSendResult {
 }
 
 /**
- * Generates the luxury Access Card HTML email template matching the attached access card design
+ * Generates the luxury Official Wedding Invitation & Access Card HTML email template
  */
 export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): string {
   const passUrl = `${siteUrl}/invite/${invite.code}`
   const guestName = (invite.guestName || invite.targetName || 'Valued Guest').toUpperCase()
   const guestCount = invite.actualGuestCount || invite.maxGuests || 1
   const accessCode = invite.accessCode || invite.passId || invite.code
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-    passUrl
-  )}`
 
   return `
 <!DOCTYPE html>
@@ -25,7 +22,7 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Official Access Card - Ngozi & Sorbari Wedding</title>
+  <title>Your Official Wedding Invitation - Ngozi & Sorbari</title>
   <style>
     body {
       margin: 0;
@@ -160,16 +157,6 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
       border: 1px solid #E5D5AA;
       display: inline-block;
     }
-    .qr-wrap {
-      text-align: center;
-      margin: 18px 0;
-    }
-    .qr-img {
-      border: 3px solid #D4AF37;
-      border-radius: 8px;
-      background: #FFFFFF;
-      padding: 6px;
-    }
     .entry-prompt {
       font-size: 12px;
       font-weight: 700;
@@ -234,7 +221,7 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
             <div class="card-body">
               <!-- Rings Emblem -->
               <div class="rings-icon">💍</div>
-              <div class="card-eyebrow">OFFICIAL INVITATION &amp; ACCESS PASS</div>
+              <div class="card-eyebrow">OFFICIAL WEDDING INVITATION</div>
               <h1 class="couple-headline">NGOZI &amp; SORBARI</h1>
               <div class="sub-headline">WEDDING CELEBRATION • ACCESS CARD</div>
 
@@ -280,18 +267,36 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
                 </div>
               </div>
 
-              <!-- Scannable QR Code -->
-              <div class="qr-wrap">
-                <img
-                  src="${qrCodeUrl}"
-                  alt="Official Wedding Pass QR Code"
-                  width="160"
-                  height="160"
-                  class="qr-img"
-                />
+              <!-- Have you gifted the couple yet? Section -->
+              <div style="background: #FFFDF9; border: 2px solid #D4AF37; border-radius: 12px; padding: 18px 20px; margin: 20px 0 22px; text-align: center; box-shadow: 0 4px 14px rgba(212,175,55,0.12);">
+                <div style="font-size: 24px; margin-bottom: 4px;">🎁</div>
+                <div style="font-family: Georgia, serif; font-size: 14px; font-weight: 700; letter-spacing: 0.14em; color: #4A1525; text-transform: uppercase; margin-bottom: 6px;">
+                  HAVE YOU GIFTED THE COUPLE YET?
+                </div>
+                <p style="font-size: 12.5px; color: #6E655F; margin: 0 0 14px; line-height: 1.5;">
+                  Bless Ngozi &amp; Sorbari with a wedding gift or financial support as they begin their marital journey together.
+                </p>
+
+                <!-- Bank Transfer Details Card -->
+                <div style="background: #FAF7F2; border: 1px solid #E5D5AA; border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; text-align: left;">
+                  <div style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: #7D6B64; font-weight: 700;">Direct Bank Transfer</div>
+                  <div style="font-size: 15px; font-weight: 700; color: #4A1525; margin: 4px 0 2px;">
+                    Parallex Bank • <span style="font-family: monospace; font-size: 16px; letter-spacing: 0.04em;">2003361527</span>
+                  </div>
+                  <div style="font-size: 11.5px; color: #383431; font-weight: 600;">
+                    SORBARI GODWIN UEBARI AND NGOZI EMELE KALU
+                  </div>
+                </div>
+
+                <!-- Wishlist Link Button -->
+                <div>
+                  <a href="${siteUrl}/wishlist" style="display: inline-block; background: #FAF3E0; color: #4A1525 !important; border: 1.5px solid #D4AF37; padding: 10px 22px; border-radius: 999px; font-size: 12px; font-weight: 700; text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase;" target="_blank">
+                    🎁 Explore Wedding Wishlist &amp; Registry →
+                  </a>
+                </div>
               </div>
 
-              <div class="entry-prompt">PLEASE PRESENT THIS PASS AT ENTRANCE</div>
+              <div class="entry-prompt">PLEASE PRESENT THIS INVITATION AT ENTRANCE</div>
               <div>
                 <span class="invitation-badge">STRICTLY BY INVITATION</span>
               </div>
@@ -299,7 +304,7 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
               <!-- Action Link -->
               <div style="margin-top: 14px;">
                 <a href="${passUrl}" class="action-btn" target="_blank">
-                  View &amp; Save Digital Pass ↗
+                  View Official Invitation ↗
                 </a>
               </div>
 
@@ -310,7 +315,7 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
               </div>
 
               <div class="footer-note">
-                Please have this digital pass ready on your mobile device or printed for seamless access at the entrance.
+                Please present your official invitation card at the entrance for entry verification.
                 <br /><br />
                 RSVP &amp; Enquiries: Bright (09066157126) • Faith (08079071291)
                 <br /><br />
@@ -510,7 +515,7 @@ export async function sendWeddingPassEmail(
 
   const resendApiKey = process.env.RESEND_API_KEY
   const fromEmail = process.env.EMAIL_FROM || 'Ngozi & Sorbari Wedding <invites@ensorb.com>'
-  const subject = `🎟️ Your Official Access Card: Ngozi & Sorbari Wedding Pass (${invite.accessCode || invite.code})`
+  const subject = `💌 Official Wedding Invitation & Access Pass: Ngozi & Sorbari (${invite.accessCode || invite.code})`
   const html = generateAccessCardEmailHtml(invite, siteUrl)
 
   // 1. If Resend API Key is provided, send through Resend

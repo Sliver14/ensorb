@@ -14166,36 +14166,162 @@ html.ensorb-unlocked .wedding-journey-gate {
   letter-spacing: 0.06em;
 }
 
-/* QR Code Section */
-.access-card-qr-section {
+/* Access Card Gift Section (Replacing QR code) */
+.access-card-gift-section {
+  background: #FFFDFB;
+  border: 1.5px solid #D4AF37;
+  border-radius: 12px;
+  padding: 14px 14px 12px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+.card-gift-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 18px;
 }
 
-.qr-frame {
+.gift-emoji {
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.gift-heading {
+  font-family: var(--font-cormorant), 'Cinzel', Georgia, serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #4A1525;
+  text-transform: uppercase;
+  margin: 0 0 3px;
+}
+
+.gift-subheading {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 10.5px;
+  color: #7D6B64;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.card-gift-bank-box {
+  background: #FAF7F2;
+  border: 1px solid #E5D5AA;
+  border-radius: 8px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+}
+
+.bank-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.bank-tag {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #8C756B;
+  text-transform: uppercase;
+}
+
+.bank-details-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.bank-title {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4A1525;
+}
+
+.bank-acc-num {
+  font-family: monospace;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #4A1525;
   background: #FFFFFF;
-  padding: 8px;
-  border: 2px solid #D4AF37;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  display: inline-flex;
+  border: 1px solid #E5D5AA;
+  border-radius: 4px;
+  padding: 1px 6px;
+  letter-spacing: 0.04em;
 }
 
-.qr-image {
-  width: 120px;
-  height: 120px;
-  display: block;
-}
-
-.qr-caption {
+.bank-acc-name {
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
   font-size: 9.5px;
   font-weight: 600;
-  letter-spacing: 0.1em;
-  color: #7D6B64;
-  text-transform: uppercase;
-  margin-top: 6px;
+  color: #59534E;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+
+.bank-copy-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #4A1525;
+  color: #FAF7F2;
+  border: 1px solid #D4AF37;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.bank-copy-action-btn:hover {
+  background: #701F37;
+  transform: translateY(-1px);
+}
+
+.card-gift-wishlist-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #FAF3E0 0%, #F5E8C8 100%);
+  color: #4A1525;
+  border: 1px solid #D4AF37;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-family: var(--font-sans), 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.15);
+}
+
+.card-gift-wishlist-btn:hover {
+  background: linear-gradient(135deg, #F5E8C8 0%, #EBDAB2 100%);
+  transform: translateY(-1px);
+  color: #330D19;
 }
 
 /* Card Footer */
