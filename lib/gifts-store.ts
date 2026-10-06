@@ -443,3 +443,48 @@ export async function getGiftAdminStats(): Promise<GiftAdminStats> {
     totalItemsCount,
   }
 }
+
+export async function resetAllGiftsAndContributions(): Promise<{ success: boolean; message: string }> {
+  const sql = getDb()
+  if (sql) {
+    try {
+      await ensureGiftTables()
+      // 1. Delete all contribution records
+      await sql`DELETE FROM gift_contributions;`
+      // 2. Reset all gifts progress to 0
+      await sql`
+        UPDATE gifts
+        SET 
+          contributed_amount = 0,
+          contributor_count = 0,
+          is_fully_gifted = false,
+          updated_at = NOW();
+      `
+    } catch (err) {
+      console.error('Error resetting gifts in Neon DB:', err)
+    }
+  }
+
+  // Also reset local file cache
+  const initial: GiftRecord[] = registryGifts.map((g) => ({
+    id: g.id,
+    title: g.title,
+    price: g.price,
+    numericPrice: g.numericPrice,
+    category: g.category,
+    categoryLabel: g.categoryLabel,
+    image: g.image,
+    description: g.description,
+    featured: !!g.featured,
+    contributedAmount: 0,
+    contributorCount: 0,
+    isFullyGifted: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }))
+  await saveLocalGifts(initial)
+  await saveLocalContributions([])
+
+  return { success: true, message: 'Gift registry data and contributions have been reset to 0.' }
+}
+

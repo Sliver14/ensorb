@@ -234,29 +234,44 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
             <div class="card-body">
               <!-- Rings Emblem -->
               <div class="rings-icon">💍</div>
-              <div class="card-eyebrow">ACCESS CARD</div>
-              <h1 class="couple-headline">NGOZI &amp; SORBARI&apos;S</h1>
-              <div class="sub-headline">WEDDING CEREMONY PASS</div>
+              <div class="card-eyebrow">OFFICIAL INVITATION &amp; ACCESS PASS</div>
+              <h1 class="couple-headline">NGOZI &amp; SORBARI</h1>
+              <div class="sub-headline">WEDDING CELEBRATION • ACCESS CARD</div>
+
+              <!-- Official Wedding Invitation Card Image -->
+              <div style="margin: 14px 0 20px; text-align: center;">
+                <img
+                  src="${siteUrl}/Ensorb-IV.jpg.jpeg"
+                  alt="Official Wedding Invitation - Ngozi &amp; Sorbari"
+                  style="max-width: 100%; height: auto; border-radius: 10px; border: 2px solid #D4AF37; box-shadow: 0 8px 24px rgba(0,0,0,0.15); display: block; margin: 0 auto;"
+                />
+              </div>
 
               <!-- Date & Venue Bar -->
               <div class="date-venue-bar">
                 <div class="event-date">SATURDAY, 21ST NOVEMBER, 2026</div>
-                <div class="event-time">11:00 AM (CHURCH) | 1:00 PM (RECEPTION) • LAGOS, NIGERIA</div>
+                <div class="event-time" style="margin-top: 6px; font-size: 13px; line-height: 1.6; color: #4A1525;">
+                  <strong>⛪ Church Ceremony (11:00 AM):</strong><br />
+                  Christ Embassy Ogba 1, 25 Odusanmi St, Ogba, Lagos (Landmark: AY Hotel)
+                  <br /><br />
+                  <strong>🥂 Reception Celebration (1:00 PM):</strong><br />
+                  CELVZ Youth Church, 24 Sanyaolu St, Oregun, Ikeja, Lagos
+                </div>
               </div>
 
               <!-- Guest Details Box -->
               <div class="guest-details-box">
-                <div class="details-heading">— GUEST DETAILS —</div>
+                <div class="details-heading">— GUEST PASS DETAILS —</div>
                 <div class="detail-row">
-                  <span class="detail-label">Name:</span>
+                  <span class="detail-label">Honored Guest:</span>
                   <strong>${guestName}</strong>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Seat Number:</span>
+                  <span class="detail-label">Assigned Table:</span>
                   <strong>${invite.tableNumber} (${invite.category} Honor)</strong>
                 </div>
                 <div class="detail-row">
-                  <span class="detail-label">Number of Guests:</span>
+                  <span class="detail-label">Seats Allocated:</span>
                   <strong>${guestCount} ${guestCount === 1 ? 'Guest (1 Seat)' : 'Guests'}</strong>
                 </div>
                 <div class="detail-row">
@@ -276,13 +291,13 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
                 />
               </div>
 
-              <div class="entry-prompt">PLEASE PRESENT THIS CARD AT ENTRY</div>
+              <div class="entry-prompt">PLEASE PRESENT THIS PASS AT ENTRANCE</div>
               <div>
                 <span class="invitation-badge">STRICTLY BY INVITATION</span>
               </div>
 
               <!-- Action Link -->
-              <div style="margin-top: 12px;">
+              <div style="margin-top: 14px;">
                 <a href="${passUrl}" class="action-btn" target="_blank">
                   View &amp; Save Digital Pass ↗
                 </a>
@@ -295,8 +310,12 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
               </div>
 
               <div class="footer-note">
-                Please have this pass ready on your mobile device or printed for seamless access at the entrance.
-                <br />With warm love, <strong>Ngozi &amp; Sorbari</strong>
+                Please have this digital pass ready on your mobile device or printed for seamless access at the entrance.
+                <br /><br />
+                RSVP &amp; Enquiries: Bright (09066157126) • Faith (08079071291)
+                <br /><br />
+                With all our love,<br />
+                <strong>Ngozi &amp; Sorbari</strong>
               </div>
             </div>
           </div>

@@ -118,6 +118,8 @@ export default function HomePage() {
             src="/couple/IMG_4784-Recovered.jpg"
             alt="Ngozi & Sorbari Wedding Portrait"
             className="hero-couple-img"
+            fetchPriority="high"
+            decoding="async"
           />
         </div>
 
@@ -156,7 +158,7 @@ export default function HomePage() {
                 RSVP <span className="btn-arrow">→</span>
               </Link>
               <Link href="/wishlist" className="btn-cream-outline-pill">
-                <span className="btn-icon">🎁</span> Gift Registry
+                <span className="btn-icon">🎁</span> Gift Couple
               </Link>
             </div>
           </div>
@@ -203,6 +205,8 @@ export default function HomePage() {
                   src="/couple/story-polaroid.png"
                   alt="Ngozi & Sorbari smiling studio portrait"
                   className="polaroid-img"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
@@ -328,6 +332,8 @@ export default function HomePage() {
               src="/couple/quote-portrait.jpg"
               alt="Ngozi & Sorbari intimate embrace"
               className="quote-couple-img"
+              loading="lazy"
+              decoding="async"
             />
           </div>
 

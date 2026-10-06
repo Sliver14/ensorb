@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Great_Vibes, Montserrat } from 'next/font/google'
 import { WelcomeGate } from '@/components/WelcomeGate'
 import { Navbar } from '@/components/Navbar'
+import { GiftCoupleFab } from '@/components/GiftCoupleFab'
 import { ScrollAnimationProvider } from '@/components/ScrollAnimationProvider'
 import './globals.css'
 
@@ -178,17 +179,41 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en" className={`${cormorant.variable} ${greatVibes.variable} ${montserrat.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${cormorant.variable} ${greatVibes.variable} ${montserrat.variable}`}
+    >
       <head>
+        <script
+          id="welcome-gate-check"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var path = window.location.pathname || '';
+                  var isAdm = path.indexOf('/admin') === 0;
+                  var unlocked = sessionStorage.getItem('ensorb_wedding_unlocked');
+                  if (isAdm || unlocked === 'true') {
+                    document.documentElement.classList.add('ensorb-unlocked');
+                  } else {
+                    document.documentElement.classList.add('ensorb-locked');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning>
         <WelcomeGate />
         <Navbar />
         <ScrollAnimationProvider>{children}</ScrollAnimationProvider>
+        <GiftCoupleFab />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

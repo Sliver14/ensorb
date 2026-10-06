@@ -65,75 +65,8 @@ export function getDb() {
   }
 }
 
-// Initial seed invites for first launch
-export const INITIAL_SEED_INVITES: Partial<Invite>[] = [
-  {
-    id: 'inv-seed-001',
-    code: 'NS-VIP-001',
-    accessCode: 'NXYS26001G',
-    targetName: 'Chief & Mrs. Emeka Kalu',
-    targetEmail: 'emeka.kalu@example.com',
-    maxGuests: 2,
-    tableNumber: 'Table 01 - Emerald VIP',
-    category: 'VIP',
-    customNote: 'Bridal Family Honor Guest',
-    source: 'admin_direct',
-    approvalStatus: 'approved',
-    isRegistered: true,
-    guestName: 'Chief Emeka & Lolo Kalu',
-    guestEmail: 'emeka.kalu@example.com',
-    guestPhone: '+234 802 345 6789',
-    attendance: 'attending',
-    actualGuestCount: 2,
-    dietaryOrNotes: 'No seafood please. Warmest congratulations to Ngozi & Sorbari!',
-    passId: 'PASS-NS-2026-001',
-    emailSent: true,
-  },
-  {
-    id: 'inv-seed-002',
-    code: 'NS-FAM-002',
-    accessCode: 'NXYS26002G',
-    targetName: 'Pastor & Mrs. Godwin Uebari',
-    targetEmail: 'godwin.uebari@example.com',
-    maxGuests: 2,
-    tableNumber: 'Table 02 - Royal Gold',
-    category: 'Family',
-    customNote: 'Groom Parents & Family Table',
-    source: 'admin_direct',
-    approvalStatus: 'approved',
-    isRegistered: true,
-    guestName: 'Pastor Godwin & Deaconess Uebari',
-    guestEmail: 'godwin.uebari@example.com',
-    guestPhone: '+234 803 456 7890',
-    attendance: 'attending',
-    actualGuestCount: 2,
-    dietaryOrNotes: 'Special blessings for the couple!',
-    passId: 'PASS-NS-2026-002',
-    emailSent: true,
-  },
-  {
-    id: 'inv-seed-003',
-    code: 'NS-CLG-003',
-    accessCode: 'NXYS26003G',
-    targetName: 'Dr. Michael Adeyemi',
-    targetEmail: 'michael.adeyemi@example.com',
-    maxGuests: 1,
-    tableNumber: 'Table 03 - Sapphire',
-    category: 'Colleagues',
-    customNote: 'Loveworld Staff Community',
-    source: 'rsvp_form',
-    approvalStatus: 'pending',
-    isRegistered: true,
-    guestName: 'Dr. Michael Adeyemi',
-    guestEmail: 'michael.adeyemi@example.com',
-    guestPhone: '+234 805 123 9876',
-    attendance: 'attending',
-    actualGuestCount: 1,
-    dietaryOrNotes: 'Looking forward to the grand celebration!',
-    passId: 'PASS-NS-2026-003',
-    emailSent: false,
-  },
-]
+// Initial seed invites (empty array for clean launch)
+export const INITIAL_SEED_INVITES: Partial<Invite>[] = []
 
 let isInitialized = false
 

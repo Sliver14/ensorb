@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { navLinks } from '@/lib/data'
 import { MonogramLogo, BotanicalSprig } from '@/components/WeddingIcons'
+import { GiftCoupleBanner } from '@/components/GiftCoupleBanner'
 
 export function Footer() {
   const pathname = usePathname()
@@ -13,9 +14,13 @@ export function Footer() {
     return null
   }
 
+  const showGiftBanner = pathname !== '/wishlist'
+
   return (
-    <footer className="burgundy-site-footer">
-      <div className="footer-watercolor-wash" />
+    <>
+      {showGiftBanner && <GiftCoupleBanner variant="footer" />}
+      <footer className="burgundy-site-footer">
+        <div className="footer-watercolor-wash" />
       
       <BotanicalSprig className="footer-botanical-left" />
       <BotanicalSprig className="footer-botanical-right" />
@@ -50,5 +55,6 @@ export function Footer() {
         </p>
       </div>
     </footer>
+    </>
   )
 }

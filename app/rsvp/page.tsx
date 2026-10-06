@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Footer } from '@/components/Footer'
+import { GiftCoupleBanner } from '@/components/GiftCoupleBanner'
 import {
   BotanicalSprig,
   CardCornerBotanical,
@@ -22,6 +23,7 @@ export default function RsvpPage() {
   const [guestCount, setGuestCount] = useState<string>('1')
   const [message, setMessage] = useState('')
   const [inviteCode, setInviteCode] = useState('')
+  const [showCardModal, setShowCardModal] = useState(false)
 
   // Submission State
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -85,6 +87,8 @@ export default function RsvpPage() {
               src="/couple/IMG_6075.png"
               alt="Ngozi & Sorbari loving couple portrait"
               className="rsvp-hero-couple-img"
+              fetchPriority="high"
+              decoding="async"
             />
             {/* Torn Paper Deckled Edge */}
             <div className="rsvp-hero-torn-divider" aria-hidden="true">
@@ -132,7 +136,7 @@ export default function RsvpPage() {
       </section>
 
       {/* ====================================================================
-          SECTION 2: MAIN CONTENT (RSVP FORM + EVENT DETAILS / POLAROID)
+          SECTION 2: MAIN CONTENT (RSVP FORM + EVENT DETAILS)
          ==================================================================== */}
       <section className="rsvp-content-section" id="rsvp-form-section">
         <div className="rsvp-content-grid">
@@ -141,7 +145,7 @@ export default function RsvpPage() {
             <div className="rsvp-form-card">
               <h2 className="rsvp-form-title">RSVP FORM</h2>
               <p className="rsvp-form-instruction">
-                Please fill in the form below to confirm your attendance and let us know if you&apos;ll be joining us for our wedding celebration.
+                Please fill in the form below to confirm your attendance. Once approved by the couple, your Official Wedding Invitation Card &amp; Digital Access Pass will be sent to your email.
               </p>
 
               {submitError && (
@@ -168,7 +172,7 @@ export default function RsvpPage() {
                     {submittedData.attendance === 'declined'
                       ? `Dear ${submittedData.guestName}, thank you for your warm wishes. You will be dearly missed on our special day!`
                       : submittedData.approvalStatus === 'pending'
-                      ? `Dear ${submittedData.guestName}, thank you for submitting your RSVP! Your reservation is currently being reviewed by Ngozi & Sorbari. Once approved, your official Access Card, assigned table, and entry QR code will be emailed directly to ${submittedData.guestEmail}.`
+                      ? `Dear ${submittedData.guestName}, thank you for submitting your RSVP! Your reservation is currently being reviewed by Ngozi & Sorbari. Once approved by the couple, your Official Wedding Invitation Card, assigned table, and entry QR code pass will be emailed directly to ${submittedData.guestEmail}.`
                       : `Dear ${submittedData.guestName}, we are overjoyed that you will be celebrating with us! Your official wedding Access Card has been activated.`}
                   </p>
 
@@ -202,11 +206,16 @@ export default function RsvpPage() {
                         <strong>{submittedData.actualGuestCount} Guest(s)</strong>
                       </div>
                       <div className="summary-row">
-                        <span className="lbl">Email Notification:</span>
+                        <span className="lbl">Email for Invitation Delivery:</span>
                         <span>{submittedData.guestEmail}</span>
                       </div>
                     </div>
                   )}
+
+                  {/* Gift the Couple Post-Registration Section */}
+                  <div className="post-rsvp-gift-wrapper">
+                    <GiftCoupleBanner variant="registration" />
+                  </div>
 
                   <div className="success-actions">
                     {submittedData.approvalStatus !== 'pending' && (
@@ -251,7 +260,7 @@ export default function RsvpPage() {
                   {/* EMAIL ADDRESS */}
                   <div className="form-group">
                     <label htmlFor="email">
-                      EMAIL ADDRESS <span className="req">*</span>
+                      EMAIL ADDRESS (FOR INVITATION CARD DELIVERY) <span className="req">*</span>
                     </label>
                     <input
                       id="email"
@@ -327,11 +336,11 @@ export default function RsvpPage() {
 
                   {/* SPECIAL MESSAGE */}
                   <div className="form-group">
-                    <label htmlFor="message">SPECIAL MESSAGE (OPTIONAL)</label>
+                    <label htmlFor="message">SPECIAL MESSAGE &amp; BLESSINGS (OPTIONAL)</label>
                     <textarea
                       id="message"
                       rows={3}
-                      placeholder="Leave us a message..."
+                      placeholder="Leave us a warm message or prayer..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       className="form-control textarea-control"
@@ -363,35 +372,20 @@ export default function RsvpPage() {
             <CardCornerBotanical className="rsvp-bottom-left-botanical floating-botanical-sway" />
           </div>
 
-          {/* RIGHT COLUMN: POLAROID + EVENT DETAILS + GENTLE REMINDER */}
+          {/* RIGHT COLUMN: EVENT DETAILS + GENTLE REMINDER */}
           <div className="rsvp-details-column reveal-fade-right">
-            {/* 1. Tilted Centerpiece Polaroid */}
-            <div className="rsvp-polaroid-wrapper">
-              <div className="washi-polaroid-frame rsvp-table-polaroid floating-polaroid-motion">
-                <div className="washi-tape-strip" />
-                <div className="polaroid-photo-inner">
-                  <img
-                    src="/couple/table-centerpiece.jpg"
-                    alt="Romantic wedding dining centerpiece with candle lantern"
-                    className="polaroid-img"
-                  />
-                </div>
-                <BotanicalSprig className="polaroid-botanical-corner floating-botanical-sway" />
-              </div>
-            </div>
-
-            {/* 2. EVENT DETAILS */}
+            {/* 1. EVENT DETAILS */}
             <div className="rsvp-event-details-block reveal-fade-up">
-              <span className="eyebrow-spaced">EVENT DETAILS</span>
+              <span className="eyebrow-spaced">EVENT DETAILS &amp; VENUES</span>
 
               <div className="event-detail-item">
                 <div className="event-icon-circle">
                   <CalendarEventIcon className="icon-svg" />
                 </div>
                 <div className="event-item-text">
-                  <span className="detail-tag">Date</span>
-                  <strong className="detail-val">21 November 2026</strong>
-                  <span className="detail-sub">11:00 AM (Church) | 1:00 PM (Reception)</span>
+                  <span className="detail-tag">Wedding Date</span>
+                  <strong className="detail-val">Saturday, 21 November 2026</strong>
+                  <span className="detail-sub">Church: 11:00 AM | Reception: 1:00 PM</span>
                 </div>
               </div>
 
@@ -400,10 +394,10 @@ export default function RsvpPage() {
                   <PinLocationIcon size={22} className="icon-svg" />
                 </div>
                 <div className="event-item-text">
-                  <span className="detail-tag">Ceremony (11:00 AM)</span>
+                  <span className="detail-tag">Church Ceremony (11:00 AM)</span>
                   <strong className="detail-val">Christ Embassy Ogba 1</strong>
                   <span className="detail-sub">
-                    25 Odusanmi St, Ogba, Lagos (Landmark: AY Hotel)
+                    25 Odusanmi Street, Ogba, Lagos (Landmark: AY Hotel)
                   </span>
                 </div>
               </div>
@@ -413,26 +407,35 @@ export default function RsvpPage() {
                   <ChampagneIcon className="icon-svg" />
                 </div>
                 <div className="event-item-text">
-                  <span className="detail-tag">Reception (1:00 PM)</span>
+                  <span className="detail-tag">Grand Reception (1:00 PM)</span>
                   <strong className="detail-val">CELVZ Youth Church</strong>
                   <span className="detail-sub">
-                    24 Sanyaolu St, Oregun, Ikeja, Lagos
+                    24 Sanyaolu Street, Oregun, Ikeja, Lagos
                   </span>
                 </div>
               </div>
 
               <div className="event-details-divider-line" />
+
+              <div className="event-detail-item" style={{ marginTop: '12px' }}>
+                <div className="event-item-text">
+                  <span className="detail-tag">RSVP &amp; Enquiries</span>
+                  <span className="detail-sub" style={{ color: '#4A1525', fontWeight: 600 }}>
+                    Bright (09066157126) • Faith (08079071291)
+                  </span>
+                </div>
+              </div>
             </div>
 
-            {/* 3. A GENTLE REMINDER CARD */}
-            <div className="rsvp-gentle-reminder-card">
-              <div className="reminder-heart-top">♥</div>
-              <h3 className="reminder-cursive-title">A Gentle Reminder</h3>
+            {/* 2. INVITATION & ACCESS PASS NOTICE */}
+            <div className="rsvp-gentle-reminder-card reveal-fade-up" style={{ marginTop: '20px' }}>
+              <div className="reminder-heart-top">💌</div>
+              <h3 className="reminder-cursive-title">Invitation &amp; Access Cards</h3>
               <p className="reminder-body-text">
-                Your response helps us plan and make this day even more special. We sincerely hope you can join us!
+                This celebration is strictly by invitation. Once your RSVP is approved by the couple, your Official Wedding Invitation Card &amp; Personalized Access Pass with QR Code will be dispatched directly to your email address.
               </p>
-              <div className="reminder-signature">Thank you</div>
-              <div className="reminder-names-stamp">— N &amp; S —</div>
+              <div className="reminder-signature">With Warm Love</div>
+              <div className="reminder-names-stamp">— Ngozi &amp; Sorbari —</div>
             </div>
           </div>
         </div>

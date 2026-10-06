@@ -132,6 +132,8 @@ export default function StoryPage() {
                     src="/couple/quote-portrait.jpg"
                     alt="Ngozi & Sorbari loving portrait"
                     className="polaroid-img"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div className="polaroid-footer-row">
@@ -268,7 +270,7 @@ export default function StoryPage() {
               className={`gallery-figure ${index === 3 ? 'wide-figure' : ''}`}
             >
               <div className="gallery-img-wrap">
-                <img src={photo.src} alt={photo.alt} loading="lazy" />
+                <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
               </div>
               <figcaption>
                 <span className="fig-caption-text">{photo.caption}</span>

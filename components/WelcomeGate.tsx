@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { MonogramLogo } from '@/components/WeddingIcons'
 
 export function WelcomeGate() {
-  const [isUnlocked, setIsUnlocked] = useState(true) // default true for SSR safety
+  const [isUnlocked, setIsUnlocked] = useState(false)
   const [isUnlocking, setIsUnlocking] = useState(false)
   const [cardRevealed, setCardRevealed] = useState(false)
   const [cardFloating, setCardFloating] = useState(false)
@@ -16,11 +16,16 @@ export function WelcomeGate() {
   useEffect(() => {
     // Check session storage on client mount
     if (typeof window !== 'undefined') {
+      const isAdm = window.location.pathname.startsWith('/admin')
       const unlocked = sessionStorage.getItem('ensorb_wedding_unlocked')
-      if (pathname && pathname.startsWith('/admin')) {
+      if (isAdm || unlocked === 'true') {
         setIsUnlocked(true)
-      } else if (!unlocked) {
+        document.documentElement.classList.remove('ensorb-locked')
+        document.documentElement.classList.add('ensorb-unlocked')
+      } else {
         setIsUnlocked(false)
+        document.documentElement.classList.remove('ensorb-unlocked')
+        document.documentElement.classList.add('ensorb-locked')
       }
     }
   }, [pathname])
@@ -89,6 +94,8 @@ export function WelcomeGate() {
       setIsUnlocked(true)
       setIsUnlocking(false)
       if (typeof window !== 'undefined') {
+        document.documentElement.classList.remove('ensorb-locked')
+        document.documentElement.classList.add('ensorb-unlocked')
         window.dispatchEvent(new Event('ensorb-portal-unlocked'))
       }
     }, 4400)

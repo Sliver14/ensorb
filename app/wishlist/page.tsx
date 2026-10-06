@@ -360,6 +360,8 @@ export default function WishlistPage() {
                     src="/couple/quote-portrait.jpg"
                     alt="Ngozi & Sorbari loving portrait"
                     className="polaroid-img"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <CardCornerBotanical className="polaroid-botanical-corner" />
                 </div>
@@ -862,90 +864,67 @@ export default function WishlistPage() {
               ✕
             </button>
 
-            <div className="modal-grid">
-              {/* Left Column: Product Photo */}
-              <div className="modal-photo">
-                <img
-                  src={selectedItem.image}
-                  alt={selectedItem.title}
-                />
-                {modalContributionDetails.isComplete && (
-                  <div className="modal-complete-overlay">
-                    <span>✓ Fully Funded</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Right Column: Scrollable Content / Form */}
-              <div className="modal-info">
-                {/* Header Tag Row */}
-                <div className="modal-header-tag-row">
-                  <span className="modal-tag">{selectedItem.categoryLabel}</span>
-                  {modalContributionDetails.isComplete ? (
-                    <span className="badge-gifted-100-modal">✓ 100% Funded</span>
-                  ) : (
-                    <span className="badge-in-progress-modal">
-                      ₦{modalContributionDetails.remaining.toLocaleString()} needed
-                    </span>
+            <div className="modal-grid simplified-gift-modal">
+              {/* Left Column: Product Photo & Details */}
+              <div className="modal-photo-col">
+                <div className="modal-photo-wrap">
+                  <img
+                    src={selectedItem.image}
+                    alt={selectedItem.title}
+                    className="modal-gift-img"
+                  />
+                  {modalContributionDetails.isComplete && (
+                    <div className="modal-complete-overlay">
+                      <span>✓ Fully Funded</span>
+                    </div>
                   )}
                 </div>
 
-                <h2 id="modal-title">{selectedItem.title}</h2>
-                <div className="modal-price-tag">Target: {selectedItem.price}</div>
-                <p className="modal-summary">{selectedItem.description}</p>
-
-                {/* Progress Bar */}
-                <div className="modal-progress-box">
-                  <div className="modal-progress-bar-wrap">
-                    <div
-                      className={`wishlist-progress-fill ${modalContributionDetails.isComplete ? 'fill-complete' : ''}`}
-                      style={{ width: `${modalContributionDetails.percentage}%` }}
-                    />
+                <div className="modal-item-summary-box">
+                  <span className="modal-cat-tag">{selectedItem.categoryLabel}</span>
+                  <h2 id="modal-title" className="modal-item-heading">{selectedItem.title}</h2>
+                  <div className="modal-item-price-row">
+                    <span className="lbl">Target Cost:</span>
+                    <strong className="val">{selectedItem.price}</strong>
                   </div>
-                  <div className="modal-progress-stats">
-                    <span>
-                      Raised: <strong>₦{selectedItem.contributedAmount.toLocaleString()}</strong> ({modalContributionDetails.percentage}%)
-                    </span>
-                    <span>Goal: <strong>{selectedItem.price}</strong></span>
+                  
+                  {/* Clean Mini Progress */}
+                  <div className="modal-mini-progress-box">
+                    <div className="modal-progress-bar-wrap">
+                      <div
+                        className={`wishlist-progress-fill ${modalContributionDetails.isComplete ? 'fill-complete' : ''}`}
+                        style={{ width: `${modalContributionDetails.percentage}%` }}
+                      />
+                    </div>
+                    <div className="modal-progress-text-row">
+                      <span>₦{selectedItem.contributedAmount.toLocaleString()} funded</span>
+                      <span>₦{modalContributionDetails.remaining.toLocaleString()} remaining</span>
+                    </div>
                   </div>
                 </div>
+              </div>
 
+              {/* Right Column: Clean Bank Details & Transfer Confirmation */}
+              <div className="modal-form-col">
                 {submitSuccess ? (
                   /* Success Celebration State */
                   <div className="modal-success-state">
                     <div className="success-icon-badge">✨</div>
-                    <h3 className="success-heading">Thank You for Your Blessing!</h3>
+                    <h3 className="success-heading">Thank You for Your Gift!</h3>
                     <p className="success-subtext">
-                      Your gift contribution of{' '}
-                      <strong style={{ color: '#4A1525' }}>
+                      Your contribution of{' '}
+                      <strong className="text-burgundy">
                         ₦{successDetails?.amount.toLocaleString()}
                       </strong>{' '}
-                      towards <em>&quot;{successDetails?.itemTitle}&quot;</em> has been submitted.
+                      towards <em>&quot;{successDetails?.itemTitle}&quot;</em> has been recorded.
                     </p>
 
                     <div className="success-ref-card">
-                      <span className="ref-title">Transfer Reference</span>
+                      <span className="ref-title">Payment Reference</span>
                       <div className="ref-val">{successDetails?.reference}</div>
                       <p className="ref-note">
-                        Once verified by Ngozi &amp; Sorbari, the progress bar will update automatically!
+                        Once verified by Ngozi &amp; Sorbari, the registry balance will update automatically!
                       </p>
-                    </div>
-
-                    <div className="modal-actions-grid" style={{ width: '100%' }}>
-                      <a
-                        href={`https://wa.me/?text=${whatsappText}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-whatsapp-notify"
-                      >
-                        <span>💬</span> Notify via WhatsApp
-                      </a>
-                      <a
-                        href={`mailto:hello@ensorb.com?subject=${emailSubject}&body=${emailBody}`}
-                        className="btn-email-notify"
-                      >
-                        <span>✉️</span> Notify via Email
-                      </a>
                     </div>
 
                     <button
@@ -953,223 +932,155 @@ export default function WishlistPage() {
                       className="btn-back-to-wishlist"
                       onClick={() => setSelectedItem(null)}
                     >
-                      Back to Wishlist
+                      Done &amp; Return to Wishlist
                     </button>
                   </div>
                 ) : (
-                  /* Standard Contribution Form */
-                  <form onSubmit={handleConfirmTransferSubmit}>
-                    {/* Amount Chips Selection */}
-                    {!modalContributionDetails.isComplete && (
-                      <div className="modal-contribution-selector">
-                        <label className="selector-label">Select Contribution Amount:</label>
-                        <div className="contribution-chips-grid">
-                          <button
-                            type="button"
-                            className={`chip-btn ${contributionMode === 'full' ? 'active' : ''}`}
-                            onClick={() => setContributionMode('full')}
-                          >
-                            <span className="chip-title">Full Balance</span>
-                            <span className="chip-amt">
-                              ₦{modalContributionDetails.remaining.toLocaleString()}
-                            </span>
-                          </button>
-
-                          {modalContributionDetails.remaining > 50000 && (
-                            <button
-                              type="button"
-                              className={`chip-btn ${contributionMode === 'half' ? 'active' : ''}`}
-                              onClick={() => setContributionMode('half')}
-                            >
-                              <span className="chip-title">50% Share</span>
-                              <span className="chip-amt">
-                                ₦{Math.round(modalContributionDetails.remaining / 2).toLocaleString()}
-                              </span>
-                            </button>
-                          )}
-
-                          {modalContributionDetails.remaining >= 50000 && (
-                            <button
-                              type="button"
-                              className={`chip-btn ${contributionMode === 'preset50k' ? 'active' : ''}`}
-                              onClick={() => setContributionMode('preset50k')}
-                            >
-                              <span className="chip-title">Contribution</span>
-                              <span className="chip-amt">₦50,000</span>
-                            </button>
-                          )}
-
-                          {modalContributionDetails.remaining >= 25000 && (
-                            <button
-                              type="button"
-                              className={`chip-btn ${contributionMode === 'preset25k' ? 'active' : ''}`}
-                              onClick={() => setContributionMode('preset25k')}
-                            >
-                              <span className="chip-title">Contribution</span>
-                              <span className="chip-amt">₦25,000</span>
-                            </button>
-                          )}
-
-                          <button
-                            type="button"
-                            className={`chip-btn ${contributionMode === 'custom' ? 'active' : ''}`}
-                            onClick={() => setContributionMode('custom')}
-                          >
-                            <span className="chip-title">Custom</span>
-                            <span className="chip-amt">Enter Amount</span>
-                          </button>
-                        </div>
-
-                        {contributionMode === 'custom' && (
-                          <div className="custom-amount-input-wrap">
-                            <span className="currency-prefix">₦</span>
-                            <input
-                              type="number"
-                              placeholder="e.g. 15000"
-                              min="1000"
-                              max={modalContributionDetails.remaining}
-                              value={customAmount}
-                              onChange={(e) => setCustomAmount(e.target.value)}
-                              className="custom-amount-field"
-                              required
-                            />
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Bank Transfer Box */}
-                    <div className="modal-bank-transfer-card">
-                      <div className="transfer-header">
-                        <span className="transfer-badge">Direct Bank Transfer</span>
-                        <span className="transfer-note">Instant Narration</span>
+                  /* Simplified Contribution Form */
+                  <form onSubmit={handleConfirmTransferSubmit} className="simplified-modal-form">
+                    {/* 1. Official Bank Account Box */}
+                    <div className="modal-bank-highlight-box">
+                      <div className="bank-box-top">
+                        <span className="bank-box-title">1. Transfer to Wedding Account</span>
+                        <span className="bank-box-sub">Parallex Bank</span>
                       </div>
 
-                      <div className="transfer-details">
-                        <div className="transfer-row">
-                          <span className="transfer-label">Bank:</span>
-                          <strong>{bankDetails.bankName}</strong>
+                      <div className="bank-acc-display-row">
+                        <div className="acc-info">
+                          <span className="acc-num-display">{bankDetails.accountNumber}</span>
+                          <span className="acc-name-display">{bankDetails.accountName}</span>
                         </div>
-
-                        <div className="transfer-row">
-                          <span className="transfer-label">Account Number:</span>
-                          <div className="copy-num-group">
-                            <strong className="font-mono" style={{ color: '#4A1525', fontSize: '13px' }}>
-                              {bankDetails.accountNumber}
-                            </strong>
-                            <button
-                              type="button"
-                              className="copy-btn-sm"
-                              onClick={() => handleCopy(bankDetails.accountNumber, 'account')}
-                            >
-                              {copiedAccount ? '✓ Copied' : 'Copy'}
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="transfer-row">
-                          <span className="transfer-label">Account Name:</span>
-                          <strong style={{ fontSize: '11px', textAlign: 'right' }}>
-                            {bankDetails.accountName}
-                          </strong>
-                        </div>
-
-                        <div className="transfer-row">
-                          <span className="transfer-label">Narration Ref:</span>
-                          <div className="copy-num-group">
-                            <code className="ref-code font-mono">{referenceCode}</code>
-                            <button
-                              type="button"
-                              className="copy-btn-sm"
-                              onClick={() => handleCopy(referenceCode, 'ref')}
-                            >
-                              {copiedRef ? '✓ Copied' : 'Copy'}
-                            </button>
-                          </div>
-                        </div>
+                        <button
+                          type="button"
+                          className="btn-copy-acc-prominent"
+                          onClick={() => handleCopy(bankDetails.accountNumber, 'account')}
+                        >
+                          {copiedAccount ? '✓ Copied' : 'Copy Number'}
+                        </button>
                       </div>
                     </div>
 
-                    {/* Contributor Details */}
-                    <div className="contributor-name-input-box">
-                      <label htmlFor="contributorName">Your Name / Family Name *</label>
+                    {/* 2. Amount Selection */}
+                    <div className="modal-step-group">
+                      <label className="step-label">2. Select Your Gift Amount</label>
+                      <div className="clean-amount-chips-grid">
+                        {!modalContributionDetails.isComplete && (
+                          <button
+                            type="button"
+                            className={`amount-chip ${contributionMode === 'full' ? 'selected' : ''}`}
+                            onClick={() => setContributionMode('full')}
+                          >
+                            <span className="chip-sub">Full Balance</span>
+                            <span className="chip-val">₦{modalContributionDetails.remaining.toLocaleString()}</span>
+                          </button>
+                        )}
+
+                        {modalContributionDetails.remaining >= 50000 && (
+                          <button
+                            type="button"
+                            className={`amount-chip ${contributionMode === 'preset50k' ? 'selected' : ''}`}
+                            onClick={() => setContributionMode('preset50k')}
+                          >
+                            <span className="chip-sub">Share</span>
+                            <span className="chip-val">₦50,000</span>
+                          </button>
+                        )}
+
+                        {modalContributionDetails.remaining >= 20000 && (
+                          <button
+                            type="button"
+                            className={`amount-chip ${contributionMode === 'preset25k' ? 'selected' : ''}`}
+                            onClick={() => setContributionMode('preset25k')}
+                          >
+                            <span className="chip-sub">Share</span>
+                            <span className="chip-val">₦25,000</span>
+                          </button>
+                        )}
+
+                        <button
+                          type="button"
+                          className={`amount-chip ${contributionMode === 'custom' ? 'selected' : ''}`}
+                          onClick={() => setContributionMode('custom')}
+                        >
+                          <span className="chip-sub">Custom</span>
+                          <span className="chip-val">Other Amount</span>
+                        </button>
+                      </div>
+
+                      {contributionMode === 'custom' && (
+                        <div className="custom-input-wrapper">
+                          <span className="currency-mark">₦</span>
+                          <input
+                            type="number"
+                            placeholder="Enter amount (e.g. 15000)"
+                            min="1000"
+                            value={customAmount}
+                            onChange={(e) => setCustomAmount(e.target.value)}
+                            className="clean-text-input"
+                            required
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 3. Contributor Name & Info */}
+                    <div className="modal-step-group">
+                      <label htmlFor="contributorName" className="step-label">
+                        3. Your Name / Family Name <span className="req">*</span>
+                      </label>
                       <input
                         id="contributorName"
                         type="text"
-                        placeholder="e.g. Uncle John &amp; Aunt Mary"
+                        placeholder="e.g. Samuel &amp; Grace Adeleke"
                         value={contributorName}
                         onChange={(e) => setContributorName(e.target.value)}
+                        className="clean-text-input"
                         required
                       />
 
-                      <div className="modal-form-grid-2col">
-                        <div>
-                          <label htmlFor="contributorEmail">Email (Optional)</label>
-                          <input
-                            id="contributorEmail"
-                            type="email"
-                            placeholder="john@example.com"
-                            value={contributorEmail}
-                            onChange={(e) => setContributorEmail(e.target.value)}
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="contributorPhone">Phone (Optional)</label>
-                          <input
-                            id="contributorPhone"
-                            type="tel"
-                            placeholder="080 1234 5678"
-                            value={contributorPhone}
-                            onChange={(e) => setContributorPhone(e.target.value)}
-                          />
-                        </div>
-                      </div>
-
-                      <div style={{ marginTop: '8px' }}>
-                        <label htmlFor="customNote">Personal Blessing Note (Optional)</label>
-                        <textarea
-                          id="customNote"
-                          rows={2}
-                          placeholder="Warmest congratulations to Ngozi &amp; Sorbari!"
-                          value={customNote}
-                          onChange={(e) => setCustomNote(e.target.value)}
-                          className="modal-textarea"
+                      <div className="modal-two-col-inputs">
+                        <input
+                          id="contributorPhone"
+                          type="tel"
+                          placeholder="Phone / WhatsApp (Optional)"
+                          value={contributorPhone}
+                          onChange={(e) => setContributorPhone(e.target.value)}
+                          className="clean-text-input"
+                        />
+                        <input
+                          id="contributorEmail"
+                          type="email"
+                          placeholder="Email Address (Optional)"
+                          value={contributorEmail}
+                          onChange={(e) => setContributorEmail(e.target.value)}
+                          className="clean-text-input"
                         />
                       </div>
+
+                      <textarea
+                        id="customNote"
+                        rows={2}
+                        placeholder="Personal blessing or note for the couple (Optional)..."
+                        value={customNote}
+                        onChange={(e) => setCustomNote(e.target.value)}
+                        className="clean-textarea"
+                      />
                     </div>
 
-                    {/* Submit Button */}
+                    {/* 4. Prominent Submit Action */}
                     <button
                       type="submit"
-                      className="btn-confirm-gift-modal"
-                      disabled={isSubmitting}
+                      className="btn-submit-gift-direct"
+                      disabled={isSubmitting || modalContributionDetails.amount <= 0}
                     >
                       {isSubmitting ? (
-                        <span>Submitting Contribution...</span>
+                        <span>Submitting Blessing...</span>
                       ) : (
                         <span>
-                          ✓ I Have Transferred ₦{modalContributionDetails.amount.toLocaleString()} — Confirm Gift
+                          ✓ I Have Transferred ₦{modalContributionDetails.amount.toLocaleString()} — Confirm Blessing
                         </span>
                       )}
                     </button>
-
-                    {/* WhatsApp & Email Quick Links */}
-                    <div className="modal-actions-grid" style={{ marginTop: '10px' }}>
-                      <a
-                        href={`https://wa.me/?text=${whatsappText}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-whatsapp-notify"
-                      >
-                        <span>💬</span> Notify via WhatsApp
-                      </a>
-                      <a
-                        href={`mailto:hello@ensorb.com?subject=${emailSubject}&body=${emailBody}`}
-                        className="btn-email-notify"
-                      >
-                        <span>✉️</span> Notify via Email
-                      </a>
-                    </div>
                   </form>
                 )}
               </div>

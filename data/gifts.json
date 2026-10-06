@@ -9,11 +9,11 @@
     "image": "/gifts/solar-inverter.jpg",
     "description": "Clean, continuous solar backup power and high-capacity lithium storage for our new home.",
     "featured": true,
-    "contributedAmount": 1200000,
-    "contributorCount": 4,
+    "contributedAmount": 0,
+    "contributorCount": 0,
     "isFullyGifted": false,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "honeymoon-fund",
@@ -22,14 +22,14 @@
     "numericPrice": 500000,
     "category": "appliances",
     "categoryLabel": "Experiences & Honeymoon",
-    "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&auto=format&fit=crop&q=80",
+    "image": "/gifts/honeymoon-fund.jpg",
     "description": "Help us create unforgettable memories on our honeymoon.",
     "featured": true,
-    "contributedAmount": 300000,
-    "contributorCount": 6,
+    "contributedAmount": 0,
+    "contributorCount": 0,
     "isFullyGifted": false,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "lg-air-conditioner",
@@ -41,11 +41,11 @@
     "image": "/gifts/lg-air-conditioner.jpeg",
     "description": "Energy-efficient dual inverter air conditioner for our new home.",
     "featured": false,
-    "contributedAmount": 650000,
-    "contributorCount": 3,
-    "isFullyGifted": true,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "contributedAmount": 0,
+    "contributorCount": 0,
+    "isFullyGifted": false,
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "washing-machine",
@@ -57,11 +57,11 @@
     "image": "/gifts/washing-machine.jpeg",
     "description": "Automatic front-loading washing machine with steam care and eco wash.",
     "featured": false,
-    "contributedAmount": 435000,
-    "contributorCount": 4,
+    "contributedAmount": 0,
+    "contributorCount": 0,
     "isFullyGifted": false,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "porcelain-dinnerware",
@@ -73,11 +73,11 @@
     "image": "/gifts/porcelain-dinnerware.jpeg",
     "description": "32-piece fine porcelain luxury dinner set with gold trim.",
     "featured": false,
-    "contributedAmount": 125000,
-    "contributorCount": 2,
-    "isFullyGifted": true,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "contributedAmount": 0,
+    "contributorCount": 0,
+    "isFullyGifted": false,
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "cookware-pot-set",
@@ -89,11 +89,11 @@
     "image": "/gifts/cookware-pot-set.jpeg",
     "description": "Premium multi-layer granite non-stick pot and pan collection.",
     "featured": false,
-    "contributedAmount": 95000,
-    "contributorCount": 1,
-    "isFullyGifted": true,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "contributedAmount": 0,
+    "contributorCount": 0,
+    "isFullyGifted": false,
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "gold-cutlery-set",
@@ -105,11 +105,11 @@
     "image": "/gifts/gold-cutlery-set.jpeg",
     "description": "Mirror-polished luxury stainless steel gold dining silverware set.",
     "featured": false,
-    "contributedAmount": 45000,
-    "contributorCount": 1,
-    "isFullyGifted": true,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "contributedAmount": 0,
+    "contributorCount": 0,
+    "isFullyGifted": false,
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "food-processor-yam-pounder",
@@ -121,11 +121,11 @@
     "image": "/gifts/food-processor-yam-pounder.jpeg",
     "description": "Heavy-duty electric processor with traditional yam pounder attachments.",
     "featured": false,
-    "contributedAmount": 45000,
-    "contributorCount": 2,
+    "contributedAmount": 0,
+    "contributorCount": 0,
     "isFullyGifted": false,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "hisense-airfryer",
@@ -137,11 +137,11 @@
     "image": "/gifts/hisense-airfryer.jpeg",
     "description": "Large capacity digital air fryer for healthy and delicious meals.",
     "featured": false,
-    "contributedAmount": 25000,
-    "contributorCount": 1,
+    "contributedAmount": 0,
+    "contributorCount": 0,
     "isFullyGifted": false,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "commercial-blender",
@@ -153,11 +153,11 @@
     "image": "/gifts/commercial-blender.jpeg",
     "description": "High-power professional blender with multi-blade crushing system.",
     "featured": false,
-    "contributedAmount": 30000,
-    "contributorCount": 1,
+    "contributedAmount": 0,
+    "contributorCount": 0,
     "isFullyGifted": false,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "cold-press-juicer",
@@ -172,8 +172,8 @@
     "contributedAmount": 0,
     "contributorCount": 0,
     "isFullyGifted": false,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   },
   {
     "id": "philips-steam-iron",
@@ -185,10 +185,10 @@
     "image": "/gifts/philips-steam-iron.jpeg",
     "description": "Continuous steam generator garment care iron with OptimalTEMP.",
     "featured": false,
-    "contributedAmount": 24000,
-    "contributorCount": 1,
+    "contributedAmount": 0,
+    "contributorCount": 0,
     "isFullyGifted": false,
-    "createdAt": "2026-10-05T23:00:16.158Z",
-    "updatedAt": "2026-10-05T23:00:16.158Z"
+    "createdAt": "2026-10-06T16:58:27.908Z",
+    "updatedAt": "2026-10-06T16:58:27.908Z"
   }
 ]
