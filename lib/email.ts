@@ -11,7 +11,6 @@ export interface EmailSendResult {
  * Generates the luxury Official Wedding Invitation & Access Card HTML email template
  */
 export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): string {
-  const passUrl = `${siteUrl}/invite/${invite.code}`
   const guestName = (invite.guestName || invite.targetName || 'Valued Guest').toUpperCase()
   const guestCount = invite.actualGuestCount || invite.maxGuests || 1
   const accessCode = invite.accessCode || invite.passId || invite.code
@@ -299,13 +298,6 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
               <div class="entry-prompt">PLEASE PRESENT THIS INVITATION AT ENTRANCE</div>
               <div>
                 <span class="invitation-badge">STRICTLY BY INVITATION</span>
-              </div>
-
-              <!-- Action Link -->
-              <div style="margin-top: 14px;">
-                <a href="${passUrl}" class="action-btn" target="_blank">
-                  View Official Invitation ↗
-                </a>
               </div>
 
               <!-- Palette Info -->
