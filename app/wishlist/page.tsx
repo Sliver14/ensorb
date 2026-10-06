@@ -659,7 +659,12 @@ export default function WishlistPage() {
                         className={`btn-gift-this-card ${isCompleted ? 'btn-complete' : ''}`}
                         onClick={() => handleOpenModal(item)}
                       >
-                        {isCompleted ? 'View Details / Extra Blessing →' : 'Contribute or Gift Item 🎁'}
+                        <span className="btn-label-desktop">
+                          {isCompleted ? 'View Details / Extra Blessing →' : 'Contribute or Gift Item 🎁'}
+                        </span>
+                        <span className="btn-label-mobile">
+                          {isCompleted ? 'View Details →' : 'Gift Item 🎁'}
+                        </span>
                       </button>
 
                       {/* Corner Botanical Accent */}
