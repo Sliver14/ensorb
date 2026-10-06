@@ -75,9 +75,6 @@ export default function AdminPage() {
 
   // Modals & UI States
   const [showManualModal, setShowManualModal] = useState(false)
-  const [showResetModal, setShowResetModal] = useState(false)
-  const [isResettingData, setIsResettingData] = useState(false)
-  const [resetTarget, setResetTarget] = useState<'all' | 'invites' | 'gifts'>('all')
 
   const [editingInvite, setEditingInvite] = useState<Invite | null>(null)
   const [previewInvite, setPreviewInvite] = useState<Invite | null>(null)
@@ -482,30 +479,6 @@ export default function AdminPage() {
     }
   }
 
-  // Handle Complete Data Reset
-  const handleResetData = async () => {
-    setIsResettingData(true)
-    try {
-      const res = await fetch('/api/admin/reset-data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ target: resetTarget }),
-      })
-      const data = await res.json()
-
-      if (res.ok && data.success) {
-        showToast('✓ Demo data successfully wiped and reset clean!', 'success')
-        setShowResetModal(false)
-        await loadDashboardData()
-      } else {
-        showToast(data.error || 'Failed to reset data', 'error')
-      }
-    } catch {
-      showToast('Error executing database reset', 'error')
-    } finally {
-      setIsResettingData(false)
-    }
-  }
 
   // Export CSV
   const handleExportCSV = () => {
@@ -725,15 +698,6 @@ export default function AdminPage() {
                 <span>{isLoading ? 'Syncing...' : 'Sync DB'}</span>
               </button>
 
-              <button
-                type="button"
-                className="admin-action-btn-danger"
-                onClick={() => setShowResetModal(true)}
-                title="Reset test data"
-              >
-                <Trash2 size={15} />
-                <span>Reset Demo Data</span>
-              </button>
 
               <button
                 type="button"
@@ -1728,104 +1692,6 @@ export default function AdminPage() {
         document.body
       )}
 
-      {/* =======================================================================
-          MODAL: RESET DATA CONFIRMATION
-          ======================================================================= */}
-      {showResetModal && mounted && createPortal(
-        <div className="admin-modal-overlay" onClick={() => setShowResetModal(false)}>
-          <div
-            className="admin-modal-dialog"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            style={{ maxWidth: '480px' }}
-          >
-            <button
-              type="button"
-              className="admin-modal-close"
-              onClick={() => setShowResetModal(false)}
-            >
-              ✕
-            </button>
-
-            <div className="admin-modal-header" style={{ textAlign: 'center' }}>
-              <div className="admin-warning-circle">
-                <AlertTriangle size={32} />
-              </div>
-              <h2>Reset Demo Data</h2>
-              <p>This action will cleanly wipe test data so you can launch with a completely fresh system.</p>
-            </div>
-
-            <div className="admin-modal-body">
-              <div className="admin-form-group">
-                <label className="admin-label">Select What to Reset:</label>
-                <div className="reset-options-list">
-                  <label className="reset-radio-item">
-                    <input
-                      type="radio"
-                      name="resetTarget"
-                      value="all"
-                      checked={resetTarget === 'all'}
-                      onChange={() => setResetTarget('all')}
-                    />
-                    <div>
-                      <strong>All Data (Guests &amp; Gifts)</strong>
-                      <span>Wipes guest RSVPs and resets all gift registry funds to ₦0</span>
-                    </div>
-                  </label>
-
-                  <label className="reset-radio-item">
-                    <input
-                      type="radio"
-                      name="resetTarget"
-                      value="invites"
-                      checked={resetTarget === 'invites'}
-                      onChange={() => setResetTarget('invites')}
-                    />
-                    <div>
-                      <strong>Guest List Only</strong>
-                      <span>Wipes all RSVPs and registered invites</span>
-                    </div>
-                  </label>
-
-                  <label className="reset-radio-item">
-                    <input
-                      type="radio"
-                      name="resetTarget"
-                      value="gifts"
-                      checked={resetTarget === 'gifts'}
-                      onChange={() => setResetTarget('gifts')}
-                    />
-                    <div>
-                      <strong>Gift Contributions Only</strong>
-                      <span>Resets gift funding progress and contribution records</span>
-                    </div>
-                  </label>
-                </div>
-              </div>
-
-              <div className="admin-modal-footer">
-                <button
-                  type="button"
-                  className="admin-btn-secondary-luxury"
-                  onClick={() => setShowResetModal(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  className="admin-btn-danger-luxury"
-                  onClick={handleResetData}
-                  disabled={isResettingData}
-                >
-                  {isResettingData ? 'Wiping Database...' : 'Confirm Reset Data 🗑'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>,
-        document.body
-      )}
 
       {/* =======================================================================
           MODAL: EDIT GUEST DETAILS
