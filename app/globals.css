@@ -15713,59 +15713,189 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 /* =========================================================================
-   GIFT COUPLE FLOATING ACTION BUTTON (FAB) & MODAL
+   GIFT COUPLE FLOATING ACTION BUTTON (FAB) & MODAL (LUXURY REDESIGN)
    ========================================================================= */
 .gift-couple-fab-container {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 999;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
   display: flex;
   align-items: center;
 }
 
 .gift-couple-fab-btn {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #4A1525 0%, #6B1D2F 100%);
+  gap: 12px;
+  background: linear-gradient(135deg, #3A101C 0%, #5E1729 50%, #4A1525 100%);
   color: #FAF7F2;
   border: 1.5px solid #D4AF37;
-  padding: 12px 20px;
+  padding: 10px 22px 10px 14px;
   border-radius: 9999px;
   font-family: var(--font-sans), sans-serif;
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  box-shadow: 0 10px 28px rgba(74, 21, 37, 0.35), 0 2px 8px rgba(212, 175, 55, 0.2);
+  box-shadow: 0 10px 32px rgba(58, 16, 28, 0.45), 0 0 16px rgba(212, 175, 55, 0.35);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
 }
 
 .gift-couple-fab-btn:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 14px 34px rgba(74, 21, 37, 0.45), 0 4px 12px rgba(212, 175, 55, 0.35);
-  background: linear-gradient(135deg, #5C1D2E 0%, #7D2338 100%);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 42px rgba(58, 16, 28, 0.55), 0 0 24px rgba(212, 175, 55, 0.5);
+  background: linear-gradient(135deg, #4A1525 0%, #731C32 50%, #5E1729 100%);
 }
 
-.fab-gift-icon {
-  font-size: 18px;
-  animation: fab-gift-bounce 3s infinite ease-in-out;
+.fab-shimmer-sweep {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.35), transparent);
+  transform: skewX(-20deg);
+  animation: fab-shimmer 4s infinite ease-in-out;
+  pointer-events: none;
 }
 
-@keyframes fab-gift-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px) rotate(6deg); }
+@keyframes fab-shimmer {
+  0% { left: -100%; }
+  35%, 100% { left: 200%; }
+}
+
+.fab-gift-icon-wrap {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FAF0D7 0%, #E8D098 100%);
+  color: #4A1525;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.fab-lucide-gift {
+  animation: fab-gift-wiggle 3.5s infinite ease-in-out;
+}
+
+.fab-sparkle-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  font-size: 11px;
+  animation: fab-sparkle-ping 2.5s infinite ease-in-out;
+}
+
+@keyframes fab-gift-wiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  15% { transform: rotate(-10deg) scale(1.1); }
+  30% { transform: rotate(10deg) scale(1.1); }
+  45% { transform: rotate(0deg) scale(1); }
+}
+
+@keyframes fab-sparkle-ping {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.fab-text-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.fab-text-primary {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+.fab-text-sub {
+  font-size: 10px;
+  font-weight: 500;
+  color: #E8D098;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+/* -------------------------------------------------------------------------
+   GIFT FAB MODAL UI
+   ------------------------------------------------------------------------- */
+.gift-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 6, 10, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.reveal-modal-fade {
+  animation: modalFadeIn 0.25s ease-out forwards;
+}
+
+.reveal-modal-card {
+  animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalScaleUp {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .fab-quick-gift-modal {
-  max-width: 480px;
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: 32px 28px;
-  border: 1px solid #E5DFD3;
-  box-shadow: 0 24px 64px rgba(74, 21, 37, 0.2);
+  max-width: 500px;
+  width: 100%;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF7F2 100%);
+  border-radius: 24px;
+  padding: 34px 28px 28px;
+  border: 1.5px solid #D4AF37;
+  box-shadow: 0 25px 70px rgba(58, 16, 28, 0.45), 0 0 35px rgba(212, 175, 55, 0.2);
   position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.fab-modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #F4EFEA;
+  border: 1px solid #D8CFC2;
+  color: #4A1525;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 10;
+}
+
+.fab-modal-close-btn:hover {
+  background: #4A1525;
+  color: #FAF7F2;
+  border-color: #D4AF37;
+  transform: rotate(90deg);
 }
 
 .fab-modal-header {
@@ -15773,106 +15903,312 @@ html.ensorb-unlocked .wedding-journey-gate {
   margin-bottom: 20px;
 }
 
-.fab-modal-icon {
-  width: 52px;
-  height: 52px;
-  margin: 0 auto 12px;
-  border-radius: 50%;
-  background: #F8F3EA;
-  color: #4A1525;
-  display: flex;
+.fab-modal-crest {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-.fab-modal-header .eyebrow {
-  font-size: 10px;
+.fab-modal-crest .eyebrow {
+  font-size: 10.5px;
   letter-spacing: 0.18em;
-  color: #8C7A6B;
-  display: block;
-  margin-bottom: 4px;
+  font-weight: 700;
+  color: #8C6D1F;
+  text-transform: uppercase;
 }
 
 .fab-modal-header h2 {
   font-family: var(--font-cormorant), Georgia, serif;
-  font-size: 26px;
-  color: #4A1525;
-  margin: 0 0 6px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #3A101C;
+  margin: 0 0 8px;
+  line-height: 1.15;
 }
 
 .fab-modal-header p {
   font-size: 13px;
   color: #6B6258;
-  line-height: 1.5;
-  margin: 0;
+  line-height: 1.55;
+  margin: 0 auto;
+  max-width: 420px;
 }
 
-.fab-modal-bank-card {
-  background: #FDFBF7;
-  border: 1px solid #E8E0D2;
-  border-radius: 12px;
-  padding: 18px;
-  margin-bottom: 20px;
+/* VIP Metal Bank Transfer Card */
+.fab-luxury-bank-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2E0B16 0%, #4D1322 50%, #1F070F 100%);
+  border: 1px solid #D4AF37;
+  border-radius: 18px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+  color: #FAF7F2;
+  box-shadow: 0 12px 32px rgba(46, 11, 22, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.bank-header-pill {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 700;
-  color: #4A1525;
-  margin-bottom: 12px;
-  display: inline-block;
-  background: #F2E9DB;
-  padding: 3px 10px;
-  border-radius: 20px;
+.bank-card-glass-glow {
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
-.fab-bank-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.fab-bank-row {
+.bank-card-top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
+  margin-bottom: 14px;
 }
 
-.fab-bank-row .lbl {
-  color: #8C7A6B;
-  font-size: 12px;
-}
-
-.fab-bank-row .val {
-  color: #191919;
-}
-
-.acc-copy-wrap {
-  display: flex;
+.bank-brand-pill {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #FAF7F2;
+  letter-spacing: 0.04em;
 }
 
-.btn-quick-copy {
-  background: #4A1525;
-  color: #FAF7F2;
+.bank-instant-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #D4AF37;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.bank-acc-hero-box {
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bank-acc-hero-box:hover {
+  border-color: #D4AF37;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.acc-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.acc-lbl-text {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #D4AF37;
+}
+
+.acc-tap-hint {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.acc-number-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.acc-number-display {
+  font-family: monospace;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #FFFFFF;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.btn-bank-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #D4AF37;
+  color: #2E0B16;
   border: none;
   border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 11px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.btn-quick-copy:hover {
-  opacity: 0.9;
+.btn-bank-copy:hover {
+  background: #E5C158;
+}
+
+.btn-bank-copy.copied {
+  background: #2F634A;
+  color: #FFFFFF;
+}
+
+.bank-acc-name-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 14px;
+}
+
+.acc-name-lbl {
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #D4AF37;
+}
+
+.acc-name-val {
+  font-size: 12px;
+  font-weight: 600;
+  color: #FAF7F2;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+}
+
+.bank-card-footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 12px;
+}
+
+.btn-copy-all-details {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FAF7F2;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.btn-copy-all-details:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #D4AF37;
+}
+
+.bank-narration-hint {
+  font-size: 11px;
+  color: #E8D098;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.fab-modal-divider {
+  position: relative;
+  text-align: center;
+  margin: 16px 0;
+}
+
+.fab-modal-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #E5DFD3;
+}
+
+.fab-modal-divider span {
+  position: relative;
+  background: #FAF7F2;
+  padding: 0 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #8C7A6B;
+}
+
+.btn-luxury-registry-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #4A1525 0%, #6B1D2F 100%);
+  color: #FAF7F2;
+  border: 1.5px solid #D4AF37;
+  border-radius: 14px;
+  padding: 12px 18px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(74, 21, 37, 0.25);
+  transition: all 0.25s ease;
+}
+
+.btn-luxury-registry-cta:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #5C1D2E 0%, #7D2338 100%);
+  box-shadow: 0 12px 30px rgba(74, 21, 37, 0.35);
+}
+
+.btn-cta-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-cta-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D4AF37;
+}
+
+.btn-cta-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.btn-cta-text strong {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.btn-cta-text span {
+  font-size: 11px;
+  color: #E8D098;
+}
+
+.btn-cta-arrow {
+  color: #D4AF37;
+  transition: transform 0.2s ease;
+}
+
+.btn-luxury-registry-cta:hover .btn-cta-arrow {
+  transform: translateX(4px);
 }
 
 /* =========================================================================
@@ -16891,74 +17227,89 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 /* -------------------------------------------------------------------------
-   ADMIN TOP HEADER BAR
+   ADMIN TOP HEADER & ACTIONS
    ------------------------------------------------------------------------- */
 .admin-top-header-section {
-  background: #FFFFFF;
-  border-bottom: 1px solid #E2D9CB;
-  padding: 24px 0;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF7F2 100%);
+  border-bottom: 1.5px solid #E2D9CB;
+  padding: 24px 0 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.admin-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
 .admin-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
   flex-wrap: wrap;
-  gap: 18px;
 }
 
 .admin-header-crest-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 6px;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
 .admin-crest-tag {
   font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-weight: 800;
+  letter-spacing: 0.16em;
   color: #6B1D2F;
+  background: #F7EBEF;
+  border: 1px solid rgba(107, 29, 47, 0.2);
+  padding: 3px 10px;
+  border-radius: 20px;
   text-transform: uppercase;
-  background: #FAF7F2;
-  border: 1px solid #E8DECE;
-  padding: 3px 8px;
-  border-radius: 4px;
 }
 
 .admin-db-status-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  background: #DCFCE7;
+  border: 1px solid #BBF7D0;
+  color: #166534;
   font-size: 11px;
-  color: #2F634A;
-  font-weight: 600;
-  background: #F0F9F4;
-  border: 1px solid #C3E6D3;
+  font-weight: 700;
   padding: 3px 10px;
-  border-radius: 9999px;
+  border-radius: 20px;
 }
 
 .pulsing-green-dot {
   width: 7px;
   height: 7px;
+  background: #22C55E;
   border-radius: 50%;
-  background: #2F634A;
-  box-shadow: 0 0 0 2px rgba(47, 99, 74, 0.2);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.35);
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.6; }
 }
 
 .admin-main-heading {
   font-family: var(--font-cormorant), Georgia, serif;
-  font-size: 28px;
-  color: #3D101C;
-  margin: 0 0 4px;
-  line-height: 1.2;
+  font-size: 30px;
+  font-weight: 700;
+  color: #3A101C;
+  margin: 2px 0 4px;
+  letter-spacing: -0.01em;
 }
 
 .admin-sub-heading {
-  font-size: 13px;
-  color: #70685F;
+  font-size: 13.5px;
+  color: #6B6258;
   margin: 0;
+  max-width: 600px;
 }
 
 .admin-header-actions-group {
@@ -16972,19 +17323,20 @@ html.ensorb-unlocked .wedding-journey-gate {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #FAF7F2;
-  border: 1px solid #D4CEBF;
+  background: #FFFFFF;
+  border: 1.5px solid #D4CEBF;
   color: #4A1525;
-  border-radius: 8px;
-  padding: 8px 14px;
+  border-radius: 10px;
+  padding: 9px 16px;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .admin-action-btn-refresh:hover {
-  background: #FFFFFF;
+  background: #FAF7F2;
   border-color: #4A1525;
 }
 
@@ -16992,20 +17344,20 @@ html.ensorb-unlocked .wedding-journey-gate {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #FFF5F5;
-  border: 1px solid #F3C4C4;
-  color: #9C1414;
-  border-radius: 8px;
-  padding: 8px 14px;
+  background: #FFF1F2;
+  border: 1.5px solid #FECDD3;
+  color: #BE123C;
+  border-radius: 10px;
+  padding: 9px 16px;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .admin-action-btn-danger:hover {
-  background: #FDF0F0;
-  border-color: #9C1414;
+  background: #FFE4E6;
+  border-color: #E11D48;
 }
 
 .admin-action-btn-logout {
@@ -17013,12 +17365,12 @@ html.ensorb-unlocked .wedding-journey-gate {
   align-items: center;
   gap: 6px;
   background: #F0ECE6;
-  border: 1px solid #D4CEBF;
+  border: 1.5px solid #D4CEBF;
   color: #554F47;
-  border-radius: 8px;
-  padding: 8px 14px;
+  border-radius: 10px;
+  padding: 9px 16px;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -17028,17 +17380,33 @@ html.ensorb-unlocked .wedding-journey-gate {
   color: #191919;
 }
 
-/* -------------------------------------------------------------------------
-   MASTER INVITATION LINK BANNER
-   ------------------------------------------------------------------------- */
+/* Master Invite Banner Card */
+.admin-main-content-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+}
+
 .admin-master-invite-card {
-  background: linear-gradient(135deg, #FFFFFF 0%, #FAF7F2 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #FDFBF7 100%);
   border: 1.5px solid #D4AF37;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.12), 0 4px 12px rgba(0, 0, 0, 0.03);
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.15), 0 4px 14px rgba(0, 0, 0, 0.03);
   padding: 28px 32px;
   position: relative;
   overflow: hidden;
+}
+
+.admin-master-invite-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 240px;
+  height: 100%;
+  background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.12), transparent 70%);
+  pointer-events: none;
 }
 
 .master-invite-badge-row {
@@ -17055,36 +17423,37 @@ html.ensorb-unlocked .wedding-journey-gate {
   background: #FAF0D7;
   border: 1px solid #D4AF37;
   color: #7A5B0B;
-  font-size: 10.5px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 9999px;
 }
 
 .master-badge-status {
-  font-size: 11px;
-  font-weight: 600;
-  color: #5E1729;
-  background: rgba(94, 23, 41, 0.08);
-  padding: 3px 8px;
-  border-radius: 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #6B1D2F;
+  background: rgba(107, 29, 47, 0.08);
+  padding: 4px 10px;
+  border-radius: 6px;
 }
 
 .master-invite-title {
   font-family: var(--font-cormorant), Georgia, serif;
-  font-size: 26px;
-  color: #3D101C;
+  font-size: 28px;
+  font-weight: 700;
+  color: #3A101C;
   margin: 0 0 6px;
 }
 
 .master-invite-desc {
   font-size: 13.5px;
-  color: #61584F;
+  color: #5D544B;
   margin: 0 0 18px;
-  max-width: 860px;
-  line-height: 1.5;
+  max-width: 880px;
+  line-height: 1.55;
 }
 
 .master-link-input-group {
@@ -17096,14 +17465,14 @@ html.ensorb-unlocked .wedding-journey-gate {
 .master-link-display-box {
   background: #FFFFFF;
   border: 1.5px solid #D4CEBF;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 12px 18px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .master-link-url {
   font-family: monospace;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 700;
   color: #4A1525;
   word-break: break-all;
@@ -17119,25 +17488,27 @@ html.ensorb-unlocked .wedding-journey-gate {
 .btn-master-action {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  border-radius: 8px;
-  padding: 10px 16px;
+  gap: 8px;
+  border-radius: 10px;
+  padding: 10px 18px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
 
 .btn-master-action.copy {
-  background: #4A1525;
+  background: linear-gradient(135deg, #4A1525 0%, #6B1D2F 100%);
   color: #FAF7F2;
-  border: 1px solid #D4AF37;
-  box-shadow: 0 4px 10px rgba(74, 21, 37, 0.15);
+  border: 1.5px solid #D4AF37;
+  box-shadow: 0 4px 14px rgba(74, 21, 37, 0.25);
 }
 
 .btn-master-action.copy:hover {
-  background: #6B1D2F;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(74, 21, 37, 0.35);
+  background: linear-gradient(135deg, #5C1D2E 0%, #7D2338 100%);
 }
 
 .btn-master-action.copy.copied {
@@ -17149,20 +17520,24 @@ html.ensorb-unlocked .wedding-journey-gate {
   background: #25D366;
   color: #FFFFFF;
   border: none;
-  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
 }
 
 .btn-master-action.whatsapp:hover {
+  transform: translateY(-2px);
   background: #20BA5A;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
 }
 
 .btn-master-action.preview {
   background: #FFFFFF;
   color: #4A1525;
   border: 1.5px solid #D4CEBF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .btn-master-action.preview:hover {
+  transform: translateY(-2px);
   background: #FAF7F2;
   border-color: #4A1525;
 }
@@ -17174,38 +17549,37 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 .btn-master-action.manual:hover {
+  transform: translateY(-2px);
   background: #F5E5C0;
 }
 
-/* -------------------------------------------------------------------------
-   KPI STATS GRID
-   ------------------------------------------------------------------------- */
+/* KPI Overview Grid */
 .admin-kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
   gap: 16px;
 }
 
 .admin-kpi-card {
   background: #FFFFFF;
   border: 1.5px solid #E5DFD3;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 18px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.02);
 }
 
 .admin-kpi-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: #D4AF37;
-  box-shadow: 0 6px 16px rgba(61, 16, 28, 0.06);
+  box-shadow: 0 8px 22px rgba(58, 16, 28, 0.08);
 }
 
 .admin-kpi-card.selected {
   border-color: #4A1525;
   background: #FDFBF8;
-  box-shadow: 0 0 0 1.5px #4A1525;
+  box-shadow: 0 0 0 2px #4A1525, 0 8px 20px rgba(74, 21, 37, 0.1);
 }
 
 .kpi-card-inner {
@@ -17215,9 +17589,9 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 .kpi-icon-box {
-  width: 46px;
-  height: 46px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17255,31 +17629,34 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 .kpi-label {
-  font-size: 11.5px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: #7A6F64;
 }
 
 .kpi-number {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
   color: #1A1A1A;
   line-height: 1.15;
   margin: 2px 0;
 }
+
+.kpi-number.text-amber { color: #D97706; }
+.kpi-number.text-green { color: #16A34A; }
+.kpi-number.text-gold { color: #B45309; }
+.kpi-number.text-rose { color: #E11D48; }
 
 .kpi-caption {
   font-size: 11px;
   color: #8C8276;
 }
 
-/* -------------------------------------------------------------------------
-   MAIN TABS NAVIGATION
-   ------------------------------------------------------------------------- */
+/* Main Navigation Tabs */
 .admin-main-tabs-wrapper {
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .admin-tabs-nav-bar {
@@ -17295,9 +17672,9 @@ html.ensorb-unlocked .wedding-journey-gate {
   gap: 8px;
   background: transparent;
   border: none;
-  padding: 12px 18px;
-  font-size: 14.5px;
-  font-weight: 600;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 700;
   color: #6B6258;
   cursor: pointer;
   border-bottom: 3px solid transparent;
@@ -17316,7 +17693,7 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .admin-tab-bubble {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   padding: 2px 8px;
   border-radius: 9999px;
 }
@@ -17326,9 +17703,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   color: #92400E;
 }
 
-/* -------------------------------------------------------------------------
-   TABLE FILTER BAR & CONTROLS
-   ------------------------------------------------------------------------- */
+/* Filter Bar & Controls */
 .admin-table-filter-bar {
   display: flex;
   justify-content: space-between;
@@ -17347,12 +17722,12 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .admin-pill-btn {
   background: #FFFFFF;
-  border: 1px solid #D4CEBF;
+  border: 1.5px solid #D4CEBF;
   color: #554F47;
   border-radius: 9999px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -17367,7 +17742,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   background: #4A1525;
   color: #FAF7F2;
   border-color: #4A1525;
-  box-shadow: 0 2px 6px rgba(74, 21, 37, 0.2);
+  box-shadow: 0 3px 8px rgba(74, 21, 37, 0.25);
 }
 
 .admin-filter-actions-right {
@@ -17391,20 +17766,20 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .admin-search-input {
   background: #FFFFFF;
-  border: 1px solid #D4CEBF;
-  border-radius: 8px;
-  padding: 8px 30px 8px 34px;
+  border: 1.5px solid #D4CEBF;
+  border-radius: 10px;
+  padding: 8px 30px 8px 36px;
   font-size: 13px;
   color: #191919;
   outline: none;
-  width: 260px;
+  width: 270px;
   transition: all 0.2s ease;
 }
 
 .admin-search-input:focus {
   border-color: #4A1525;
-  width: 300px;
-  box-shadow: 0 0 0 2px rgba(74, 21, 37, 0.08);
+  width: 320px;
+  box-shadow: 0 0 0 2px rgba(74, 21, 37, 0.1);
 }
 
 .admin-clear-search-btn {
@@ -17423,12 +17798,12 @@ html.ensorb-unlocked .wedding-journey-gate {
   align-items: center;
   gap: 6px;
   background: #FFFFFF;
-  border: 1px solid #D4CEBF;
+  border: 1.5px solid #D4CEBF;
   color: #2F634A;
-  border-radius: 8px;
-  padding: 8px 14px;
+  border-radius: 10px;
+  padding: 8px 16px;
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -17438,14 +17813,12 @@ html.ensorb-unlocked .wedding-journey-gate {
   border-color: #2F634A;
 }
 
-/* -------------------------------------------------------------------------
-   LUXURY MODERN TABLES
-   ------------------------------------------------------------------------- */
+/* Luxury Modern Tables */
 .admin-luxury-table-card {
   background: #FFFFFF;
   border: 1.5px solid #E5DFD3;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03);
   overflow: hidden;
 }
 
@@ -17465,10 +17838,10 @@ html.ensorb-unlocked .wedding-journey-gate {
   background: #FAF7F2;
   color: #5A4E42;
   font-size: 11.5px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  padding: 14px 18px;
+  padding: 16px 20px;
   border-bottom: 1.5px solid #E2D9CB;
   white-space: nowrap;
 }
@@ -17495,7 +17868,7 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 .admin-modern-table td {
-  padding: 16px 18px;
+  padding: 16px 20px;
   vertical-align: middle;
 }
 
@@ -17504,7 +17877,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-width: 260px;
+  max-width: 270px;
 }
 
 .guest-name-text {
@@ -17521,18 +17894,20 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .source-tag {
   font-size: 11px;
+  font-weight: 600;
   color: #6B6258;
   background: #F0ECE6;
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: 4px;
 }
 
 .vip-star-tag {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   color: #92400E;
   background: #FEF3C7;
-  padding: 2px 6px;
+  border: 1px solid #FDE68A;
+  padding: 2px 7px;
   border-radius: 4px;
 }
 
@@ -17545,7 +17920,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   border-radius: 6px;
   margin-top: 2px;
   display: inline-block;
-  max-width: 240px;
+  max-width: 250px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -17564,7 +17939,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   gap: 6px;
   color: #4A1525;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .contact-link:hover {
@@ -17601,17 +17976,17 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .table-assigned-tag {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: #191919;
 }
 
 .category-pill {
   display: inline-block;
   font-size: 10.5px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 2px 7px;
+  padding: 2px 8px;
   border-radius: 4px;
   width: fit-content;
 }
@@ -17650,7 +18025,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   gap: 5px;
   font-size: 11.5px;
   font-weight: 700;
-  padding: 4px 9px;
+  padding: 4px 10px;
   border-radius: 9999px;
   width: fit-content;
 }
@@ -17717,10 +18092,10 @@ html.ensorb-unlocked .wedding-journey-gate {
   background: #2F634A;
   color: #FAF7F2;
   border: none;
-  border-radius: 6px;
-  padding: 7px 12px;
+  border-radius: 8px;
+  padding: 7px 14px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.15s ease;
 }
@@ -17736,8 +18111,8 @@ html.ensorb-unlocked .wedding-journey-gate {
   background: #FFF1F2;
   color: #BE123C;
   border: 1px solid #FECDD3;
-  border-radius: 6px;
-  padding: 7px;
+  border-radius: 8px;
+  padding: 7px 9px;
   cursor: pointer;
   transition: background 0.15s ease;
 }
@@ -17752,8 +18127,8 @@ html.ensorb-unlocked .wedding-journey-gate {
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 6px;
-  border: 1px solid #D4CEBF;
+  border-radius: 8px;
+  border: 1.5px solid #D4CEBF;
   background: #FFFFFF;
   color: #554F47;
   cursor: pointer;
@@ -17772,9 +18147,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   color: #BE123C;
 }
 
-/* -------------------------------------------------------------------------
-   EMPTY TABLE & LOADING BOXES
-   ------------------------------------------------------------------------- */
+/* Empty Table & Loading Boxes */
 .admin-empty-table-box {
   padding: 60px 24px;
   text-align: center;
@@ -17798,7 +18171,8 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .admin-empty-table-box h3 {
   font-family: var(--font-cormorant), Georgia, serif;
-  font-size: 22px;
+  font-size: 24px;
+  font-weight: 700;
   color: #3D101C;
   margin: 0 0 6px;
 }
@@ -17808,6 +18182,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   color: #70685F;
   margin: 0 0 20px;
   max-width: 480px;
+  line-height: 1.5;
 }
 
 .empty-actions-row {
@@ -17826,27 +18201,27 @@ html.ensorb-unlocked .wedding-journey-gate {
   gap: 14px;
   color: #6B1D2F;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-/* -------------------------------------------------------------------------
-   GIFT STATS BANNER & CATALOG GRID
-   ------------------------------------------------------------------------- */
+/* Gift Stats Banner & Catalog Grid */
 .admin-gift-stats-banner {
   background: #FFFFFF;
   border: 1.5px solid #E5DFD3;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 24px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
 }
 
 .gift-banner-left h2 {
   font-family: var(--font-cormorant), Georgia, serif;
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 700;
   color: #3D101C;
   margin: 2px 0 4px;
 }
@@ -17867,7 +18242,7 @@ html.ensorb-unlocked .wedding-journey-gate {
 .gift-stat-box {
   background: #FAF7F2;
   border: 1px solid #E5DFD3;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 12px 18px;
   display: flex;
   flex-direction: column;
@@ -17876,13 +18251,13 @@ html.ensorb-unlocked .wedding-journey-gate {
 .gift-stat-box .lbl {
   font-size: 11px;
   color: #7A6F64;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
 }
 
 .gift-stat-box .val {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
   color: #191919;
 }
 
@@ -17897,13 +18272,14 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 .gift-item-name-tag {
-  font-weight: 600;
+  font-weight: 700;
   color: #191919;
 }
 
 .gift-amount-display {
   color: #6B1D2F;
   font-size: 15px;
+  font-weight: 800;
 }
 
 .admin-catalog-grid-section {
@@ -17916,7 +18292,8 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .admin-section-header h3 {
   font-family: var(--font-cormorant), Georgia, serif;
-  font-size: 22px;
+  font-size: 24px;
+  font-weight: 700;
   color: #3D101C;
   margin: 2px 0 0;
 }
@@ -17929,10 +18306,16 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .admin-catalog-item-card {
   background: #FFFFFF;
-  border: 1px solid #E5DFD3;
-  border-radius: 12px;
+  border: 1.5px solid #E5DFD3;
+  border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease;
+}
+
+.admin-catalog-item-card:hover {
+  transform: translateY(-2px);
+  border-color: #D4AF37;
 }
 
 .catalog-img-wrap {
@@ -17951,7 +18334,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   position: absolute;
   top: 8px;
   right: 8px;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.7);
   color: #FFFFFF;
   font-size: 10.5px;
   font-weight: 700;
@@ -17998,15 +18381,14 @@ html.ensorb-unlocked .wedding-journey-gate {
   transition: width 0.3s ease;
 }
 
-/* -------------------------------------------------------------------------
-   ADMIN MODALS & OVERLAYS
-   ------------------------------------------------------------------------- */
+/* Admin Modals & Overlays */
 .admin-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(30, 10, 16, 0.65);
-  backdrop-filter: blur(4px);
-  z-index: 99999;
+  background: rgba(30, 10, 16, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18016,12 +18398,12 @@ html.ensorb-unlocked .wedding-journey-gate {
 .admin-modal-dialog {
   background: #FFFFFF;
   border: 1.5px solid #D4AF37;
-  border-radius: 16px;
+  border-radius: 20px;
   max-width: 540px;
   width: 100%;
   padding: 32px;
   position: relative;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
   max-height: 90vh;
   overflow-y: auto;
 }
@@ -18033,8 +18415,8 @@ html.ensorb-unlocked .wedding-journey-gate {
   background: #FAF7F2;
   border: 1px solid #D4CEBF;
   color: #4A1525;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   font-size: 14px;
   font-weight: 700;
@@ -18042,11 +18424,12 @@ html.ensorb-unlocked .wedding-journey-gate {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .admin-modal-close:hover {
-  background: #EFEAE1;
+  background: #4A1525;
+  color: #FAF7F2;
 }
 
 .admin-modal-header {
@@ -18055,7 +18438,8 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .admin-modal-header h2 {
   font-family: var(--font-cormorant), Georgia, serif;
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 700;
   color: #3D101C;
   margin: 2px 0 4px;
 }
@@ -18079,18 +18463,18 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 .admin-label {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11.5px;
+  font-weight: 800;
   color: #4A1525;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .admin-input-field {
   width: 100%;
   background: #FFFFFF;
-  border: 1px solid #D4CEBF;
-  border-radius: 8px;
+  border: 1.5px solid #D4CEBF;
+  border-radius: 10px;
   padding: 10px 14px;
   font-size: 13.5px;
   color: #191919;
@@ -18100,7 +18484,7 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .admin-input-field:focus {
   border-color: #4A1525;
-  box-shadow: 0 0 0 2px rgba(74, 21, 37, 0.08);
+  box-shadow: 0 0 0 2px rgba(74, 21, 37, 0.1);
 }
 
 .admin-input-field.select {
@@ -18110,8 +18494,8 @@ html.ensorb-unlocked .wedding-journey-gate {
 .admin-textarea-field {
   width: 100%;
   background: #FFFFFF;
-  border: 1px solid #D4CEBF;
-  border-radius: 8px;
+  border: 1.5px solid #D4CEBF;
+  border-radius: 10px;
   padding: 10px 14px;
   font-size: 13px;
   color: #191919;
@@ -18143,12 +18527,62 @@ html.ensorb-unlocked .wedding-journey-gate {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 20px;
+}
+
+.admin-btn-primary-luxury {
+  background: linear-gradient(135deg, #4A1525 0%, #6B1D2F 100%);
+  color: #FAF7F2;
+  border: 1.5px solid #D4AF37;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(74, 21, 37, 0.2);
+}
+
+.admin-btn-primary-luxury:hover {
+  background: linear-gradient(135deg, #5C1D2E 0%, #7D2338 100%);
+}
+
+.admin-btn-secondary-luxury {
+  background: #F0ECE6;
+  border: 1.5px solid #D4CEBF;
+  color: #554F47;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-secondary-luxury:hover {
+  background: #E5DFD7;
+  color: #191919;
+}
+
+.admin-btn-danger-luxury {
+  background: #DC2626;
+  color: #FFFFFF;
+  border: 1.5px solid #EF4444;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-btn-danger-luxury:hover {
+  background: #B91C1C;
 }
 
 .admin-warning-circle {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: #FEF2F2;
   border: 1px solid #FCA5A5;
@@ -18171,10 +18605,15 @@ html.ensorb-unlocked .wedding-journey-gate {
   align-items: flex-start;
   gap: 10px;
   background: #FAF7F2;
-  border: 1px solid #E5DFD3;
-  border-radius: 8px;
-  padding: 10px 14px;
+  border: 1.5px solid #E5DFD3;
+  border-radius: 10px;
+  padding: 12px 16px;
   cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.reset-radio-item:hover {
+  border-color: #D4AF37;
 }
 
 .reset-radio-item input {
@@ -18222,7 +18661,7 @@ html.ensorb-unlocked .wedding-journey-gate {
   right: 24px;
   z-index: 100000;
   padding: 12px 18px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 13.5px;
   font-weight: 600;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
