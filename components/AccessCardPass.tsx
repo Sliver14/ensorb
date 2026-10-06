@@ -382,14 +382,24 @@ export function AccessCardPass({
 
       {/* Interactive Pass Action Controls */}
       <div className="pass-actions-panel">
+        <a
+          href="/api/download-invitation"
+          download="Official-Wedding-Invitation-Ngozi-and-Sorbari.jpeg"
+          className="pass-btn primary-gold-btn"
+          style={{ textDecoration: 'none' }}
+        >
+          <Download size={18} />
+          <span>Download Invitation Card</span>
+        </a>
+
         <button
           type="button"
-          className="pass-btn primary-gold-btn"
+          className="pass-btn outline-btn"
           onClick={handleDownloadCard}
           disabled={isGeneratingImage}
         >
           <Download size={18} />
-          <span>{isGeneratingImage ? 'Generating Image...' : 'Save Invitation Card (PNG)'}</span>
+          <span>{isGeneratingImage ? 'Generating Pass...' : 'Save Guest Pass (PNG)'}</span>
         </button>
 
         <a

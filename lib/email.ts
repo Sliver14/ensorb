@@ -224,13 +224,28 @@ export function generateAccessCardEmailHtml(invite: Invite, siteUrl: string): st
               <h1 class="couple-headline">NGOZI &amp; SORBARI</h1>
               <div class="sub-headline">WEDDING CELEBRATION • ACCESS CARD</div>
 
-              <!-- Official Wedding Invitation Card Image -->
-              <div style="margin: 14px 0 20px; text-align: center;">
-                <img
-                  src="${siteUrl}/Ensorb-IV.jpg.jpeg"
-                  alt="Official Wedding Invitation - Ngozi &amp; Sorbari"
-                  style="max-width: 100%; height: auto; border-radius: 10px; border: 2px solid #D4AF37; box-shadow: 0 8px 24px rgba(0,0,0,0.15); display: block; margin: 0 auto;"
-                />
+              <!-- Official Wedding Invitation Card Image & Download Button -->
+              <div style="margin: 16px 0 22px; text-align: center;">
+                <a href="${siteUrl}/api/download-invitation" target="_blank" style="display: block; text-decoration: none;" title="Click to view or download invitation">
+                  <img
+                    src="${siteUrl}/Ensorb-IV.jpg.jpeg"
+                    alt="Official Wedding Invitation - Ngozi &amp; Sorbari"
+                    style="max-width: 100%; height: auto; border-radius: 10px; border: 2px solid #D4AF37; box-shadow: 0 8px 24px rgba(0,0,0,0.15); display: block; margin: 0 auto;"
+                  />
+                </a>
+                <div style="margin-top: 14px; text-align: center;">
+                  <a
+                    href="${siteUrl}/api/download-invitation"
+                    download="Official-Wedding-Invitation-Ngozi-and-Sorbari.jpeg"
+                    target="_blank"
+                    style="display: inline-block; background: linear-gradient(135deg, #4A1525 0%, #330D19 100%); color: #FAF7F2 !important; text-decoration: none; padding: 12px 28px; border-radius: 999px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border: 1.5px solid #D4AF37; box-shadow: 0 4px 14px rgba(74,21,37,0.25);"
+                  >
+                    📥 Download Official Invitation Card (HD)
+                  </a>
+                </div>
+                <div style="font-size: 11px; color: #8C7B75; margin-top: 6px;">
+                  Tap button above to save the invitation card image to your device
+                </div>
               </div>
 
               <!-- Date & Venue Bar -->
@@ -470,7 +485,28 @@ export function generateUniqueInviteEmailHtml(invite: Invite, siteUrl: string): 
                 ${invite.customNote ? `<div class="res-row" style="margin-top: 8px; color: #4A1525; font-style: italic;">&ldquo;${invite.customNote}&rdquo;</div>` : ''}
               </div>
 
-              <div>
+              <!-- Official Wedding Invitation Card Image & Download Button -->
+              <div style="margin: 18px 0 24px; text-align: center;">
+                <a href="${siteUrl}/api/download-invitation" target="_blank" style="display: block; text-decoration: none;" title="Click to view or download invitation">
+                  <img
+                    src="${siteUrl}/Ensorb-IV.jpg.jpeg"
+                    alt="Official Wedding Invitation - Ngozi &amp; Sorbari"
+                    style="max-width: 100%; height: auto; border-radius: 10px; border: 2px solid #D4AF37; box-shadow: 0 8px 24px rgba(0,0,0,0.15); display: block; margin: 0 auto;"
+                  />
+                </a>
+                <div style="margin-top: 12px;">
+                  <a
+                    href="${siteUrl}/api/download-invitation"
+                    download="Official-Wedding-Invitation-Ngozi-and-Sorbari.jpeg"
+                    target="_blank"
+                    style="display: inline-block; background: #FAF3E0; color: #4A1525 !important; border: 1.5px solid #D4AF37; padding: 10px 22px; border-radius: 999px; font-size: 12px; font-weight: 700; text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase;"
+                  >
+                    📥 Download Official Invitation Card (HD)
+                  </a>
+                </div>
+              </div>
+
+              <div style="margin-top: 10px;">
                 <a href="${inviteUrl}" class="cta-btn" target="_blank">
                   Confirm RSVP &amp; Claim Access Card ↗
                 </a>
