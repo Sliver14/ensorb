@@ -78,6 +78,12 @@ export function ColorCodeSection() {
             <strong>Dress Code:</strong> Black Tie / Formal Traditional &amp; Contemporary Elegance.
             Guests are welcome to style in any of our four official shades (Burgundy, Blush, Mint Green, or Olive Green), or pair them gracefully with classic neutrals (black, ivory, gold, or champagne).
           </p>
+          <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px dashed rgba(74, 21, 37, 0.15)' }}>
+            <strong>Official Wedding Asoebi:</strong> Female (₦35,000) • Male (₦30,000).{' '}
+            <a href="#asoebi" style={{ color: '#4A1525', fontWeight: 600, textDecoration: 'underline' }}>
+              Order Your Asoebi Below ↓
+            </a>
+          </div>
         </div>
       </div>
     </section>

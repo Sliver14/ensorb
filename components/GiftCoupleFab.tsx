@@ -205,7 +205,7 @@ export function GiftCoupleFab() {
                   </div>
                   <div className="btn-cta-text">
                     <strong>Browse Gift Registry Catalog</strong>
-                    <span>Solar power, kitchen appliances &amp; honeymoon fund</span>
+                    <span>Solar power, kitchen appliances &amp; home essentials</span>
                   </div>
                 </div>
                 <ArrowRight size={18} className="btn-cta-arrow" />

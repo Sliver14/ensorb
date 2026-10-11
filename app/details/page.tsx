@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { Footer } from '@/components/Footer'
 import { ColorCodeSection } from '@/components/ColorCodeSection'
+import { AsoebiSection } from '@/components/AsoebiSection'
 import { weddingSchedule } from '@/lib/data'
 
 export default function DetailsPage() {
@@ -48,6 +49,9 @@ export default function DetailsPage() {
 
       {/* Dress Color Code Section */}
       <ColorCodeSection />
+
+      {/* Official Wedding Asoebi Section */}
+      <AsoebiSection />
 
       {/* Venue & Logistics Section */}
       <section className="venue-logistics-section section-shell">

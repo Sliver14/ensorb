@@ -14,6 +14,7 @@ import {
   HeroBottomTornWithWash,
   TornBannerEdge,
 } from '@/components/WeddingIcons'
+import { AsoebiSection } from '@/components/AsoebiSection'
 
 function CountdownTimer() {
   const [timeLeft, setTimeLeft] = useState({ days: 207, hours: 16, minutes: 42, seconds: 18 })
@@ -96,6 +97,11 @@ export default function HomePage() {
       question: 'When will the reception details be available?',
       answer:
         'The church ceremony begins at 11:00 AM at Christ Embassy Ogba 1 (25 Odusanmi Street, Ogba), followed by the grand reception at 1:00 PM at CELVZ Youth Church (24 Sanyaolu Street, Oregun, Ikeja). For Seat Reservation inquiries, contact Bright (09066157126) or Faith (08079071291).',
+    },
+    {
+      question: 'How do I order the wedding Asoebi?',
+      answer:
+        'You can order directly via WhatsApp (09075720446) or call 08106690387. Female Asoebi is ₦35,000 (luxury beaded lace) and Male Asoebi is ₦30,000 (shimmering Senator/Agbada fabric). Payment is made to Parallex Bank (2000079513 — Ngozi Kalu Emele). Send your transfer receipt on WhatsApp for instant confirmation.',
     },
   ]
 
@@ -318,6 +324,11 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* ====================================================================
+          SECTION 4B: OUR WEDDING ASOEBI
+         ==================================================================== */}
+      <AsoebiSection />
 
       {/* ====================================================================
           SECTION 5: FULL-WIDTH TORN-EDGE QUOTE BANNER

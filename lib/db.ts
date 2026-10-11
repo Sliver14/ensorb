@@ -149,31 +149,26 @@ export async function ensureAllTables() {
       );
     `
 
-    // 4. Seed gifts table if empty
-    const existingGifts = await sql`SELECT count(*) as count FROM gifts;`
-    const count = Number(existingGifts[0]?.count || 0)
-
-    if (count === 0) {
-      for (const gift of registryGifts) {
-        await sql`
-          INSERT INTO gifts (
-            id, title, price, numeric_price, category, category_label, image, description, featured, contributed_amount, contributor_count, is_fully_gifted
-          ) VALUES (
-            ${gift.id},
-            ${gift.title},
-            ${gift.price},
-            ${gift.numericPrice},
-            ${gift.category},
-            ${gift.categoryLabel},
-            ${gift.image},
-            ${gift.description},
-            ${gift.featured || false},
-            ${gift.contributedAmount || 0},
-            ${gift.contributorCount || 0},
-            ${gift.isFullyGifted || false}
-          ) ON CONFLICT (id) DO NOTHING;
-        `
-      }
+    // 4. Seed any missing gifts safely (ON CONFLICT DO NOTHING preserves all existing contributions & DB details)
+    for (const gift of registryGifts) {
+      await sql`
+        INSERT INTO gifts (
+          id, title, price, numeric_price, category, category_label, image, description, featured, contributed_amount, contributor_count, is_fully_gifted
+        ) VALUES (
+          ${gift.id},
+          ${gift.title},
+          ${gift.price},
+          ${gift.numericPrice},
+          ${gift.category},
+          ${gift.categoryLabel},
+          ${gift.image},
+          ${gift.description},
+          ${gift.featured || false},
+          ${gift.contributedAmount || 0},
+          ${gift.contributorCount || 0},
+          ${gift.isFullyGifted || false}
+        ) ON CONFLICT (id) DO NOTHING;
+      `
     }
 
     // 5. Seed sample invites if empty

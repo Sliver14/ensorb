@@ -19284,3 +19284,641 @@ html.ensorb-unlocked .wedding-journey-gate {
     width: 100%;
   }
 }
+
+/* =============================================================================
+   OUR WEDDING ASOEBI SECTION (LUXURY BESPOKE STYLING)
+   ============================================================================= */
+.wedding-asoebi-section {
+  position: relative;
+  padding: 100px 24px;
+  background: linear-gradient(180deg, #FAF7F2 0%, #F5EFEB 50%, #FAF7F2 100%);
+  overflow: hidden;
+  border-top: 1px solid rgba(74, 21, 37, 0.08);
+  border-bottom: 1px solid rgba(74, 21, 37, 0.08);
+}
+
+.asoebi-sprig-left {
+  position: absolute;
+  top: 40px;
+  left: -20px;
+  width: 140px;
+  height: 140px;
+  opacity: 0.18;
+  pointer-events: none;
+  transform: rotate(25deg);
+}
+
+.asoebi-sprig-right {
+  position: absolute;
+  bottom: 40px;
+  right: -20px;
+  width: 140px;
+  height: 140px;
+  opacity: 0.18;
+  pointer-events: none;
+  transform: rotate(-155deg);
+}
+
+.asoebi-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.asoebi-header-center {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 52px;
+}
+
+.asoebi-crest-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  background: rgba(74, 21, 37, 0.06);
+  border: 1px solid rgba(74, 21, 37, 0.12);
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.asoebi-crest-badge .eyebrow-spaced {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: #4A1525;
+}
+
+.asoebi-main-title {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(34px, 4.5vw, 48px);
+  font-weight: 600;
+  color: #4A1525;
+  margin: 0 0 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.asoebi-subtitle {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #6B5E57;
+  margin: 0 auto;
+}
+
+.asoebi-content-grid {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Left Flyer Card */
+.asoebi-flyer-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(74, 21, 37, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(74, 21, 37, 0.12);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.asoebi-flyer-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 50px rgba(74, 21, 37, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.flyer-img-wrap {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  background: #2A0E18;
+}
+
+.asoebi-flyer-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.flyer-img-wrap:hover .asoebi-flyer-img {
+  transform: scale(1.025);
+}
+
+.flyer-zoom-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(42, 14, 24, 0.45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #FFFFFF;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  backdrop-filter: blur(2px);
+}
+
+.flyer-img-wrap:hover .flyer-zoom-overlay {
+  opacity: 1;
+}
+
+.flyer-zoom-overlay span {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.flyer-card-footer {
+  padding: 18px 22px;
+  background: #FAF7F2;
+  border-top: 1px solid rgba(74, 21, 37, 0.08);
+}
+
+.flyer-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.flyer-tag {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #4A1525;
+}
+
+.flyer-event-date {
+  font-size: 12px;
+  color: #8C7A70;
+  font-weight: 500;
+}
+
+.flyer-price-pills {
+  display: flex;
+  gap: 10px;
+}
+
+.price-chip {
+  flex: 1;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.price-chip.female {
+  background: #FCE7F3;
+  color: #831843;
+  border: 1px solid #FBCFE8;
+}
+
+.price-chip.male {
+  background: #FEF3C7;
+  color: #78350F;
+  border: 1px solid #FDE68A;
+}
+
+/* Right Details Column */
+.asoebi-details-col {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Packages 2-Card Grid */
+.asoebi-packages-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.asoebi-package-card {
+  background: #FFFFFF;
+  border-radius: 18px;
+  padding: 24px;
+  border: 1px solid rgba(74, 21, 37, 0.12);
+  box-shadow: 0 8px 24px rgba(74, 21, 37, 0.05);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.asoebi-package-card:hover {
+  transform: translateY(-3px);
+  border-color: #4A1525;
+  box-shadow: 0 14px 30px rgba(74, 21, 37, 0.09);
+}
+
+.asoebi-package-card.female {
+  border-top: 4px solid #D946EF;
+}
+
+.asoebi-package-card.male {
+  border-top: 4px solid #D97706;
+}
+
+.package-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.package-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #7D6B64;
+}
+
+.package-price {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #4A1525;
+  line-height: 1;
+}
+
+.package-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2D1A22;
+  margin: 0 0 8px;
+}
+
+.package-fabric-lbl {
+  font-size: 12.5px;
+  color: #4A1525;
+  background: #FAF7F2;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin: 0 0 10px;
+}
+
+.package-fabric-lbl strong {
+  color: #2D1A22;
+}
+
+.package-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: #6B5E57;
+  margin: 0 0 18px;
+  flex-grow: 1;
+}
+
+.btn-asoebi-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #25D366;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.22s ease;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.25);
+}
+
+.btn-asoebi-whatsapp:hover {
+  background: #1EBE5D;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+}
+
+.btn-asoebi-whatsapp .ext-icon {
+  opacity: 0.8;
+}
+
+/* Bank Payment Box */
+.asoebi-payment-box {
+  background: #FFFFFF;
+  border-radius: 18px;
+  padding: 24px;
+  border: 1px solid rgba(74, 21, 37, 0.12);
+  box-shadow: 0 8px 24px rgba(74, 21, 37, 0.05);
+}
+
+.payment-box-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.payment-crest-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.payment-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4A1525;
+  margin: 0 0 4px;
+}
+
+.payment-hint {
+  font-size: 12.5px;
+  color: #7D6B64;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.asoebi-bank-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background: #FAF7F2;
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(74, 21, 37, 0.08);
+}
+
+.bank-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bank-field.full-row {
+  grid-column: 1 / -1;
+  border-top: 1px dashed rgba(74, 21, 37, 0.12);
+  padding-top: 10px;
+}
+
+.field-lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #7D6B64;
+  font-weight: 600;
+}
+
+.field-val {
+  font-size: 14.5px;
+  color: #2D1A22;
+  font-weight: 600;
+}
+
+.field-val.account-num {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #4A1525;
+  letter-spacing: 0.05em;
+}
+
+.field-val.name-val {
+  color: #4A1525;
+}
+
+.account-number-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-copy-account-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #FFFFFF;
+  border: 1px solid rgba(74, 21, 37, 0.2);
+  color: #4A1525;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-account-mini:hover {
+  background: #4A1525;
+  color: #FFFFFF;
+  border-color: #4A1525;
+}
+
+.btn-copy-account-mini.copied {
+  background: #D1FAE5;
+  color: #065F46;
+  border-color: #A7F3D0;
+}
+
+/* Contact Bar */
+.asoebi-contact-bar {
+  background: #FAF7F2;
+  border-radius: 16px;
+  padding: 18px 22px;
+  border: 1px dashed rgba(74, 21, 37, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.contact-prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-prompt strong {
+  font-size: 13.5px;
+  color: #4A1525;
+}
+
+.contact-prompt span {
+  font-size: 12px;
+  color: #6B5E57;
+}
+
+.contact-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-contact-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #25D366;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-contact-whatsapp:hover {
+  background: #1EBE5D;
+  transform: translateY(-1px);
+}
+
+.btn-contact-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFFFFF;
+  color: #4A1525;
+  border: 1px solid rgba(74, 21, 37, 0.22);
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-contact-phone:hover {
+  background: #4A1525;
+  color: #FFFFFF;
+  border-color: #4A1525;
+}
+
+/* Lightbox Modal */
+.asoebi-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 6, 10, 0.82);
+  backdrop-filter: blur(10px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.25s ease-out;
+}
+
+.asoebi-modal-content {
+  position: relative;
+  max-width: 520px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: #1E0B13;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  animation: modalScaleUp 0.3s ease-out;
+}
+
+.asoebi-modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.asoebi-modal-close-btn:hover {
+  background: #E11D48;
+  transform: scale(1.1);
+}
+
+.asoebi-modal-img {
+  width: 100%;
+  max-height: calc(92vh - 70px);
+  object-fit: contain;
+  display: block;
+}
+
+.asoebi-modal-footer {
+  padding: 14px 20px;
+  background: #2A0E18;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-modal-order-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25D366;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+}
+
+.btn-modal-order-wa:hover {
+  background: #1EBE5D;
+  transform: scale(1.02);
+}
+
+/* Responsive Styles for Asoebi */
+@media (max-width: 992px) {
+  .asoebi-content-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .asoebi-flyer-col {
+    max-width: 440px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .wedding-asoebi-section {
+    padding: 70px 16px;
+  }
+
+  .asoebi-packages-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .asoebi-bank-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .asoebi-contact-bar {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .contact-actions-row {
+    flex-direction: column;
+  }
+
+  .btn-contact-whatsapp,
+  .btn-contact-phone {
+    width: 100%;
+    justify-content: center;
+  }
+}
