@@ -138,7 +138,7 @@ export default function HomePage() {
           <HeroCornerFlower className="hero-corner-flower floating-flower-sway" />
 
           <div className="hero-card-inner">
-            <span className="eyebrow-spaced">THE WEDDING OF</span>
+            {/* <span className="eyebrow-spaced">THE WEDDING OF</span> */}
 
             <h1 className="hero-couple-title">
               Ngozi <span className="script-amp">&amp;</span>
