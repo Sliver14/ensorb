@@ -108,9 +108,8 @@ export function WelcomeGate() {
 
   return (
     <div
-      className={`wedding-journey-gate ${isUnlocking ? 'is-opening' : ''} ${
-        cardRevealed ? 'card-out' : ''
-      } ${cardFloating ? 'card-floating-stage' : ''} ${isFadingOut ? 'is-fading-out' : ''}`}
+      className={`wedding-journey-gate ${isUnlocking ? 'is-opening' : ''} ${cardRevealed ? 'card-out' : ''
+        } ${cardFloating ? 'card-floating-stage' : ''} ${isFadingOut ? 'is-fading-out' : ''}`}
       onClick={handleUnlock}
       role="button"
       tabIndex={0}
@@ -154,7 +153,7 @@ export function WelcomeGate() {
           </div>
 
           <span className="journey-eyebrow">WELCOME TO OUR</span>
-          <h1 className="journey-title">Wedding Journey</h1>
+          <h1 className="journey-title">Unending Love Story</h1>
 
           {/* Heart Divider */}
           <div className="journey-heart-divider">
@@ -163,7 +162,7 @@ export function WelcomeGate() {
             <span className="line" />
           </div>
 
-          <p className="journey-subtitle">Two hearts. One beautiful journey.</p>
+          <p className="journey-subtitle">Our Beautiful Beginning</p>
         </header>
 
         {/* CENTER INTERACTIVE ENVELOPE */}

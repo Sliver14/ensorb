@@ -110,9 +110,9 @@ export default function RsvpPage() {
               <span className="eyebrow-spaced">— RSVP —</span>
 
               <h1 className="rsvp-hero-headline">
-                We Can&apos;t Wait
+                We will be honored
                 <br />
-                <span>to Celebrate With You</span>
+                <span>to have you celebrate With us</span>
               </h1>
 
               <p className="rsvp-hero-script-desc">
@@ -165,15 +165,15 @@ export default function RsvpPage() {
                     {submittedData.attendance === 'declined'
                       ? 'Thank You for Letting Us Know'
                       : submittedData.approvalStatus === 'pending'
-                      ? 'RSVP Received & Under Review ✨'
-                      : 'RSVP Confirmed & Access Card Ready! 🎟️'}
+                        ? 'RSVP Received & Under Review ✨'
+                        : 'RSVP Confirmed & Access Card Ready! 🎟️'}
                   </h3>
                   <p className="success-desc">
                     {submittedData.attendance === 'declined'
                       ? `Dear ${submittedData.guestName}, thank you for your warm wishes. You will be dearly missed on our special day!`
                       : submittedData.approvalStatus === 'pending'
-                      ? `Dear ${submittedData.guestName}, thank you for submitting your RSVP! Your reservation is currently being reviewed by Ngozi & Sorbari. Once approved by the couple, your Official Wedding Invitation Card and assigned table details will be emailed directly to ${submittedData.guestEmail}.`
-                      : `Dear ${submittedData.guestName}, we are overjoyed that you will be celebrating with us! Your official wedding invitation card has been activated.`}
+                        ? `Dear ${submittedData.guestName}, thank you for submitting your RSVP! Your reservation is currently being reviewed by Ngozi & Sorbari. Once approved by the couple, your Official Wedding Invitation Card and assigned table details will be emailed directly to ${submittedData.guestEmail}.`
+                        : `Dear ${submittedData.guestName}, we are overjoyed that you will be celebrating with us! Your official wedding invitation card has been activated.`}
                   </p>
 
                   {submittedData.attendance !== 'declined' && (

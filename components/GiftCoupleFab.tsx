@@ -63,8 +63,8 @@ export function GiftCoupleFab() {
           type="button"
           onClick={() => setShowQuickModal(true)}
           className="gift-couple-fab-btn"
-          aria-label="Gift Ngozi & Sorbari"
-          title="Send a wedding blessing or browse gift registry"
+          aria-label="Gift the Couple - Ngozi & Sorbari"
+          title="Gift the Couple or browse wedding registry"
         >
           <span className="fab-shimmer-sweep" />
           <span className="fab-gift-icon-wrap">
@@ -72,7 +72,7 @@ export function GiftCoupleFab() {
             <span className="fab-sparkle-dot">✨</span>
           </span>
           <span className="fab-text-wrap">
-            <span className="fab-text-primary">Gift Couple</span>
+            <span className="fab-text-primary">Gift the Couple</span>
             <span className="fab-text-sub">Bless Ngozi &amp; Sorbari</span>
           </span>
         </button>

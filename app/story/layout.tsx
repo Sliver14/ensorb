@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Our Love Story | Ngozi & Sorbari',
   description:
-    'Sometimes, God begins writing a story long before we realise it is ours to tell. Read how Ngozi and Sorbari met in Campus Ministry, reconnected in Lagos, and began their journey to forever.',
+    'God begins writing a story long before we realise it is ours to tell. From serving together in Campus Ministry to reconnecting in Lagos. A simple friendship blossomed into a lifelong journey of faith and love.',
   alternates: {
     canonical: '/story',
   },

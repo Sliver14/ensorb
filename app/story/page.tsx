@@ -32,13 +32,13 @@ export default function StoryPage() {
     },
     {
       act: 'ACT II',
-      date: 'Lagos • 2022',
+      date: 'Lagos • 2026',
       title: 'A Divine Appointment',
       subtitle: 'An unexpected reunion ordained by God',
       highlight: '“That day, I saw Bro. Godwin again.”',
       dropCap: 'F',
       paragraphs: [
-        'ast-forward to 2022, when I came to Lagos.',
+        'ast-forward to 2026, when I came to Lagos.',
         'I was seeking an opportunity to work as a Loveworld staff, and during that period, I came to church to see Pastor Amaka, who had been my Campus Pastor while I was on campus. I wanted to seek her guidance and assistance as I explored the opportunity of joining the staff community.',
         'That day, I saw Bro. Godwin again.',
       ],
@@ -138,7 +138,7 @@ export default function StoryPage() {
                 </div>
                 <div className="polaroid-footer-row">
                   <span className="polaroid-names">Ngozi &amp; Sorbari</span>
-                  <span className="polaroid-date">Est. 2022</span>
+                  <span className="polaroid-date">Est. 2026</span>
                 </div>
                 <BotanicalSprig className="polaroid-botanical-corner floating-botanical-sway" />
               </div>

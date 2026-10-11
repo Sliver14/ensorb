@@ -6515,6 +6515,7 @@ body {
     opacity: 0;
     transform: translateY(6px);
   }
+
   100% {
     opacity: 1;
     transform: none;
@@ -7033,7 +7034,7 @@ body {
 
 
 /* --------------------------------------------------------------------------
-   SECTION 2: OUR STORY (TWO HEARTS, ONE JOURNEY & POLAROID)
+   SECTION 2: OUR STORY (Our beautiful beginning & POLAROID)
    -------------------------------------------------------------------------- */
 .our-story-section {
   padding: 90px clamp(20px, 6vw, 80px);
@@ -9119,6 +9120,7 @@ body {
     opacity: 0;
     transform: scale(0.96) translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -11286,9 +11288,11 @@ html.ensorb-unlocked .wedding-journey-gate {
     transform: rotate(-35deg) translateY(-80px);
     opacity: 0.3;
   }
+
   50% {
     opacity: 0.85;
   }
+
   100% {
     transform: rotate(-35deg) translateY(120px);
     opacity: 0.4;
@@ -11300,9 +11304,11 @@ html.ensorb-unlocked .wedding-journey-gate {
     transform: rotate(-25deg) translateY(40px);
     opacity: 0.35;
   }
+
   50% {
     opacity: 0.75;
   }
+
   100% {
     transform: rotate(-25deg) translateY(240px);
     opacity: 0.25;
@@ -11314,9 +11320,11 @@ html.ensorb-unlocked .wedding-journey-gate {
     transform: rotate(-45deg) translateY(160px);
     opacity: 0.4;
   }
+
   50% {
     opacity: 0.9;
   }
+
   100% {
     transform: rotate(-45deg) translateY(380px);
     opacity: 0.3;
@@ -11340,10 +11348,12 @@ html.ensorb-unlocked .wedding-journey-gate {
     transform: translate(-10%, -10%) scale(0.9);
     opacity: 0.5;
   }
+
   50% {
     transform: translate(15%, 15%) scale(1.2);
     opacity: 0.95;
   }
+
   100% {
     transform: translate(5%, -15%) scale(1);
     opacity: 0.6;
@@ -11367,6 +11377,7 @@ html.ensorb-unlocked .wedding-journey-gate {
     transform: translate(-50%, -50%) scale(0.85);
     opacity: 0.4;
   }
+
   100% {
     transform: translate(-50%, -50%) scale(1.3);
     opacity: 0.95;
@@ -11491,19 +11502,25 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes floatPetal {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) rotate(0deg) scale(0.95);
   }
+
   50% {
     transform: translateY(-24px) rotate(15deg) scale(1.05);
   }
 }
 
 @keyframes pulseBokeh {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(0.8);
     opacity: 0.3;
   }
+
   50% {
     transform: scale(1.3);
     opacity: 0.85;
@@ -11661,9 +11678,11 @@ html.ensorb-unlocked .wedding-journey-gate {
   0% {
     transform: translateY(-120px) scale(1.06) rotate(0deg);
   }
+
   50% {
     transform: translateY(-128px) scale(1.08) rotate(0.8deg);
   }
+
   100% {
     transform: translateY(-120px) scale(1.06) rotate(-0.5deg);
   }
@@ -11682,10 +11701,14 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes cardSheenSweep {
-  0%, 40% {
+
+  0%,
+  40% {
     left: -150%;
   }
-  80%, 100% {
+
+  80%,
+  100% {
     left: 200%;
   }
 }
@@ -11726,6 +11749,7 @@ html.ensorb-unlocked .wedding-journey-gate {
     transform: scale(0.6) rotate(0deg);
     opacity: 0.3;
   }
+
   100% {
     transform: scale(1.3) rotate(35deg);
     opacity: 1;
@@ -11933,6 +11957,7 @@ html.ensorb-unlocked .wedding-journey-gate {
     transform: scale(0.2);
     opacity: 1;
   }
+
   100% {
     transform: scale(2.2);
     opacity: 0;
@@ -11940,10 +11965,13 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes sealPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(0.9);
     opacity: 0.4;
   }
+
   50% {
     transform: scale(1.25);
     opacity: 0.9;
@@ -12057,10 +12085,13 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes rayPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.35;
     transform: scaleX(0.8);
   }
+
   50% {
     opacity: 1;
     transform: scaleX(1.2);
@@ -12100,6 +12131,7 @@ html.ensorb-unlocked .wedding-journey-gate {
     transform: scale(0.9);
     opacity: 0.9;
   }
+
   100% {
     transform: scale(1.6);
     opacity: 0;
@@ -12214,9 +12246,11 @@ html.ensorb-unlocked .wedding-journey-gate {
     0% {
       transform: translateY(-95px) scale(1.03) rotate(0deg);
     }
+
     50% {
       transform: translateY(-102px) scale(1.05) rotate(0.8deg);
     }
+
     100% {
       transform: translateY(-95px) scale(1.03) rotate(-0.5deg);
     }
@@ -12578,6 +12612,7 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 /* Mobile Scroll Animation: Pure vertical translation to prevent horizontal offset before scroll/refresh */
 @media (max-width: 768px) {
+
   .reveal-fade-left,
   .reveal-fade-right,
   .story-copy-col.scroll-animated,
@@ -12986,13 +13021,11 @@ html.ensorb-unlocked .wedding-journey-gate {
   left: 50%;
   transform: translateX(-50%);
   width: 2px;
-  background: repeating-linear-gradient(
-    to bottom,
-    #D5CDC0 0,
-    #D5CDC0 8px,
-    transparent 8px,
-    transparent 16px
-  );
+  background: repeating-linear-gradient(to bottom,
+      #D5CDC0 0,
+      #D5CDC0 8px,
+      transparent 8px,
+      transparent 16px);
   opacity: 0.7;
   pointer-events: none;
 }
@@ -14656,8 +14689,15 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes slideToastIn {
-  from { opacity: 0; transform: translateY(-16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .admin-toast-banner.success {
@@ -14915,8 +14955,13 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spinning {
@@ -14971,10 +15016,25 @@ html.ensorb-unlocked .wedding-journey-gate {
   flex-shrink: 0;
 }
 
-.stat-icon-box.amber { background: rgba(217, 119, 6, 0.12); color: #B45309; }
-.stat-icon-box.green { background: rgba(46, 125, 50, 0.12); color: #2E7D32; }
-.stat-icon-box.burgundy { background: rgba(74, 21, 37, 0.12); color: #4A1525; }
-.stat-icon-box.gold { background: rgba(212, 175, 55, 0.18); color: #997300; }
+.stat-icon-box.amber {
+  background: rgba(217, 119, 6, 0.12);
+  color: #B45309;
+}
+
+.stat-icon-box.green {
+  background: rgba(46, 125, 50, 0.12);
+  color: #2E7D32;
+}
+
+.stat-icon-box.burgundy {
+  background: rgba(74, 21, 37, 0.12);
+  color: #4A1525;
+}
+
+.stat-icon-box.gold {
+  background: rgba(212, 175, 55, 0.18);
+  color: #997300;
+}
 
 .stat-content {
   display: flex;
@@ -15321,11 +15381,35 @@ html.ensorb-unlocked .wedding-journey-gate {
   width: fit-content;
 }
 
-.cat-pill.cat-vip { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
-.cat-pill.cat-general { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; }
-.cat-pill.cat-family { background: #FCE7F3; color: #9D174D; border: 1px solid #FBCFE8; }
-.cat-pill.cat-friends { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
-.cat-pill.cat-colleagues { background: #E0F2FE; color: #075985; border: 1px solid #BAE6FD; }
+.cat-pill.cat-vip {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.cat-pill.cat-general {
+  background: #E0E7FF;
+  color: #3730A3;
+  border: 1px solid #C7D2FE;
+}
+
+.cat-pill.cat-family {
+  background: #FCE7F3;
+  color: #9D174D;
+  border: 1px solid #FBCFE8;
+}
+
+.cat-pill.cat-friends {
+  background: #D1FAE5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+}
+
+.cat-pill.cat-colleagues {
+  background: #E0F2FE;
+  color: #075985;
+  border: 1px solid #BAE6FD;
+}
 
 .guest-count-pill {
   background: #FAF7F2;
@@ -16068,8 +16152,14 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes fab-shimmer {
-  0% { left: -100%; }
-  35%, 100% { left: 200%; }
+  0% {
+    left: -100%;
+  }
+
+  35%,
+  100% {
+    left: 200%;
+  }
 }
 
 .fab-gift-icon-wrap {
@@ -16099,15 +16189,37 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes fab-gift-wiggle {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  15% { transform: rotate(-10deg) scale(1.1); }
-  30% { transform: rotate(10deg) scale(1.1); }
-  45% { transform: rotate(0deg) scale(1); }
+
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  15% {
+    transform: rotate(-10deg) scale(1.1);
+  }
+
+  30% {
+    transform: rotate(10deg) scale(1.1);
+  }
+
+  45% {
+    transform: rotate(0deg) scale(1);
+  }
 }
 
 @keyframes fab-sparkle-ping {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }
 
 .fab-text-wrap {
@@ -16158,13 +16270,25 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes modalFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes modalScaleUp {
-  from { opacity: 0; transform: scale(0.94) translateY(12px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .fab-quick-gift-modal {
@@ -17703,8 +17827,17 @@ html.ensorb-unlocked .wedding-journey-gate {
 }
 
 @keyframes pulse-dot {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.3); opacity: 0.6; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 0.6;
+  }
 }
 
 .admin-main-heading {
@@ -18055,10 +18188,21 @@ html.ensorb-unlocked .wedding-journey-gate {
   margin: 2px 0;
 }
 
-.kpi-number.text-amber { color: #D97706; }
-.kpi-number.text-green { color: #16A34A; }
-.kpi-number.text-gold { color: #B45309; }
-.kpi-number.text-rose { color: #E11D48; }
+.kpi-number.text-amber {
+  color: #D97706;
+}
+
+.kpi-number.text-green {
+  color: #16A34A;
+}
+
+.kpi-number.text-gold {
+  color: #B45309;
+}
+
+.kpi-number.text-rose {
+  color: #E11D48;
+}
 
 .kpi-caption {
   font-size: 11px;

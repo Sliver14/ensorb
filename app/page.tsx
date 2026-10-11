@@ -73,9 +73,9 @@ export default function HomePage() {
 
   const faqItems = [
     {
-      question: 'How do I RSVP?',
+      question: 'How do I Reserve my Seat?',
       answer:
-        'Simply click the RSVP tab or button, enter your unique invitation code, and your digital wedding pass will generate instantly for easy download and gate verification.',
+        'Simply click the Reserve your Seat tab or button, enter your unique invitation code, and your digital wedding pass will generate instantly for easy download and gate verification.',
     },
     {
       question: 'Can I bring a plus-one?',
@@ -95,7 +95,7 @@ export default function HomePage() {
     {
       question: 'When will the reception details be available?',
       answer:
-        'The church ceremony begins at 11:00 AM at Christ Embassy Ogba 1 (25 Odusanmi Street, Ogba), followed by the grand reception at 1:00 PM at CELVZ Youth Church (24 Sanyaolu Street, Oregun, Ikeja). For RSVP inquiries, contact Bright (09066157126) or Faith (08079071291).',
+        'The church ceremony begins at 11:00 AM at Christ Embassy Ogba 1 (25 Odusanmi Street, Ogba), followed by the grand reception at 1:00 PM at CELVZ Youth Church (24 Sanyaolu Street, Oregun, Ikeja). For Seat Reservation inquiries, contact Bright (09066157126) or Faith (08079071291).',
     },
   ]
 
@@ -146,7 +146,7 @@ export default function HomePage() {
             </div>
 
             <p className="hero-script-tagline">
-              Two hearts, one beautiful journey.
+              Our beautiful beginning
             </p>
 
             {/* Countdown Grid */}
@@ -155,10 +155,10 @@ export default function HomePage() {
             {/* CTA Buttons */}
             <div className="hero-buttons-row">
               <Link href="/rsvp" className="btn-burgundy-pill">
-                RSVP <span className="btn-arrow">→</span>
+                Reserve Your Seat <span className="btn-arrow">→</span>
               </Link>
               <Link href="/wishlist" className="btn-cream-outline-pill">
-                <span className="btn-icon">🎁</span> Gift Couple
+                <span className="btn-icon">🎁</span> Send Your Gift
               </Link>
             </div>
           </div>
@@ -169,7 +169,7 @@ export default function HomePage() {
       </section>
 
       {/* ====================================================================
-          SECTION 2: OUR STORY (TWO HEARTS, ONE JOURNEY & POLAROID)
+          SECTION 2: OUR STORY (Our beautiful beginning & POLAROID)
          ==================================================================== */}
       <section className="our-story-section">
         {/* Section Scoped Ambient Atmosphere */}
@@ -180,11 +180,11 @@ export default function HomePage() {
           <div className="story-copy-col reveal-fade-left">
             <span className="eyebrow-spaced">OUR STORY</span>
             <h2 className="story-title">
-              Two Hearts,
-              <span className="script-title-block">One Journey</span>
+              Our Beautiful,
+              <span className="script-title-block">Beginning</span>
             </h2>
             <p className="story-paragraph">
-              Sometimes, God begins writing a story long before we realise it is ours to tell. From serving together in Campus Ministry to reconnecting in Lagos, God turned a simple friendship into a lifelong journey of faith and love.
+              God begins writing a story long before we realise it is ours to tell. From serving together in Campus Ministry to reconnecting in Lagos. A simple friendship blossomed into a lifelong journey of faith and love.
             </p>
             <div className="story-learn-more-wrap">
               <span className="story-hairline" />

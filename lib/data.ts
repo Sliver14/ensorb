@@ -52,8 +52,8 @@ export interface FAQItem {
 export const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Our Story', href: '/story' },
-  { label: 'Gift Couple', href: '/wishlist' },
-  { label: 'RSVP', href: '/rsvp' },
+  { label: 'Send Your Gift', href: '/wishlist' },
+  { label: 'Reserve Your Seat', href: '/rsvp' },
 ]
 
 export const dressColors: DressColor[] = [
