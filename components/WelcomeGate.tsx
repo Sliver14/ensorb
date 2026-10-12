@@ -304,7 +304,7 @@ export function WelcomeGate() {
                 <div className="seal-glow-halo" />
                 {isUnlocking && <div className="seal-burst-flare" />}
                 <div className="seal-medallion-body">
-                  <span className="seal-monogram">N&amp;S</span>
+                  <span className="seal-monogram">E&amp;S</span>
                 </div>
               </div>
 

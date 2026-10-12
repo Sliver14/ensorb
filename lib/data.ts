@@ -52,6 +52,7 @@ export interface FAQItem {
 export const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Our Story', href: '/story' },
+  { label: 'Order Your Asoebi', href: '/asoebi' },
   { label: 'Send Your Gift', href: '/wishlist' },
   { label: 'Reserve Your Seat', href: '/rsvp' },
 ]
@@ -354,10 +355,46 @@ export const registryGifts: WishlistItem[] = [
 export const wishlistItems = registryGifts
 
 export const galleryPhotos = [
-  { src: '/couple/hero-portrait.png', alt: 'Ngozi & Sorbari intimate portrait', caption: 'Quiet moments of pure love & devotion' },
-  { src: '/couple/story-polaroid.png', alt: 'Ngozi & Sorbari joyful smiles', caption: 'Laughter, friendship, and shared joy' },
-  { src: '/couple/quote-portrait.jpg', alt: 'Sorbari holding Ngozi lovingly', caption: 'Walking hand-in-hand towards forever' },
-  { src: '/couple/hero-portrait.png', alt: 'Ngozi & Sorbari elegant studio portrait', caption: 'Stepping into forever together' },
+  {
+    src: '/couple/IMG_4943.jpg.jpeg',
+    alt: 'Ngozi & Sorbari smiling through a heart framed with their hands',
+    caption: 'Joy, laughter & a love that overflows',
+  },
+  {
+    src: '/couple/IMG_4784-Recovered.jpg',
+    alt: 'Ngozi in burgundy gown and Sorbari in black tuxedo holding hands',
+    caption: 'Walking hand-in-hand towards forever',
+  },
+  {
+    src: '/couple/IMG_5020.jpg.jpeg',
+    alt: 'Ngozi and Sorbari in elegant white attire with gold backdrop',
+    caption: 'A sacred promise rooted in faith & grace',
+  },
+  {
+    src: '/couple/quote-portrait.jpg',
+    alt: 'Sorbari holding Ngozi lovingly with a tender whisper and kiss',
+    caption: 'Quiet moments of pure love & devotion',
+  },
+  {
+    src: '/couple/IMG_6069.png',
+    alt: 'Ngozi radiant smile embracing Sorbari with sparkling engagement ring',
+    caption: 'Smiles that light up every tomorrow',
+  },
+  {
+    src: '/couple/IMG_4863.jpg.jpeg',
+    alt: 'Ngozi & Sorbari gazing lovingly at each other in warm olive lighting',
+    caption: 'Written by Grace, sealed in faith',
+  },
+  {
+    src: '/couple/IMG_6447.JPG.jpeg',
+    alt: 'Ngozi in blush lace dress and Sorbari in white seated together',
+    caption: 'Divine timing & beautiful beginnings',
+  },
+  {
+    src: '/couple/IMG_6075.png',
+    alt: 'Sorbari and Ngozi gazing tenderly into each other’s eyes',
+    caption: 'Looking forward to our bright future together',
+  },
 ]
 
 export const weddingSchedule: ScheduleEvent[] = [

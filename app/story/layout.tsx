@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Our Love Story | Ngozi & Sorbari Wedding',
     description:
-      'From church brethren to life partners, we can truly say that God was writing our love story all along. Read the journey of Ngozi & Sorbari.',
+      'This is our love story — a story of divine timing, beautiful beginnings, with God at the centre. Read the journey of Ngozi & Sorbari.',
     url: '/story',
     images: [
       {

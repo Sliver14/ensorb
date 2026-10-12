@@ -1016,7 +1016,7 @@ export function WaxSealMedallion({ className = '', size = 96 }: { className?: st
           <path d="M81 32 C 83 29, 79 27, 75 30 Z" fill="url(#goldSealTrim)" />
         </g>
 
-        {/* Center Embossed Monogram N & S */}
+        {/* Center Embossed Monogram E & S */}
         <text
           x="60"
           y="66"
@@ -1027,7 +1027,7 @@ export function WaxSealMedallion({ className = '', size = 96 }: { className?: st
           fontWeight="600"
           letterSpacing="1"
         >
-          N&amp;S
+          E&amp;S
         </text>
 
         {/* Bottom Year 2026 */}

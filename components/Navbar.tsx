@@ -93,12 +93,11 @@ export function Navbar() {
   return (
     <>
       <header
-        className={`burgundy-site-header ${
-          isVisible ? 'is-visible' : 'is-hidden'
-        } ${isScrolled ? 'is-scrolled' : ''}`}
+        className={`burgundy-site-header ${isVisible ? 'is-visible' : 'is-hidden'
+          } ${isScrolled ? 'is-scrolled' : ''}`}
       >
         <div className="header-inner">
-          {/* Left: Botanical Monogram N & S */}
+          {/* Left: Botanical Monogram E & S */}
           <Link
             className="header-monogram-link"
             href="/"

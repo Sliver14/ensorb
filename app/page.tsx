@@ -208,7 +208,7 @@ export default function HomePage() {
 
               <div className="polaroid-photo-inner">
                 <img
-                  src="/couple/story-polaroid.png"
+                  src="/couple/IMG_4863.jpg.jpeg"
                   alt="Ngozi & Sorbari smiling studio portrait"
                   className="polaroid-img"
                   loading="lazy"

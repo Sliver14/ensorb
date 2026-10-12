@@ -6522,22 +6522,23 @@ body {
   }
 }
 
-/* Header Nav Tabs (Home, Our Story, Wishlist, RSVP) */
+/* Header Nav Tabs (Home, Our Story, Order Your Asoebi, Send Your Gift, Reserve Your Seat) */
 .header-nav-tabs {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: clamp(14px, 1.8vw, 26px);
 }
 
 .nav-tab-item {
-  font-size: 12.5px;
+  font-size: clamp(11.5px, 0.88vw, 12.5px);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: #554F49;
   text-decoration: none;
   position: relative;
   padding: 6px 2px;
+  white-space: nowrap;
   transition: color 0.22s ease, font-weight 0.22s ease;
 }
 
@@ -13333,37 +13334,198 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .gallery-img-wrap {
   overflow: hidden;
-  height: 260px;
+  height: clamp(300px, 28vw, 380px);
   background: #ECE7DF;
+  position: relative;
+  cursor: pointer;
+}
+
+.gallery-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(74, 21, 37, 0.42);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #FAF7F2;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: opacity 0.28s ease;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.gallery-figure:hover .gallery-hover-overlay {
+  opacity: 1;
 }
 
 .gallery-figure img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%;
   display: block;
-  transition: transform 0.4s ease;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .gallery-figure:hover img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .gallery-figure figcaption {
-  padding: 12px 16px;
+  padding: 14px 18px;
   font-family: var(--font-body, 'Montserrat', sans-serif);
-  font-size: 12.5px;
+  font-size: 13px;
   color: #4A1525;
   font-weight: 600;
   background: #FAF7F2;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-top: 1px solid rgba(229, 223, 211, 0.7);
+}
+
+.fig-caption-text {
+  flex: 1;
+  text-align: left;
 }
 
 .fig-heart {
   color: #4A1525;
-  font-size: 12px;
+  font-size: 13px;
+  margin-left: 8px;
+}
+
+/* Lightbox Modal */
+.gallery-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(18, 6, 10, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.25s ease;
+}
+
+.gallery-lightbox-modal {
+  position: relative;
+  max-width: 960px;
+  max-height: 94vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: scaleUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-lightbox-img {
+  max-height: 75vh;
+  max-width: 86vw;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+}
+
+.gallery-lightbox-caption {
+  margin-top: 16px;
+  color: #FAF7F2;
+  text-align: center;
+}
+
+.gallery-lightbox-caption h4 {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: 20px;
+  color: #FFFFFF;
+  margin: 0 0 6px;
+  letter-spacing: 0.02em;
+}
+
+.gallery-lightbox-caption span {
+  font-size: 13px;
+  color: rgba(250, 247, 242, 0.75);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.gallery-lightbox-close {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FAF7F2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gallery-lightbox-close:hover {
+  background: #6B1D2F;
+  border-color: #6B1D2F;
+  transform: scale(1.08);
+}
+
+.gallery-lightbox-nav-btn {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #FFFFFF;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.gallery-lightbox-nav-btn:hover {
+  background: #6B1D2F;
+  border-color: #6B1D2F;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-lightbox-nav-btn.prev {
+  left: -64px;
+}
+
+.gallery-lightbox-nav-btn.next {
+  right: -64px;
+}
+
+@media (max-width: 768px) {
+  .gallery-lightbox-nav-btn.prev {
+    left: 10px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .gallery-lightbox-nav-btn.next {
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .gallery-lightbox-close {
+    top: -44px;
+    right: 4px;
+  }
+  .gallery-lightbox-caption h4 {
+    font-size: 16px;
+  }
 }
 
 /* Celebrate Card */

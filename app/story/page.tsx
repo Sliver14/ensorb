@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Footer } from '@/components/Footer'
 import { galleryPhotos } from '@/lib/data'
@@ -11,71 +12,99 @@ import {
   TornBannerEdge,
   MonogramLogo,
 } from '@/components/WeddingIcons'
+import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
 
 export default function StoryPage() {
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedPhotoIndex === null) return
+      if (e.key === 'Escape') setSelectedPhotoIndex(null)
+      if (e.key === 'ArrowLeft') {
+        setSelectedPhotoIndex((prev) =>
+          prev !== null && prev > 0 ? prev - 1 : galleryPhotos.length - 1
+        )
+      }
+      if (e.key === 'ArrowRight') {
+        setSelectedPhotoIndex((prev) =>
+          prev !== null && prev < galleryPhotos.length - 1 ? prev + 1 : 0
+        )
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedPhotoIndex])
+
   const storyChapters = [
     {
       act: 'ACT I',
-      date: 'The Campus Ministry Years',
+      date: 'Campus Ministry • 2014',
       title: 'Serving Together in Church',
       subtitle: 'Where our paths first crossed in faith',
-      highlight: '“He was the ever-active Brother, always willing to help, always available, and ever ready to serve.”',
+      highlight:
+        '“Little did we know that what seemed like an ordinary relationship between church brethren was the beginning of a much greater story.”',
       dropCap: 'O',
       paragraphs: [
-        'ur story began in church, during our days in Campus Ministry. That was where I first met Bro Sorbari. He was the ever-active Brother, always willing to help, always available, and ever ready to serve whenever there was a need.',
-        'At the time, we simply related as Brother and Sister, serving together in church. We had no idea that the friendship and fellowship we shared then would one day become the foundation of something much more beautiful.',
+        'ur story began in church, in 2014 during our days in Campus Ministry. We first met as Brother and Sister, serving in the same church community.',
+        'Sorbari was known for his active involvement, willingness to help, and readiness to serve whenever there was a need. In those days, we related as fellow brethren, sharing the same faith, fellowship, and passion for the things of God, never imagining that our paths would one day lead us to becoming life partners.',
+        'Little did we know that what seemed like an ordinary relationship between church brethren was the beginning of a much greater story.',
       ],
       image: '/couple/story-polaroid.png',
       imageAlt: 'Ngozi & Sorbari during fellowship days',
-      imageCaption: 'Campus Ministry • Fellowship & Service',
+      imageCaption: 'Campus Ministry • 2014 • Fellowship & Service',
       tag: 'The Beginning',
     },
     {
       act: 'ACT II',
-      date: 'Lagos • 2026',
+      date: 'Lagos • 2022',
       title: 'A Divine Appointment',
       subtitle: 'An unexpected reunion ordained by God',
-      highlight: '“That day, I saw Bro. Godwin again.”',
+      highlight:
+        '“It was during this visit that our paths crossed again — a joyful moment discovering each other anew.”',
       dropCap: 'F',
       paragraphs: [
-        'ast-forward to 2026, when I came to Lagos.',
-        'I was seeking an opportunity to work as a Loveworld staff, and during that period, I came to church to see Pastor Amaka, who had been my Campus Pastor while I was on campus. I wanted to seek her guidance and assistance as I explored the opportunity of joining the staff community.',
-        'That day, I saw Bro. Godwin again.',
+        'ast-forward to 2022, when Ngozi came to Lagos.',
+        'She was exploring an opportunity to join the Loveworld staff community and visited her former Campus Pastor, Pastor Amaka, to seek guidance and assistance. It was during this visit that our paths crossed again.',
+        'For Sorbari, seeing Ngozi again was a joyful moment. We reconnected, started talking more often, and gradually began to discover each other beyond the familiar relationship we had shared as church brethren.',
       ],
-      image: '/couple/quote-portrait.jpg',
+      image: '/couple/IMG_6447.JPG.jpeg',
       imageAlt: 'Ngozi & Sorbari reunion in Lagos',
-      imageCaption: 'Lagos Reunion • God’s Perfect Timing',
+      imageCaption: 'Lagos Reunion • 2022 • God’s Perfect Timing',
       tag: 'Divine Timing',
     },
     {
       act: 'ACT III',
-      date: 'A New Season',
-      title: 'Conversations & Intentions',
-      subtitle: 'When friendship blossomed into love',
-      highlight: '“And just like that, a journey we never saw coming began.”',
-      dropCap: 'H',
+      date: 'A Beautiful Journey',
+      title: 'From Friendship to Love',
+      subtitle: 'Conversations that took on a new meaning',
+      highlight:
+        '“What we once knew as fellowship blossomed into friendship, our friendship grew into love, and our love has brought us to this beautiful point.”',
+      dropCap: 'A',
       paragraphs: [
-        'e was genuinely excited to see me, and what seemed like an ordinary reunion soon became the beginning of a new chapter in our story. We started talking, reconnecting, and getting to know each other in a different way.',
-        'As time went on, our conversations became more meaningful, and eventually, he made his intentions known.',
-        'And just like that, a journey we never saw coming began.',
+        's our conversations deepened, so did our connection. What had once been a simple friendship began to take on a new meaning, and in time, Sorbari made his intentions known.',
+        'And so, a beautiful journey began. ❤️',
+        'Looking back, we are amazed at how God orchestrated the different seasons of our lives. Every encounter was a part of a bigger picture.',
+        'What we once knew as fellowship blossomed into friendship, our friendship grew into love, and our love has brought us to this beautiful point in our journey.',
       ],
-      image: '/couple/IMG_6069.png',
-      imageAlt: 'Romantic dining table setting',
-      imageCaption: 'Reconnecting • Meaningful Conversations',
+      image: '/couple/IMG_5020.jpg.jpeg',
+      imageAlt: 'Ngozi & Sorbari romantic moment',
+      imageCaption: 'Friendship to Love • Beautiful Beginnings',
       tag: 'New Chapter',
     },
     {
       act: 'ACT IV',
-      date: 'Forever & Always',
-      title: 'God at the Centre',
-      subtitle: 'From church brethren to life partners',
-      highlight: '“From church brethren to life partners, God was writing our love story all along.”',
-      dropCap: 'L',
+      date: 'Today & Forever',
+      title: 'With God at the Centre',
+      subtitle: 'Our story is still unfolding, and the best chapters are yet to come',
+      highlight:
+        '“This is our love story — a story of divine timing, beautiful beginnings, with God at the centre.”',
+      dropCap: 'W',
       paragraphs: [
-        'ooking back, it is amazing to realise that while we were simply living, serving, and relating as Brother and Sister in church, God already knew the beautiful story He was writing.',
-        'He brought our paths together, allowed us to meet again at the right time, and turned a simple relationship into something deeper, sweeter, and far more beautiful than we could have imagined.',
-        'From church brethren to life partners, we can truly say that God was writing our love story all along. ❤️',
-        'And today, with grateful hearts, we look forward to the beautiful journey ahead — together, with God at the centre.',
+        'e have come to appreciate that sometimes, God does not announce the beginning of a great story. He simply allows two lives to intersect, guides their steps, and gives meaning to the moments that eventually become precious memories.',
+        'Today, we look forward to the journey ahead with hearts full of gratitude, joy, and expectation. We are excited about building a life together, growing in love and faith, fulfilling God’s purpose, and creating beautiful memories as we walk hand in hand into the future.',
+        'Our story is still unfolding, and the best chapters are yet to come.',
+        'This is our love story — a story of divine timing, beautiful beginnings, with God at the centre. ❤️',
       ],
       image: '/couple/hero-portrait.png',
       imageAlt: 'Ngozi & Sorbari wedding portrait',
@@ -112,7 +141,7 @@ export default function StoryPage() {
             <div className="story-opening-card">
               <div className="story-opening-icon">✝</div>
               <p className="story-hero-opening-quote">
-                &ldquo;Sometimes, God begins writing a story long before we realise it is ours to tell.&rdquo;
+                &ldquo;God begins writing a story long before we realise it is ours to tell. From serving together in Campus Ministry to reconnecting in Lagos — a simple friendship blossomed into a lifelong journey of faith and love.&rdquo;
               </p>
               <div className="story-opening-divider">
                 <span className="line" />
@@ -241,7 +270,7 @@ export default function StoryPage() {
             <span className="story-quote-cross">✝</span>
             <span className="story-quote-heart">♡</span>
             <blockquote className="story-banner-quote">
-              &ldquo;From church brethren to life partners, we can truly say that God was writing our love story all along.&rdquo;
+              &ldquo;This is our love story — a story of divine timing, beautiful beginnings, with God at the centre.&rdquo;
             </blockquote>
             <cite className="story-banner-cite">— Ngozi &amp; Sorbari</cite>
             <p className="story-banner-sub">21 November 2026 • Lagos, Nigeria</p>
@@ -267,10 +296,15 @@ export default function StoryPage() {
           {galleryPhotos.map((photo, index) => (
             <figure
               key={photo.src + index}
-              className={`gallery-figure ${index === 3 ? 'wide-figure' : ''}`}
+              className="gallery-figure"
+              onClick={() => setSelectedPhotoIndex(index)}
             >
               <div className="gallery-img-wrap">
                 <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+                <div className="gallery-hover-overlay">
+                  <ZoomIn size={26} />
+                  <span>View Photo</span>
+                </div>
               </div>
               <figcaption>
                 <span className="fig-caption-text">{photo.caption}</span>
@@ -279,6 +313,73 @@ export default function StoryPage() {
             </figure>
           ))}
         </div>
+
+        {/* Lightbox Modal */}
+        {selectedPhotoIndex !== null && galleryPhotos[selectedPhotoIndex] && (
+          <div
+            className="gallery-lightbox-backdrop"
+            onClick={() => setSelectedPhotoIndex(null)}
+            role="presentation"
+          >
+            <div
+              className="gallery-lightbox-modal"
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-label="Enlarged couple photo"
+            >
+              <button
+                type="button"
+                className="gallery-lightbox-close"
+                onClick={() => setSelectedPhotoIndex(null)}
+                aria-label="Close photo preview"
+              >
+                <X size={20} />
+              </button>
+
+              <button
+                type="button"
+                className="gallery-lightbox-nav-btn prev"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSelectedPhotoIndex((prev) =>
+                    prev !== null && prev > 0 ? prev - 1 : galleryPhotos.length - 1
+                  )
+                }}
+                aria-label="Previous photo"
+              >
+                <ChevronLeft size={26} />
+              </button>
+
+              <img
+                src={galleryPhotos[selectedPhotoIndex].src}
+                alt={galleryPhotos[selectedPhotoIndex].alt}
+                className="gallery-lightbox-img"
+              />
+
+              <button
+                type="button"
+                className="gallery-lightbox-nav-btn next"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSelectedPhotoIndex((prev) =>
+                    prev !== null && prev < galleryPhotos.length - 1 ? prev + 1 : 0
+                  )
+                }}
+                aria-label="Next photo"
+              >
+                <ChevronRight size={26} />
+              </button>
+
+              <div className="gallery-lightbox-caption">
+                <h4>{galleryPhotos[selectedPhotoIndex].caption}</h4>
+                <span>
+                  Photo {selectedPhotoIndex + 1} of {galleryPhotos.length} • Ngozi &amp; Sorbari
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
 
         {/* Celebration CTA Bar */}
         <div className="story-celebrate-card reveal-fade-up">
@@ -289,10 +390,10 @@ export default function StoryPage() {
           </p>
           <div className="story-cta-bar">
             <Link href="/rsvp" className="btn-burgundy-pill">
-              RSVP For The Wedding <span>→</span>
+              Reserve Your Seat <span>→</span>
             </Link>
             <Link href="/wishlist" className="btn-cream-outline-pill">
-              <span>🎁</span> View Wedding Wishlist
+              <span>🎁</span> Send Your Gift
             </Link>
           </div>
         </div>
