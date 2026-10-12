@@ -50,7 +50,7 @@ export default function StoryPage() {
         'Sorbari was known for his active involvement, willingness to help, and readiness to serve whenever there was a need. In those days, we related as fellow brethren, sharing the same faith, fellowship, and passion for the things of God, never imagining that our paths would one day lead us to becoming life partners.',
         'Little did we know that what seemed like an ordinary relationship between church brethren was the beginning of a much greater story.',
       ],
-      image: '/couple/story-polaroid.png',
+      image: '/couple/IMG_4943.jpg.jpeg',
       imageAlt: 'Ngozi & Sorbari during fellowship days',
       imageCaption: 'Campus Ministry • 2014 • Fellowship & Service',
       tag: 'The Beginning',
