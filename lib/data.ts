@@ -366,11 +366,6 @@ export const galleryPhotos = [
     caption: 'Walking hand-in-hand towards forever',
   },
   {
-    src: '/couple/IMG_5020.jpg.jpeg',
-    alt: 'Ngozi and Sorbari in elegant white attire with gold backdrop',
-    caption: 'A sacred promise rooted in faith & grace',
-  },
-  {
     src: '/couple/quote-portrait.jpg',
     alt: 'Sorbari holding Ngozi lovingly with a tender whisper and kiss',
     caption: 'Quiet moments of pure love & devotion',

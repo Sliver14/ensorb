@@ -68,7 +68,7 @@ export default function StoryPage() {
         'She was exploring an opportunity to join the Loveworld staff community and visited her former Campus Pastor, Pastor Amaka, to seek guidance and assistance. It was during this visit that our paths crossed again.',
         'For Sorbari, seeing Ngozi again was a joyful moment. We reconnected, started talking more often, and gradually began to discover each other beyond the familiar relationship we had shared as church brethren.',
       ],
-      image: '/couple/IMG_6447.JPG.jpeg',
+      image: '/couple/IMG_4851.jpg.jpeg',
       imageAlt: 'Ngozi & Sorbari reunion in Lagos',
       imageCaption: 'Lagos Reunion • 2022 • God’s Perfect Timing',
       tag: 'Divine Timing',

@@ -186,8 +186,8 @@ export default function HomePage() {
           <div className="story-copy-col reveal-fade-left">
             <span className="eyebrow-spaced">OUR STORY</span>
             <h2 className="story-title">
-              Our Beautiful,
-              <span className="script-title-block">Beginning</span>
+              Our Unending,
+              <span className="script-title-block">Love Story</span>
             </h2>
             <p className="story-paragraph">
               God begins writing a story long before we realise it is ours to tell. From serving together in Campus Ministry to reconnecting in Lagos. A simple friendship blossomed into a lifelong journey of faith and love.
