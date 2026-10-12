@@ -87,7 +87,7 @@ export default function StoryPage() {
         'Looking back, we are amazed at how God orchestrated the different seasons of our lives. Every encounter was a part of a bigger picture.',
         'What we once knew as fellowship blossomed into friendship, our friendship grew into love, and our love has brought us to this beautiful point in our journey.',
       ],
-      image: '/couple/IMG_5020.jpg.jpeg',
+      image: '/couple/IMG_5012.jpg.jpeg',
       imageAlt: 'Ngozi & Sorbari romantic moment',
       imageCaption: 'Friendship to Love • Beautiful Beginnings',
       tag: 'New Chapter',
