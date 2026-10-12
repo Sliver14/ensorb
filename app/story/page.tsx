@@ -106,8 +106,8 @@ export default function StoryPage() {
         'Our story is still unfolding, and the best chapters are yet to come.',
         'This is our love story — a story of divine timing, beautiful beginnings, with God at the centre. ❤️',
       ],
-      image: '/couple/hero-portrait.png',
-      imageAlt: 'Ngozi & Sorbari wedding portrait',
+      image: '/couple/IMG_4784-Recovered.jpg',
+      imageAlt: 'Ngozi in burgundy gown and Sorbari in black tuxedo walking hand in hand',
       imageCaption: 'Stepping into forever • 21 November 2026',
       tag: 'Forever Together',
     },
@@ -124,12 +124,6 @@ export default function StoryPage() {
         <div className="story-hero-container">
           {/* Left Text Block */}
           <div className="story-hero-copy reveal-fade-left">
-            <div className="story-breadcrumb">
-              <Link href="/">Home</Link>
-              <span>/</span>
-              <span className="current">Our Story</span>
-            </div>
-
             <span className="eyebrow-spaced">— OUR LOVE STORY —</span>
 
             <h1 className="story-hero-main-title">

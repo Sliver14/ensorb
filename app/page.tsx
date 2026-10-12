@@ -178,13 +178,11 @@ export default function HomePage() {
           SECTION 2: OUR STORY (Our beautiful beginning & POLAROID)
          ==================================================================== */}
       <section className="our-story-section">
-        {/* Section Scoped Ambient Atmosphere */}
-        <AmbientAtmosphere sparkleCount={6} petalCount={4} />
 
         <div className="story-content-grid">
           {/* Left Text */}
           <div className="story-copy-col reveal-fade-left">
-            <span className="eyebrow-spaced">OUR STORY</span>
+            {/* <span className="eyebrow-spaced">OUR STORY</span> */}
             <h2 className="story-title">
               Our Unending,
               <span className="script-title-block">Love Story</span>

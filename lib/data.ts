@@ -371,9 +371,9 @@ export const galleryPhotos = [
     caption: 'Quiet moments of pure love & devotion',
   },
   {
-    src: '/couple/IMG_6069.png',
-    alt: 'Ngozi radiant smile embracing Sorbari with sparkling engagement ring',
-    caption: 'Smiles that light up every tomorrow',
+    src: '/couple/IMG_5020.jpg.jpeg',
+    alt: 'Ngozi and Sorbari in elegant white attire with gold backdrop',
+    caption: 'A sacred promise rooted in faith & grace',
   },
   {
     src: '/couple/IMG_4863.jpg.jpeg',
@@ -386,9 +386,9 @@ export const galleryPhotos = [
     caption: 'Divine timing & beautiful beginnings',
   },
   {
-    src: '/couple/IMG_6075.png',
-    alt: 'Sorbari and Ngozi gazing tenderly into each other’s eyes',
-    caption: 'Looking forward to our bright future together',
+    src: '/couple/IMG_4851.jpg.jpeg',
+    alt: 'Ngozi & Sorbari standing together in black attire under warm ambient lighting',
+    caption: 'Walking hand-in-hand in purpose & unity',
   },
 ]
 

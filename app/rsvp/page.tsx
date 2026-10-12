@@ -84,7 +84,7 @@ export default function RsvpPage() {
           {/* Left Column: Couple Photo with Torn Edge */}
           <div className="rsvp-hero-photo-col reveal-fade-left">
             <img
-              src="/couple/IMG_6075.png"
+              src="/couple/IMG_5020.jpg.jpeg"
               alt="Ngozi & Sorbari loving couple portrait"
               className="rsvp-hero-couple-img"
               fetchPriority="high"

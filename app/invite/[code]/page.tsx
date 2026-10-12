@@ -169,13 +169,6 @@ export default function UniqueInvitePage({ params }: PageProps) {
     <main className="elegant-burgundy-theme unique-invite-page">
       {/* Hero Section */}
       <section className="subpage-hero section-shell">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link>
-          <span>/</span>
-          <Link href="/rsvp">RSVP</Link>
-          <span>/</span>
-          <strong>Personal Invitation ({code})</strong>
-        </div>
         <p className="eyebrow">The Holy Matrimony Of</p>
         <h1>Ngozi &amp; Sorbari</h1>
         <p className="subpage-hero-desc">

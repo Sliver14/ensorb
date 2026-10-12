@@ -10,11 +10,6 @@ export default function AsoebiPage() {
     <main className="elegant-burgundy-theme details-page-wrapper">
       {/* Subpage Hero */}
       <section className="subpage-hero section-shell">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link>
-          <span>/</span>
-          <strong>Order Your Asoebi</strong>
-        </div>
         <p className="eyebrow">Official Celebration Attire</p>
         <h1>Order Your Wedding Asoebi</h1>
         <p className="subpage-hero-desc">

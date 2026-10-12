@@ -13515,14 +13515,17 @@ html.ensorb-unlocked .wedding-journey-gate {
     left: 10px;
     background: rgba(0, 0, 0, 0.5);
   }
+
   .gallery-lightbox-nav-btn.next {
     right: 10px;
     background: rgba(0, 0, 0, 0.5);
   }
+
   .gallery-lightbox-close {
     top: -44px;
     right: 4px;
   }
+
   .gallery-lightbox-caption h4 {
     font-size: 16px;
   }

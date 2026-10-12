@@ -10,11 +10,6 @@ export default function DetailsPage() {
   return (
     <main className="elegant-burgundy-theme details-page-wrapper">
       <section className="subpage-hero section-shell">
-        <div className="breadcrumb">
-          <Link href="/">Home</Link>
-          <span>/</span>
-          <strong>Details &amp; Dress Code</strong>
-        </div>
         <p className="eyebrow">The Celebration Details</p>
         <h1>Schedule, Venue &amp; Dress Code</h1>
         <p className="subpage-hero-desc">

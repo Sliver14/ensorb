@@ -703,7 +703,7 @@ export default function WishlistPage() {
               <div className="washi-tape-strip" />
               <div className="polaroid-photo-inner">
                 <img
-                  src="/couple/hero-portrait.png"
+                  src="/couple/IMG_5020.jpg.jpeg"
                   alt="Ngozi & Sorbari heartfelt portrait"
                   className="polaroid-img"
                 />
@@ -892,7 +892,7 @@ export default function WishlistPage() {
                     <span className="lbl">Target Cost:</span>
                     <strong className="val">{selectedItem.price}</strong>
                   </div>
-                  
+
                   {/* Clean Mini Progress */}
                   <div className="modal-mini-progress-box">
                     <div className="modal-progress-bar-wrap">
