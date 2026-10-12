@@ -663,7 +663,7 @@ export default function WishlistPage() {
                           {isCompleted ? 'View Details / Extra Blessing →' : 'Contribute or Gift Item 🎁'}
                         </span>
                         <span className="btn-label-mobile">
-                          {isCompleted ? 'View Details →' : 'Gift Item 🎁'}
+                          {isCompleted ? 'View Details →' : 'Contribute'}
                         </span>
                       </button>
 
