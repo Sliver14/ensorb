@@ -4,8 +4,8 @@ from PIL import Image, ImageDraw, ImageFont
 base_dir = r'c:\Users\dell\Desktop\Sylver\CODE PROJECTS\Nextjs Projects\ensorb'
 img_path = os.path.join(base_dir, 'public', 'couple', 'IMG_6500.PNG')
 out_og_jpeg = os.path.join(base_dir, 'public', 'couple/IMG_6500.jpeg')
-out_og_jpg = os.path.join(base_dir, 'public', 'og-image.jpg')
-out_og_png = os.path.join(base_dir, 'public', 'og-image.png')
+out_og_jpg = os.path.join(base_dir, 'public', 'couple/IMG_6500.jpeg')
+out_og_png = os.path.join(base_dir, 'public', 'couple/IMG_6500.jpeg')
 out_direct_path = os.path.join(base_dir, 'public', 'couple', 'IMG_6500-preview.jpg')
 
 src = Image.open(img_path).convert('RGB')
