@@ -386,9 +386,14 @@ export const galleryPhotos = [
     caption: 'Divine timing & beautiful beginnings',
   },
   {
-    src: '/couple/IMG_4851.jpg.jpeg',
-    alt: 'Ngozi & Sorbari standing together in black attire under warm ambient lighting',
-    caption: 'Walking hand-in-hand in purpose & unity',
+    src: '/couple/IMG_6500.jpg',
+    alt: 'Ngozi leaning gently on Sorbari in black and white luxury portrait',
+    caption: 'Grace, elegance & our unending love story',
+  },
+  {
+    src: '/couple/IMG_6067.png',
+    alt: 'Ngozi in burgundy gown and Sorbari in black tuxedo walking hand in hand',
+    caption: 'Stepping into forever • 21 November 2026',
   },
 ]
 

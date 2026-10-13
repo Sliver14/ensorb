@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { Footer } from '@/components/Footer'
 import { galleryPhotos } from '@/lib/data'
+import GalleryLightboxModal from '@/components/GalleryLightboxModal'
 import {
   BotanicalSprig,
   SideTallBotanical,
@@ -12,29 +13,10 @@ import {
   TornBannerEdge,
   MonogramLogo,
 } from '@/components/WeddingIcons'
-import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
+import { ZoomIn } from 'lucide-react'
 
 export default function StoryPage() {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null)
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (selectedPhotoIndex === null) return
-      if (e.key === 'Escape') setSelectedPhotoIndex(null)
-      if (e.key === 'ArrowLeft') {
-        setSelectedPhotoIndex((prev) =>
-          prev !== null && prev > 0 ? prev - 1 : galleryPhotos.length - 1
-        )
-      }
-      if (e.key === 'ArrowRight') {
-        setSelectedPhotoIndex((prev) =>
-          prev !== null && prev < galleryPhotos.length - 1 ? prev + 1 : 0
-        )
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedPhotoIndex])
 
   const storyChapters = [
     {
@@ -308,71 +290,12 @@ export default function StoryPage() {
           ))}
         </div>
 
-        {/* Lightbox Modal */}
-        {selectedPhotoIndex !== null && galleryPhotos[selectedPhotoIndex] && (
-          <div
-            className="gallery-lightbox-backdrop"
-            onClick={() => setSelectedPhotoIndex(null)}
-            role="presentation"
-          >
-            <div
-              className="gallery-lightbox-modal"
-              onClick={(e) => e.stopPropagation()}
-              role="dialog"
-              aria-label="Enlarged couple photo"
-            >
-              <button
-                type="button"
-                className="gallery-lightbox-close"
-                onClick={() => setSelectedPhotoIndex(null)}
-                aria-label="Close photo preview"
-              >
-                <X size={20} />
-              </button>
-
-              <button
-                type="button"
-                className="gallery-lightbox-nav-btn prev"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setSelectedPhotoIndex((prev) =>
-                    prev !== null && prev > 0 ? prev - 1 : galleryPhotos.length - 1
-                  )
-                }}
-                aria-label="Previous photo"
-              >
-                <ChevronLeft size={26} />
-              </button>
-
-              <img
-                src={galleryPhotos[selectedPhotoIndex].src}
-                alt={galleryPhotos[selectedPhotoIndex].alt}
-                className="gallery-lightbox-img"
-              />
-
-              <button
-                type="button"
-                className="gallery-lightbox-nav-btn next"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setSelectedPhotoIndex((prev) =>
-                    prev !== null && prev < galleryPhotos.length - 1 ? prev + 1 : 0
-                  )
-                }}
-                aria-label="Next photo"
-              >
-                <ChevronRight size={26} />
-              </button>
-
-              <div className="gallery-lightbox-caption">
-                <h4>{galleryPhotos[selectedPhotoIndex].caption}</h4>
-                <span>
-                  Photo {selectedPhotoIndex + 1} of {galleryPhotos.length} • Ngozi &amp; Sorbari
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Custom Portal Lightbox Modal (Higher in index, root portal) */}
+        <GalleryLightboxModal
+          photos={galleryPhotos}
+          initialIndex={selectedPhotoIndex}
+          onClose={() => setSelectedPhotoIndex(null)}
+        />
 
 
         {/* Celebration CTA Bar */}
