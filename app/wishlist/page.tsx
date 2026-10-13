@@ -363,8 +363,8 @@ export default function WishlistPage() {
                     loading="lazy"
                     decoding="async"
                   />
-                  <CardCornerBotanical className="polaroid-botanical-corner" />
                 </div>
+                <CardCornerBotanical className="polaroid-botanical-corner" />
               </div>
 
               {/* Names Stamp Badge */}

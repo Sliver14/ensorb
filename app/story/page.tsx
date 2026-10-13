@@ -276,7 +276,13 @@ export default function StoryPage() {
               onClick={() => setSelectedPhotoIndex(index)}
             >
               <div className="gallery-img-wrap">
-                <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  loading="lazy"
+                  decoding="async"
+                  style={photo.objectPosition ? { objectPosition: photo.objectPosition } : undefined}
+                />
                 <div className="gallery-hover-overlay">
                   <ZoomIn size={26} />
                   <span>View Photo</span>

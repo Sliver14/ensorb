@@ -354,46 +354,61 @@ export const registryGifts: WishlistItem[] = [
 
 export const wishlistItems = registryGifts
 
-export const galleryPhotos = [
+export interface GalleryPhoto {
+  src: string
+  alt: string
+  caption: string
+  objectPosition?: string
+}
+
+export const galleryPhotos: GalleryPhoto[] = [
   {
     src: '/couple/IMG_4943.jpg.jpeg',
     alt: 'Ngozi & Sorbari smiling through a heart framed with their hands',
     caption: 'Joy, laughter & a love that overflows',
+    objectPosition: 'center 42%',
   },
   {
     src: '/couple/IMG_4784-Recovered.jpg',
     alt: 'Ngozi in burgundy gown and Sorbari in black tuxedo holding hands',
     caption: 'Walking hand-in-hand towards forever',
+    objectPosition: 'center 18%',
   },
   {
     src: '/couple/quote-portrait.jpg',
     alt: 'Sorbari holding Ngozi lovingly with a tender whisper and kiss',
     caption: 'Quiet moments of pure love & devotion',
+    objectPosition: 'center 15%',
   },
   {
     src: '/couple/IMG_5020.jpg.jpeg',
     alt: 'Ngozi and Sorbari in elegant white attire with gold backdrop',
     caption: 'A sacred promise rooted in faith & grace',
+    objectPosition: 'center 15%',
   },
   {
     src: '/couple/IMG_4863.jpg.jpeg',
     alt: 'Ngozi & Sorbari gazing lovingly at each other in warm olive lighting',
     caption: 'Written by Grace, sealed in faith',
+    objectPosition: 'center 20%',
   },
   {
     src: '/couple/IMG_6447.JPG.jpeg',
     alt: 'Ngozi in blush lace dress and Sorbari in white seated together',
     caption: 'Divine timing & beautiful beginnings',
+    objectPosition: 'center 10%',
   },
   {
     src: '/couple/IMG_6500.jpg',
     alt: 'Ngozi leaning gently on Sorbari in black and white luxury portrait',
     caption: 'Grace, elegance & our unending love story',
+    objectPosition: 'center 5%',
   },
   {
     src: '/couple/IMG_6067.png',
     alt: 'Ngozi in burgundy gown and Sorbari in black tuxedo walking hand in hand',
     caption: 'Stepping into forever • 21 November 2026',
+    objectPosition: 'center 5%',
   },
 ]
 

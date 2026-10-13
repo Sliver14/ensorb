@@ -4009,14 +4009,9 @@ article p {
 
 .gallery-figure img {
   width: 100%;
-  height: 340px;
+  height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
-}
-
-.gallery-figure:hover img {
-  transform: scale(1.03);
 }
 
 .gallery-figure figcaption {
@@ -4027,14 +4022,6 @@ article p {
   color: #666;
   text-align: center;
   border-top: 1px solid #e5e2da;
-}
-
-.story-gallery-grid .wide-figure {
-  grid-column: span 3;
-}
-
-.story-gallery-grid .wide-figure img {
-  height: 420px;
 }
 
 .story-cta-bar {
@@ -4439,11 +4426,7 @@ article p {
   }
 
   .gallery-figure img {
-    height: 260px;
-  }
-
-  .story-gallery-grid .wide-figure img {
-    height: 220px;
+    height: 100%;
   }
 
   .venue-card,
@@ -7117,39 +7100,43 @@ body {
   position: relative;
   background: #ffffff;
   padding: 14px 14px 44px 14px;
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
   border-radius: 4px;
-  transform: rotate(2.5deg);
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transform: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   max-width: 380px;
   width: 100%;
 }
 
 .washi-polaroid-frame:hover {
-  transform: rotate(0deg) scale(1.02);
-  box-shadow: 0 24px 60px rgba(74, 21, 37, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 22px 55px rgba(74, 21, 37, 0.12);
 }
 
 .washi-tape-strip {
   position: absolute;
-  top: -12px;
+  top: -10px;
   left: 50%;
-  transform: translateX(-50%) rotate(-1.5deg);
-  width: 110px;
-  height: 28px;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 22px;
   background: rgba(229, 218, 195, 0.7);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border-left: 2px dashed rgba(200, 185, 160, 0.6);
-  border-right: 2px dashed rgba(200, 185, 160, 0.6);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-left: 2px dashed rgba(200, 185, 160, 0.5);
+  border-right: 2px dashed rgba(200, 185, 160, 0.5);
   z-index: 5;
+  pointer-events: none;
 }
 
 .polaroid-photo-inner {
   position: relative;
   overflow: hidden;
-  height: 340px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 280px;
+  max-height: 380px;
   background: #EAE5DC;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .polaroid-img {
@@ -7158,6 +7145,12 @@ body {
   object-fit: cover;
   object-position: center 20%;
   display: block;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  transform: none !important;
+  image-rendering: auto !important;
 }
 
 .polaroid-botanical-corner {
@@ -7926,12 +7919,15 @@ body {
     width: 100%;
     margin: 0 auto;
     padding: 14px 14px 44px 14px;
-    transform: rotate(0deg);
+    transform: none;
   }
 
   .polaroid-photo-inner {
-    height: clamp(280px, 76vw, 340px);
     width: 100%;
+    aspect-ratio: 1 / 1;
+    min-height: 260px;
+    max-height: 340px;
+    height: auto;
     background: #EAE5DC;
   }
 
@@ -7939,7 +7935,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 38% !important;
+    filter: none !important;
   }
 
   .polaroid-botanical-corner {
@@ -8008,14 +8004,22 @@ body {
     max-width: min(320px, 92vw);
     margin: 0 auto;
     padding: 12px 12px 40px 12px;
+    transform: none;
   }
 
   .polaroid-photo-inner {
-    height: clamp(270px, 78vw, 320px);
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    min-height: 250px;
+    max-height: 320px;
+    height: auto;
   }
 
   .polaroid-photo-inner .polaroid-img {
-    object-position: center 38% !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: none !important;
   }
 }
 
@@ -8123,39 +8127,45 @@ body {
 .washi-polaroid-frame {
   background: #FFFFFF;
   padding: 14px 14px 44px 14px;
-  border-radius: 2px;
-  box-shadow: 0 16px 36px rgba(61, 16, 28, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+  box-shadow: 0 16px 36px rgba(61, 16, 28, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
   position: relative;
-  transition: transform 0.3s ease;
+  transform: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .wishlist-hero-polaroid {
-  transform: rotate(2.5deg);
+  transform: none;
 }
 
 .wishlist-hero-polaroid:hover {
-  transform: rotate(0deg) scale(1.02);
+  transform: translateY(-4px);
 }
 
 .washi-tape-strip {
   position: absolute;
-  top: -12px;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
   width: 90px;
-  height: 24px;
+  height: 22px;
   background: rgba(220, 210, 195, 0.7);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  border-left: 2px dashed rgba(200, 190, 175, 0.6);
-  border-right: 2px dashed rgba(200, 190, 175, 0.6);
+  border-left: 2px dashed rgba(200, 190, 175, 0.5);
+  border-right: 2px dashed rgba(200, 190, 175, 0.5);
   z-index: 5;
+  pointer-events: none;
 }
 
 .polaroid-photo-inner {
   width: 100%;
-  height: 310px;
+  aspect-ratio: 1 / 1;
+  min-height: 280px;
+  max-height: 380px;
+  height: auto;
   overflow: hidden;
   background: #ECE7DF;
+  border-radius: 3px;
 }
 
 .polaroid-img {
@@ -8163,6 +8173,12 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  transform: none !important;
+  image-rendering: auto !important;
 }
 
 .polaroid-botanical-corner {
@@ -8772,11 +8788,11 @@ body {
 }
 
 .wishlist-love-polaroid {
-  transform: rotate(-2.5deg);
+  transform: none;
 }
 
 .wishlist-love-polaroid:hover {
-  transform: rotate(0deg) scale(1.02);
+  transform: translateY(-4px);
 }
 
 /* --------------------------------------------------------------------------
@@ -12457,22 +12473,22 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 @keyframes floatPolaroid {
   0% {
-    transform: rotate(-2deg) translateY(0px);
+    transform: translateY(0px);
   }
 
   50% {
-    transform: rotate(-0.5deg) translateY(-9px);
+    transform: translateY(-6px);
   }
 
   100% {
-    transform: rotate(-2.5deg) translateY(2px);
+    transform: translateY(0px);
   }
 }
 
 .floating-polaroid-motion:hover {
   animation-play-state: paused;
-  transform: rotate(0deg) translateY(-12px) scale(1.03) !important;
-  box-shadow: 0 24px 50px rgba(92, 29, 46, 0.22), 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-8px) !important;
+  box-shadow: 0 20px 45px rgba(92, 29, 46, 0.18), 0 6px 16px rgba(0, 0, 0, 0.08) !important;
 }
 
 .floating-botanical-sway {
@@ -13334,16 +13350,21 @@ html.ensorb-unlocked .wedding-journey-gate {
 
 .gallery-img-wrap {
   overflow: hidden;
-  height: clamp(300px, 28vw, 380px);
-  background: #ECE7DF;
   position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  min-height: 280px;
+  max-height: 480px;
+  height: auto;
+  background: #ECE7DF;
   cursor: pointer;
+  border-radius: 9px 9px 0 0;
 }
 
 .gallery-hover-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(74, 21, 37, 0.42);
+  background: rgba(61, 16, 28, 0.22);
   opacity: 0;
   display: flex;
   flex-direction: column;
@@ -13355,26 +13376,40 @@ html.ensorb-unlocked .wedding-journey-gate {
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  transition: opacity 0.28s ease;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  transition: opacity 0.25s ease;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  pointer-events: none;
 }
 
 .gallery-figure:hover .gallery-hover-overlay {
   opacity: 1;
 }
 
-.gallery-figure img {
+@media (hover: none) {
+  .gallery-hover-overlay {
+    display: none !important;
+  }
+}
+
+.gallery-figure img,
+.gallery-img-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center 15%;
   display: block;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  transform: none !important;
+  image-rendering: auto !important;
+  transition: transform 0.35s ease;
 }
 
 .gallery-figure:hover img {
-  transform: scale(1.06);
+  transform: scale(1.02) !important;
 }
 
 .gallery-figure figcaption {
@@ -13690,7 +13725,11 @@ html.ensorb-unlocked .wedding-journey-gate {
   }
 
   .gallery-img-wrap {
-    height: 220px;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    min-height: 280px;
+    max-height: 460px;
+    height: auto;
   }
 
   .story-celebrate-card {
