@@ -28,7 +28,18 @@ const montserrat = Montserrat({
   display: 'swap',
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ensorb.com'
+const getSiteUrl = (): string => {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL
+  if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
+    return envUrl.replace(/\/$/, '')
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  }
+  return 'https://www.engywedssorbari.com'
+}
+
+const siteUrl = getSiteUrl()
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -75,10 +86,25 @@ export const metadata: Metadata = {
       'Join Ngozi and Sorbari for their wedding celebration at Christ Embassy Ogba 1, Lagos, Nigeria. Explore event schedule, dress code palette, gift registry & RSVP for your digital pass.',
     images: [
       {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Ngozi & Sorbari Wedding Celebration — November 21, 2026',
+        type: 'image/jpeg',
+      },
+      {
+        url: '/couple/IMG_6500.jpg',
+        width: 1121,
+        height: 1403,
+        alt: 'Ngozi & Sorbari Wedding Celebration — November 21, 2026',
+        type: 'image/jpeg',
+      },
+      {
         url: '/couple/IMG_6500.PNG',
         width: 1121,
         height: 1403,
         alt: 'Ngozi & Sorbari Wedding Celebration — November 21, 2026',
+        type: 'image/png',
       },
     ],
   },
@@ -87,7 +113,7 @@ export const metadata: Metadata = {
     title: 'Ngozi & Sorbari — Our Wedding Celebration | November 21, 2026',
     description:
       'Join Ngozi and Sorbari for their wedding celebration on Saturday, November 21, 2026 at Christ Embassy Ogba 1, Lagos, Nigeria.',
-    images: ['/couple/IMG_6500.PNG'],
+    images: ['/og-image.jpg', '/couple/IMG_6500.jpg'],
     creator: '@ensorb_wedding',
   },
   robots: {
@@ -162,7 +188,7 @@ export default function RootLayout({
         longitude: '3.3411',
       },
     },
-    image: [`${siteUrl}/couple/IMG_6500.PNG`, `${siteUrl}/logo.png`],
+    image: [`${siteUrl}/og-image.jpg`, `${siteUrl}/couple/IMG_6500.jpg`, `${siteUrl}/couple/IMG_6500.PNG`, `${siteUrl}/logo.png`],
     organizer: {
       '@type': 'Person',
       name: 'Ngozi & Sorbari',
@@ -185,6 +211,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${greatVibes.variable} ${montserrat.variable}`}
     >
       <head>
+        <link rel="image_src" href={`${siteUrl}/og-image.jpg`} />
         <script
           id="welcome-gate-check"
           dangerouslySetInnerHTML={{
