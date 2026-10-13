@@ -399,7 +399,7 @@ export const galleryPhotos: GalleryPhoto[] = [
     objectPosition: 'center 10%',
   },
   {
-    src: '/couple/IMG_6500.jpg',
+    src: '/couple/story-polaroid.png',
     alt: 'Ngozi leaning gently on Sorbari in black and white luxury portrait',
     caption: 'Grace, elegance & our unending love story',
     objectPosition: 'center 5%',
