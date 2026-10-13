@@ -106,7 +106,7 @@ export default function StoryPage() {
         'Our story is still unfolding, and the best chapters are yet to come.',
         'This is our love story — a story of divine timing, beautiful beginnings, with God at the centre. ❤️',
       ],
-      image: '/couple/IMG_4784-Recovered.jpg',
+      image: '/couple/IMG_6067.png',
       imageAlt: 'Ngozi in burgundy gown and Sorbari in black tuxedo walking hand in hand',
       imageCaption: 'Stepping into forever • 21 November 2026',
       tag: 'Forever Together',

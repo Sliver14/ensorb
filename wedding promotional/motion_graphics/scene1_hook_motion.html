@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scene 1: The Hook - More Than a Wedding Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #060204;
+      color: #FFFFFF;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Vertical 9:16 Frame */
+    .scene-container {
+      position: relative;
+      width: 100vw;
+      max-width: 540px;
+      height: 100vh;
+      max-height: 960px;
+      aspect-ratio: 9 / 16;
+      background: radial-gradient(circle at 50% 28%, #380b1b 0%, #1a040b 50%, #080104 100%);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 24px 50px;
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 100px rgba(128, 0, 32, 0.25);
+    }
+
+    /* Background Ambient Lights & Particles */
+    .ambient-burgundy {
+      position: absolute;
+      top: 25%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(162, 28, 62, 0.4) 0%, transparent 70%);
+      filter: blur(55px);
+      pointer-events: none;
+      animation: pulseLight 6s ease-in-out infinite alternate;
+    }
+
+    .ambient-blush {
+      position: absolute;
+      bottom: 20%;
+      right: 10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255, 182, 193, 0.18) 0%, transparent 70%);
+      filter: blur(45px);
+      pointer-events: none;
+      animation: pulseLight 7s ease-in-out infinite alternate-reverse;
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Top Agency Badge */
+    .top-badge {
+      position: relative;
+      z-index: 10;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #FFD1DC;
+      backdrop-filter: blur(10px);
+      animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .top-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: #FF69B4;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #FF69B4;
+    }
+
+    /* Headline Section */
+    .header-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      margin-top: 10px;
+      animation: pushInTitle 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .headline-main {
+      font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+      font-size: 34px;
+      line-height: 1.15;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFE4E8 50%, #FFB6C1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+      filter: drop-shadow(0 4px 15px rgba(128, 0, 32, 0.5));
+    }
+
+    .headline-main em {
+      font-style: italic;
+      color: #FFCCD5;
+      font-weight: 400;
+    }
+
+    .headline-sub {
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255, 228, 232, 0.85);
+      font-weight: 400;
+      max-width: 340px;
+      margin: 0 auto;
+      letter-spacing: 0.02em;
+    }
+
+    /* Dual Device Mockup Frame */
+    .mockup-showcase {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      animation: deviceFloat 5s ease-in-out infinite alternate;
+    }
+
+    /* Laptop Frame */
+    .laptop-frame {
+      position: absolute;
+      width: 320px;
+      height: 200px;
+      background: #111;
+      border: 3px solid #333;
+      border-radius: 12px 12px 2px 2px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(255, 182, 193, 0.15);
+      overflow: hidden;
+      transform: translateX(-25px) translateY(-10px) rotateY(8deg) rotateX(4deg);
+      transition: transform 0.3s;
+    }
+
+    .laptop-screen {
+      width: 100%;
+      height: 100%;
+      background: #1A040B;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .laptop-screen video, .laptop-screen iframe, .laptop-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .laptop-base {
+      position: absolute;
+      bottom: -10px;
+      left: -12%;
+      width: 124%;
+      height: 10px;
+      background: #2a2a2a;
+      border-radius: 0 0 10px 10px;
+      border-top: 1px solid #444;
+    }
+
+    /* Phone Frame */
+    .phone-frame {
+      position: absolute;
+      right: 25px;
+      bottom: 25px;
+      width: 145px;
+      height: 290px;
+      background: #09090b;
+      border: 3px solid #3f3f46;
+      border-radius: 26px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.9), 0 0 25px rgba(255, 105, 180, 0.3);
+      overflow: hidden;
+      transform: rotateZ(-4deg) rotateY(-8deg);
+      z-index: 5;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: #160309;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 48px;
+      height: 10px;
+      background: #000;
+      border-radius: 10px;
+      z-index: 10;
+    }
+
+    .phone-screen video, .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Bottom Highlight Banner */
+    .bottom-features {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      justify-content: center;
+      animation: fadeInUp 1.2s ease-out 0.8s forwards;
+    }
+
+    .feature-pill {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 209, 220, 0.2);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #FFD1DC;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+    }
+
+    @keyframes pulseLight {
+      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+      100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.9; }
+    }
+
+    @keyframes pushInTitle {
+      0% {
+        opacity: 0;
+        transform: scale(0.92) translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-15px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes deviceFloat {
+      0% { transform: translateY(0px) rotateX(0deg); }
+      100% { transform: translateY(-10px) rotateX(2deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scene-container">
+    <div class="ambient-burgundy"></div>
+    <div class="ambient-blush"></div>
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Top Badge -->
+    <div class="top-badge">
+      <span class="top-badge-dot"></span>
+      InsightNovaTech Showcase
+    </div>
+
+    <!-- Main Headline Hook -->
+    <div class="header-content">
+      <h1 class="headline-main">
+        More Than a<br><em>Wedding Website</em>
+      </h1>
+      <p class="headline-sub">
+        A beautiful digital experience for your special day.
+      </p>
+    </div>
+
+    <!-- Dual Device Mockup Previewing Real Project -->
+    <div class="mockup-showcase">
+      <!-- Laptop Mockup -->
+      <div class="laptop-frame">
+        <div class="laptop-screen">
+          <video src="../screen_recordings/scene1_homepage_desktop.mp4" autoplay loop muted playsinline></video>
+        </div>
+        <div class="laptop-base"></div>
+      </div>
+
+      <!-- Smartphone Mockup -->
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <video src="../screen_recordings/scene2_homepage_mobile.mp4" autoplay loop muted playsinline></video>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Pills -->
+    <div class="bottom-features">
+      <div class="feature-pill">
+        <span>✨</span> Custom Storytelling
+      </div>
+      <div class="feature-pill">
+        <span>👗</span> Aso Ebi Guide
+      </div>
+      <div class="feature-pill">
+        <span>💌</span> Online RSVP
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Particle Dust
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Sparkle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.8;
+        this.speedY = -(Math.random() * 0.4 + 0.1);
+        this.opacity = Math.random() * 0.6 + 0.2;
+        this.fade = Math.random() * 0.007 + 0.002;
+        this.color = Math.random() > 0.5 ? '#FFD1DC' : '#FFB6C1';
+      }
+      update() {
+        this.y += this.speedY;
+        this.opacity -= this.fade;
+        if (this.opacity <= 0 || this.y < 0) {
+          this.reset();
+          this.y = canvas.height + 10;
+        }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.opacity;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#FF69B4';
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    for (let i = 0; i < 40; i++) particles.push(new Sparkle());
+
+    function loop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>

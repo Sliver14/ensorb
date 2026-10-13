@@ -75,9 +75,9 @@ export const metadata: Metadata = {
       'Join Ngozi and Sorbari for their wedding celebration at Christ Embassy Ogba 1, Lagos, Nigeria. Explore event schedule, dress code palette, gift registry & RSVP for your digital pass.',
     images: [
       {
-        url: '/couple/IMG_4784-Recovered.jpg',
-        width: 1200,
-        height: 630,
+        url: '/couple/IMG_6500.PNG',
+        width: 1121,
+        height: 1403,
         alt: 'Ngozi & Sorbari Wedding Celebration — November 21, 2026',
       },
     ],
@@ -87,7 +87,7 @@ export const metadata: Metadata = {
     title: 'Ngozi & Sorbari — Our Wedding Celebration | November 21, 2026',
     description:
       'Join Ngozi and Sorbari for their wedding celebration on Saturday, November 21, 2026 at Christ Embassy Ogba 1, Lagos, Nigeria.',
-    images: ['/couple/IMG_4784-Recovered.jpg'],
+    images: ['/couple/IMG_6500.PNG'],
     creator: '@ensorb_wedding',
   },
   robots: {
@@ -162,7 +162,7 @@ export default function RootLayout({
         longitude: '3.3411',
       },
     },
-    image: [`${siteUrl}/logo.png`],
+    image: [`${siteUrl}/couple/IMG_6500.PNG`, `${siteUrl}/logo.png`],
     organizer: {
       '@type': 'Person',
       name: 'Ngozi & Sorbari',

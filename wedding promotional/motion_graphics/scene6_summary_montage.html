@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scene 6: Product Summary - A Complete Wedding Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #050308;
+      color: #FFFFFF;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .scene-container {
+      position: relative;
+      width: 100vw;
+      max-width: 540px;
+      height: 100vh;
+      max-height: 960px;
+      aspect-ratio: 9 / 16;
+      background: radial-gradient(circle at 50% 30%, #29091c 0%, #0e030a 55%, #050104 100%);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 50px 24px 40px;
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+    }
+
+    .ambient-glow {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, rgba(219, 39, 119, 0.22) 0%, transparent 70%);
+      filter: blur(55px);
+      pointer-events: none;
+    }
+
+    .header-box {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #FBCFE8;
+      margin-bottom: 8px;
+    }
+
+    .headline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 29px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFE4E6 50%, #FDA4AF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.01em;
+      line-height: 1.22;
+    }
+
+    /* 4-Feature Montage Grid */
+    .montage-grid {
+      position: relative;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      width: 100%;
+      max-width: 420px;
+      margin: 15px 0;
+    }
+
+    .montage-card {
+      position: relative;
+      height: 230px;
+      background: #0f0710;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 12px;
+      transition: transform 0.3s;
+    }
+
+    .montage-card video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(5, 1, 4, 0.9) 100%);
+      pointer-events: none;
+    }
+
+    .card-label {
+      position: relative;
+      z-index: 2;
+      font-size: 12px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+    }
+
+    .card-sub {
+      position: relative;
+      z-index: 2;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 2px;
+    }
+
+    .bottom-tag {
+      position: relative;
+      z-index: 10;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 18px;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scene-container">
+    <div class="ambient-glow"></div>
+
+    <div class="header-box">
+      <div class="category-badge">
+        <span>💎</span> Full Solution Showcase
+      </div>
+      <h1 class="headline">One Website.<br>A Complete Experience.</h1>
+    </div>
+
+    <!-- 4-Feature Montage Grid -->
+    <div class="montage-grid">
+      <!-- Story -->
+      <div class="montage-card">
+        <video src="../screen_recordings/scene2_story_chapters.mp4" autoplay loop muted playsinline></video>
+        <div class="card-overlay"></div>
+        <div class="card-label">📖 Love Story</div>
+        <div class="card-sub">Chapters & Gallery</div>
+      </div>
+
+      <!-- Aso Ebi -->
+      <div class="montage-card">
+        <video src="../screen_recordings/scene3_asoebi_guide.mp4" autoplay loop muted playsinline></video>
+        <div class="card-overlay"></div>
+        <div class="card-label">👗 Color Guide</div>
+        <div class="card-sub">Swatches & Fabrics</div>
+      </div>
+
+      <!-- Wishlist -->
+      <div class="montage-card">
+        <video src="../screen_recordings/scene4_gift_registry.mp4" autoplay loop muted playsinline></video>
+        <div class="card-overlay"></div>
+        <div class="card-label">🎁 Gift Registry</div>
+        <div class="card-sub">Bank Transfer & Funds</div>
+      </div>
+
+      <!-- RSVP -->
+      <div class="montage-card">
+        <video src="../screen_recordings/scene5_rsvp_invitations.mp4" autoplay loop muted playsinline></video>
+        <div class="card-overlay"></div>
+        <div class="card-label">💌 Online RSVP</div>
+        <div class="card-sub">Digital Passes & Invites</div>
+      </div>
+    </div>
+
+    <div class="bottom-tag">
+      Designed & Engineered by <strong>InsightNovaTech</strong>
+    </div>
+  </div>
+
+</body>
+</html>

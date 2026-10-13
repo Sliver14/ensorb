@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsightNovaTech - Wedding Showcase Video Production Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #08030C;
+      --bg-card: rgba(22, 11, 31, 0.7);
+      --border-card: rgba(168, 85, 247, 0.2);
+      --primary-purple: #A855F7;
+      --accent-blush: #FFD1DC;
+      --accent-burgundy: #800020;
+      --accent-gold: #FCD34D;
+      --text-main: #F3F4F6;
+      --text-muted: #9CA3AF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(128, 0, 32, 0.25) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(147, 51, 234, 0.2) 0%, transparent 50%);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* Container */
+    .app-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 36px 24px 80px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 36px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo-img {
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.6));
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, #FFF 0%, #E9D5FF 60%, #C084FC 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #D8B4FE;
+      letter-spacing: 0.08em;
+    }
+
+    .header-tag {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10B981;
+      animation: pulse 2s infinite;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(56, 11, 27, 0.6) 0%, rgba(26, 11, 38, 0.7) 100%);
+      border: 1px solid rgba(255, 209, 220, 0.18);
+      border-radius: 20px;
+      padding: 32px 36px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      right: -80px;
+      top: -80px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 680px;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 24px;
+    }
+
+    .stat-card {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 20px;
+      border-radius: 12px;
+    }
+
+    .stat-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: #E9D5FF;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Main Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 36px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 1024px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Master Video Showcase Player */
+    .master-player-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 24px;
+      padding: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .player-title-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .section-h2 {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .version-switch {
+      display: flex;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      padding: 3px;
+    }
+
+    .switch-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .switch-btn.active {
+      background: var(--primary-purple);
+      color: #FFF;
+      box-shadow: 0 2px 10px rgba(168, 85, 247, 0.4);
+    }
+
+    /* 9:16 Video Wrapper */
+    .video-viewport {
+      width: 100%;
+      max-width: 380px;
+      aspect-ratio: 9 / 16;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(168, 85, 247, 0.2);
+      position: relative;
+      margin-bottom: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .video-viewport video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .player-actions {
+      width: 100%;
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-primary {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #9333EA 0%, #A855F7 100%);
+      color: #FFF;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(168, 85, 247, 0.35);
+      transition: 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(168, 85, 247, 0.5);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFF;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 12px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    /* Scene Timeline & Assets Tabs */
+    .content-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .tab-btn.active {
+      background: rgba(168, 85, 247, 0.15);
+      color: #E9D5FF;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    /* Scene Cards List */
+    .scenes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .scene-row {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      align-items: center;
+      gap: 18px;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .scene-row:hover {
+      border-color: rgba(168, 85, 247, 0.5);
+      transform: translateX(4px);
+      background: rgba(30, 15, 42, 0.8);
+    }
+
+    .scene-row.active {
+      border-color: var(--primary-purple);
+      background: rgba(45, 18, 65, 0.8);
+      box-shadow: 0 4px 20px rgba(168, 85, 247, 0.2);
+    }
+
+    .scene-thumb {
+      width: 100px;
+      height: 60px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    .scene-thumb video, .scene-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .scene-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .scene-time {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #C084FC;
+      font-weight: 600;
+    }
+
+    .scene-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFF;
+    }
+
+    .scene-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .scene-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #E2E8F0;
+    }
+
+    /* Motion Graphics Grid */
+    .mg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .mg-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mg-preview {
+      width: 100%;
+      height: 260px;
+      background: #060209;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mg-preview video, .mg-preview img, .mg-preview iframe {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border: none;
+    }
+
+    .mg-details {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mg-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .mg-link {
+      font-size: 12px;
+      color: #C084FC;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+
+    .mg-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Assembly Guide Sheet */
+    .guide-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 20px;
+      padding: 28px;
+      margin-top: 36px;
+    }
+
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      font-size: 13px;
+    }
+
+    .guide-table th {
+      text-align: left;
+      padding: 12px 14px;
+      background: rgba(0, 0, 0, 0.4);
+      color: #D8B4FE;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .guide-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #E2E8F0;
+    }
+
+    .guide-table tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.9); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header>
+      <div class="brand-section">
+        <img src="Gemini_Generated_Image_ssnwfissnwfissnw-Photoroom.png" alt="InsightNovaTech" class="brand-logo-img">
+        <div>
+          <div class="brand-title">InsightNovaTech</div>
+          <span class="brand-badge">PROMOTIONAL VIDEO SUITE</span>
+        </div>
+      </div>
+      <div class="header-tag">
+        <span class="pulse-dot"></span>
+        Ready for Export • 1080×1920 (9:16 Vertical)
+      </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div>
+        <h1 class="hero-title">Wedding Portfolio Promotional Assets</h1>
+        <p class="hero-subtitle">
+          Complete production package based on <strong>guide.md</strong> &amp; <strong>voice-over-tip.md</strong>.
+          Includes high-definition screen recordings of the real website, animated 3D brand logo reveal, motion graphic scene templates, audio stems, synchronized subtitles, and assembled master MP4s.
+        </p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-val">56.6s</div>
+          <div class="stat-lbl">Duration</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">9:16</div>
+          <div class="stat-lbl">Format</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">7</div>
+          <div class="stat-lbl">Scenes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+      <!-- Master Player Card -->
+      <div class="master-player-card">
+        <div class="player-title-row">
+          <h2 class="section-h2">🎬 Master Video Preview</h2>
+          <div class="version-switch">
+            <button class="switch-btn active" id="btnCaptioned" onclick="switchVideo('captioned')">Captioned</button>
+            <button class="switch-btn" id="btnClean" onclick="switchVideo('clean')">Clean</button>
+          </div>
+        </div>
+
+        <!-- 9:16 Video Player -->
+        <div class="video-viewport">
+          <video id="mainVideoPlayer" controls playsinline>
+            <source id="videoSource" src="InsightNovaTech_Wedding_Showcase_Captioned.mp4" type="video/mp4">
+            Your browser does not support video playback.
+          </video>
+        </div>
+
+        <!-- Download & Source Buttons -->
+        <div class="player-actions">
+          <a id="btnDownload" href="InsightNovaTech_Wedding_Showcase_Captioned.mp4" download class="btn-primary">
+            ⬇ Download Master MP4
+          </a>
+          <button class="btn-secondary" onclick="openFullscreen()">
+            ⛶ Fullscreen
+          </button>
+        </div>
+      </div>
+
+      <!-- Content Column: Tabs for Scenes, Audio, Motion Graphics -->
+      <div class="content-column">
+        <!-- Tabs -->
+        <div class="nav-tabs">
+          <button class="tab-btn active" onclick="switchTab('scenes')">Scene Breakdown (7)</button>
+          <button class="tab-btn" onclick="switchTab('motion')">Motion Graphics &amp; Logo</button>
+          <button class="tab-btn" onclick="switchTab('recordings')">Screen Recordings</button>
+          <button class="tab-btn" onclick="switchTab('audio')">Voiceover &amp; Subtitles</button>
+        </div>
+
+        <!-- 1. Scenes Tab Content -->
+        <div id="tab-scenes" class="tab-content">
+          <div class="scenes-list">
+            <!-- Scene 1 -->
+            <div class="scene-row active" onclick="jumpToTime(0)">
+              <div class="scene-thumb">
+                <video src="motion_graphics/scene1_hook_intro.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+              </div>
+              <div class="scene-info">
+                <span class="scene-time">00:00 - 00:05.5</span>
+                <span class="scene-name">Scene 1: The Hook (Dual Mockup Reveal)</span>
+                <span class="scene-desc">"More Than a Wedding Website: A beautiful digital experience for your special day."</span>
+              </div>
+              <div class="scene-actions">
+                <span class="badge-tag">Motion 3D</span>
+              </div>
+            </div>
+
+            <!-- Scene 2 -->
+            <div class="scene-row" onclick="jumpToTime(5.5)">
+              <div class="scene-thumb">
+                <video src="screen_recordings/scene2_homepage_mobile.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+              </div>
+              <div class="scene-info">
+                <span class="scene-time">00:05.5 - 00:15.0</span>
+                <span class="scene-name">Scene 2: Homepage &amp; Love Story</span>
+                <span class="scene-desc">"Your Story. Your Style. Your Day." — Hero countdown, date, venue, and couple story.</span>
+              </div>
+              <div class="scene-actions">
+                <span class="badge-tag">Website Recording</span>
+              </div>
+            </div>
+
+            <!-- Scene 3 -->
+            <div class="scene-row" onclick="jumpToTime(15.0)">
+              <div class="scene-thumb">
+                <video src="screen_recordings/scene3_asoebi_guide.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+              </div>
+              <div class="scene-info">
+                <span class="scene-time">00:15.0 - 00:23.5</span>
+                <span class="scene-name">Scene 3: Aso Ebi Color Guide</span>
+                <span class="scene-desc">"Keep Everyone in Style" — Burgundy, Blush Pink, Mint, Olive swatches &amp; fabric coordination.</span>
+              </div>
+              <div class="scene-actions">
+                <span class="badge-tag">Palette Swatches</span>
+              </div>
+            </div>
+
+            <!-- Scene 4 -->
+            <div class="scene-row" onclick="jumpToTime(23.5)">
+              <div class="scene-thumb">
+                <video src="screen_recordings/scene4_gift_registry.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+              </div>
+              <div class="scene-info">
+                <span class="scene-time">00:23.5 - 00:32.0</span>
+                <span class="scene-name">Scene 4: Gift Registry &amp; Contribution</span>
+                <span class="scene-desc">"Make Giving More Meaningful" — Filterable registry, "Contribute" buttons, and instant transfer modal.</span>
+              </div>
+              <div class="scene-actions">
+                <span class="badge-tag">Registry UI</span>
+              </div>
+            </div>
+
+            <!-- Scene 5 -->
+            <div class="scene-row" onclick="jumpToTime(32.0)">
+              <div class="scene-thumb">
+                <video src="screen_recordings/scene5_rsvp_invitations.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+              </div>
+              <div class="scene-info">
+                <span class="scene-time">00:32.0 - 00:40.0</span>
+                <span class="scene-name">Scene 5: Email Invitations &amp; Online RSVP</span>
+                <span class="scene-desc">"Invitations and RSVPs, Simplified" — Guest invitation check and instant digital access pass.</span>
+              </div>
+              <div class="scene-actions">
+                <span class="badge-tag">Digital Pass</span>
+              </div>
+            </div>
+
+            <!-- Scene 6 -->
+            <div class="scene-row" onclick="jumpToTime(40.0)">
+              <div class="scene-thumb">
+                <video src="motion_graphics/scene6_summary_motion.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+              </div>
+              <div class="scene-info">
+                <span class="scene-time">00:40.0 - 00:47.0</span>
+                <span class="scene-name">Scene 6: Product Summary Montage</span>
+                <span class="scene-desc">"One Website. A Complete Wedding Experience." — 4-quadrant feature recap.</span>
+              </div>
+              <div class="scene-actions">
+                <span class="badge-tag">Montage Grid</span>
+              </div>
+            </div>
+
+            <!-- Scene 7 -->
+            <div class="scene-row" onclick="jumpToTime(47.0)">
+              <div class="scene-thumb">
+                <video src="motion_graphics/scene7_logo_reveal.mp4" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+              </div>
+              <div class="scene-info">
+                <span class="scene-time">00:47.0 - 00:56.6</span>
+                <span class="scene-name">Scene 7: InsightNovaTech Outro &amp; Logo Reveal</span>
+                <span class="scene-desc">"Need a Website Built Around Your Vision? ... Let's Build Something Exceptional."</span>
+              </div>
+              <div class="scene-actions">
+                <span class="badge-tag">Brand Outro</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Motion Graphics & Logo Tab -->
+        <div id="tab-motion" class="tab-content" style="display: none;">
+          <div class="mg-grid">
+            <!-- Animated 3D Logo Reveal -->
+            <div class="mg-card">
+              <div class="mg-preview">
+                <img src="motion_graphics/scene7_logo_reveal.gif" alt="Animated Logo Reveal">
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">InsightNovaTech 3D Animated Logo</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Metallic purple "iN" monogram with glowing halo, particle aura, and call to action.</p>
+                <div style="display: flex; gap: 8px; margin-top: 6px;">
+                  <a href="motion_graphics/logo_animation.html" target="_blank" class="mg-link">▶ Live 60fps HTML5</a>
+                  <a href="motion_graphics/scene7_logo_reveal.mp4" download class="mg-link">⬇ MP4 Video</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scene 1 Hook -->
+            <div class="mg-card">
+              <div class="mg-preview">
+                <video src="motion_graphics/scene1_hook_intro.mp4" autoplay loop muted playsinline></video>
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">Scene 1: Hook Dual Mockup Reveal</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Burgundy particle atmosphere with 3D laptop &amp; smartphone website display.</p>
+                <div style="display: flex; gap: 8px; margin-top: 6px;">
+                  <a href="motion_graphics/scene1_hook_motion.html" target="_blank" class="mg-link">▶ Live HTML5</a>
+                  <a href="motion_graphics/scene1_hook_intro.mp4" download class="mg-link">⬇ MP4 Video</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scene 3 Swatches -->
+            <div class="mg-card">
+              <div class="mg-preview">
+                <video src="motion_graphics/scene3_asoebi_motion.mp4" autoplay loop muted playsinline></video>
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">Scene 3: Aso Ebi Palette Swatches</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Burgundy, Blush Pink, Mint, Olive swatches with live phone screen walkthrough.</p>
+                <div style="display: flex; gap: 8px; margin-top: 6px;">
+                  <a href="motion_graphics/scene3_asoebi_swatches.html" target="_blank" class="mg-link">▶ Live HTML5</a>
+                  <a href="motion_graphics/scene3_asoebi_motion.mp4" download class="mg-link">⬇ MP4 Video</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scene 6 Montage -->
+            <div class="mg-card">
+              <div class="mg-preview">
+                <video src="motion_graphics/scene6_summary_motion.mp4" autoplay loop muted playsinline></video>
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">Scene 6: 4-Grid Summary Montage</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Simultaneous 4-quadrant feature playback showcasing complete wedding experience.</p>
+                <div style="display: flex; gap: 8px; margin-top: 6px;">
+                  <a href="motion_graphics/scene6_summary_montage.html" target="_blank" class="mg-link">▶ Live HTML5</a>
+                  <a href="motion_graphics/scene6_summary_motion.mp4" download class="mg-link">⬇ MP4 Video</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Screen Recordings Tab -->
+        <div id="tab-recordings" class="tab-content" style="display: none;">
+          <div class="mg-grid">
+            <div class="mg-card">
+              <div class="mg-preview">
+                <video src="screen_recordings/scene2_homepage_mobile.mp4" controls muted playsinline></video>
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">Mobile Homepage &amp; Countdown</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Welcome envelope, countdown clock, ceremony details, and story teaser.</p>
+                <a href="screen_recordings/scene2_homepage_mobile.mp4" download class="mg-link">⬇ Download (2.3 MB)</a>
+              </div>
+            </div>
+
+            <div class="mg-card">
+              <div class="mg-preview">
+                <video src="screen_recordings/scene3_asoebi_guide.mp4" controls muted playsinline></video>
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">Aso Ebi Color Palette &amp; Packages</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Real color swatches, package pricing, fabrics, and WhatsApp order CTA.</p>
+                <a href="screen_recordings/scene3_asoebi_guide.mp4" download class="mg-link">⬇ Download (2.5 MB)</a>
+              </div>
+            </div>
+
+            <div class="mg-card">
+              <div class="mg-preview">
+                <video src="screen_recordings/scene4_gift_registry.mp4" controls muted playsinline></video>
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">Gift Registry &amp; Contribute Flow</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Registry categories, gift cards, and bank transfer contribution modal.</p>
+                <a href="screen_recordings/scene4_gift_registry.mp4" download class="mg-link">⬇ Download (4.1 MB)</a>
+              </div>
+            </div>
+
+            <div class="mg-card">
+              <div class="mg-preview">
+                <video src="screen_recordings/scene5_rsvp_invitations.mp4" controls muted playsinline></video>
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">RSVP Invitations &amp; Guest Pass</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Guest verification, instant pass card preview, and wedding directions.</p>
+                <a href="screen_recordings/scene5_rsvp_invitations.mp4" download class="mg-link">⬇ Download (1.8 MB)</a>
+              </div>
+            </div>
+
+            <div class="mg-card">
+              <div class="mg-preview">
+                <video src="screen_recordings/scene2_story_chapters.mp4" controls muted playsinline></video>
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">Our Love Story Timeline</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Story chapters, timeline milestones, and couple portrait gallery.</p>
+                <a href="screen_recordings/scene2_story_chapters.mp4" download class="mg-link">⬇ Download (4.0 MB)</a>
+              </div>
+            </div>
+
+            <div class="mg-card">
+              <div class="mg-preview">
+                <video src="screen_recordings/scene1_homepage_desktop.mp4" controls muted playsinline></video>
+              </div>
+              <div class="mg-details">
+                <div class="mg-title">Desktop Overview Walkthrough</div>
+                <p style="font-size: 11px; color: var(--text-muted);">Desktop widescreen (1784x996) view used for the laptop mockup in Scene 1.</p>
+                <a href="screen_recordings/scene1_homepage_desktop.mp4" download class="mg-link">⬇ Download (3.5 MB)</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Voiceover & Audio Tab -->
+        <div id="tab-audio" class="tab-content" style="display: none;">
+          <div class="guide-card" style="margin-top: 0;">
+            <h3 style="font-size: 16px; margin-bottom: 14px;">🎙 Voiceover Tracks &amp; Synchronized Subtitles</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 18px;">
+              British English narrator (crisp, professional agency delivery). Full audio mix and individual scene stems are provided for modular editing.
+            </p>
+
+            <table class="guide-table">
+              <thead>
+                <tr>
+                  <th>Asset</th>
+                  <th>Duration</th>
+                  <th>Preview Audio</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Full Narration Mix</strong></td>
+                  <td>56.6s</td>
+                  <td><audio src="voiceover/voiceover_full.mp3" controls style="height: 32px;"></audio></td>
+                  <td><a href="voiceover/voiceover_full.mp3" download class="mg-link">⬇ MP3</a></td>
+                </tr>
+                <tr>
+                  <td>Scene 1: Hook Stem</td>
+                  <td>4.6s</td>
+                  <td><audio src="voiceover/scene1_hook.mp3" controls style="height: 32px;"></audio></td>
+                  <td><a href="voiceover/scene1_hook.mp3" download class="mg-link">⬇ Stem</a></td>
+                </tr>
+                <tr>
+                  <td>Scene 2: Story Stem</td>
+                  <td>9.6s</td>
+                  <td><audio src="voiceover/scene2_homepage_story.mp3" controls style="height: 32px;"></audio></td>
+                  <td><a href="voiceover/scene2_homepage_story.mp3" download class="mg-link">⬇ Stem</a></td>
+                </tr>
+                <tr>
+                  <td>Scene 3: Aso Ebi Stem</td>
+                  <td>8.7s</td>
+                  <td><audio src="voiceover/scene3_asoebi_guide.mp3" controls style="height: 32px;"></audio></td>
+                  <td><a href="voiceover/scene3_asoebi_guide.mp3" download class="mg-link">⬇ Stem</a></td>
+                </tr>
+                <tr>
+                  <td>Scene 4: Registry Stem</td>
+                  <td>7.7s</td>
+                  <td><audio src="voiceover/scene4_gift_registry.mp3" controls style="height: 32px;"></audio></td>
+                  <td><a href="voiceover/scene4_gift_registry.mp3" download class="mg-link">⬇ Stem</a></td>
+                </tr>
+                <tr>
+                  <td>Scene 5: RSVP Stem</td>
+                  <td>7.3s</td>
+                  <td><audio src="voiceover/scene5_practical_experience.mp3" controls style="height: 32px;"></audio></td>
+                  <td><a href="voiceover/scene5_practical_experience.mp3" download class="mg-link">⬇ Stem</a></td>
+                </tr>
+                <tr>
+                  <td>Scene 6: Summary Stem</td>
+                  <td>6.4s</td>
+                  <td><audio src="voiceover/scene6_brand_summary.mp3" controls style="height: 32px;"></audio></td>
+                  <td><a href="voiceover/scene6_brand_summary.mp3" download class="mg-link">⬇ Stem</a></td>
+                </tr>
+                <tr>
+                  <td>Scene 7: Outro CTA Stem</td>
+                  <td>10.7s</td>
+                  <td><audio src="voiceover/scene7_call_to_action.mp3" controls style="height: 32px;"></audio></td>
+                  <td><a href="voiceover/scene7_call_to_action.mp3" download class="mg-link">⬇ Stem</a></td>
+                </tr>
+                <tr>
+                  <td><strong>Subtitle Track (SRT)</strong></td>
+                  <td>Timed</td>
+                  <td>SubRip Subtitles format</td>
+                  <td><a href="subtitles/voiceover_subtitles.srt" download class="mg-link">⬇ SRT</a></td>
+                </tr>
+                <tr>
+                  <td><strong>Subtitle Track (VTT)</strong></td>
+                  <td>Timed</td>
+                  <td>WebVTT format</td>
+                  <td><a href="subtitles/voiceover_subtitles.vtt" download class="mg-link">⬇ VTT</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Editing & Assembly Guide -->
+    <div class="guide-card">
+      <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 6px;">📐 Timeline Assembly &amp; Editing Cheat Sheet</h2>
+      <p style="font-size: 13px; color: var(--text-muted);">
+        Follow this layout in CapCut, Premiere Pro, or DaVinci Resolve if you wish to adjust timing, music volume, or transitions.
+      </p>
+
+      <table class="guide-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Scene</th>
+            <th>Video Asset</th>
+            <th>On-Screen Overlay</th>
+            <th>Voiceover Voice Clip</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>0:00 - 0:05</strong></td>
+            <td>Scene 1: Hook</td>
+            <td><code>motion_graphics/scene1_hook_intro.mp4</code></td>
+            <td>"More Than a Wedding Website"</td>
+            <td>"What if your wedding website could do more than share the date and venue?"</td>
+          </tr>
+          <tr>
+            <td><strong>0:05 - 0:15</strong></td>
+            <td>Scene 2: Story</td>
+            <td><code>screen_recordings/scene2_homepage_mobile.mp4</code></td>
+            <td>"Your Story. Your Style. Your Day."</td>
+            <td>"For this project, I built a personalized wedding website designed to bring the couple's story and their guests' experience together."</td>
+          </tr>
+          <tr>
+            <td><strong>0:15 - 0:23</strong></td>
+            <td>Scene 3: Aso Ebi</td>
+            <td><code>screen_recordings/scene3_asoebi_guide.mp4</code></td>
+            <td>"Keep Everyone in Style"</td>
+            <td>"From the couple's love story and wedding details to a dedicated Aso Ebi color guide, every section has a purpose."</td>
+          </tr>
+          <tr>
+            <td><strong>0:23 - 0:32</strong></td>
+            <td>Scene 4: Registry</td>
+            <td><code>screen_recordings/scene4_gift_registry.mp4</code></td>
+            <td>"Make Giving More Meaningful"</td>
+            <td>"Guests can explore the gift registry, receive their invitations by email, and RSVP online."</td>
+          </tr>
+          <tr>
+            <td><strong>0:32 - 0:40</strong></td>
+            <td>Scene 5: RSVP</td>
+            <td><code>screen_recordings/scene5_rsvp_invitations.mp4</code></td>
+            <td>"Invitations &amp; RSVPs, Simplified"</td>
+            <td>"It's more than a beautiful design. It's a practical digital experience tailored to a special occasion."</td>
+          </tr>
+          <tr>
+            <td><strong>0:40 - 0:47</strong></td>
+            <td>Scene 6: Montage</td>
+            <td><code>motion_graphics/scene6_summary_motion.mp4</code></td>
+            <td>"One Website. A Complete Wedding Experience."</td>
+            <td>"At InsightNovaTech, we build websites and digital solutions around real needs."</td>
+          </tr>
+          <tr>
+            <td><strong>0:47 - 0:57</strong></td>
+            <td>Scene 7: Outro CTA</td>
+            <td><code>motion_graphics/scene7_logo_reveal.mp4</code></td>
+            <td>"Need a Website Built Around Your Vision? ... Let's Build Something Exceptional."</td>
+            <td>"Planning a wedding, launching a business, or looking to bring your idea online? Let's build something exceptional. Send us a message today."</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    function switchTab(tabKey) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+      
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.innerText.toLowerCase().includes(tabKey));
+      if (activeBtn) activeBtn.classList.add('active');
+      
+      const tabEl = document.getElementById('tab-' + tabKey);
+      if (tabEl) tabEl.style.display = 'block';
+    }
+
+    // Video version switcher
+    const player = document.getElementById('mainVideoPlayer');
+    const source = document.getElementById('videoSource');
+    const downloadBtn = document.getElementById('btnDownload');
+    const btnCap = document.getElementById('btnCaptioned');
+    const btnCln = document.getElementById('btnClean');
+
+    function switchVideo(type) {
+      const currentTime = player.currentTime;
+      const isPaused = player.paused;
+      
+      if (type === 'captioned') {
+        source.src = 'InsightNovaTech_Wedding_Showcase_Captioned.mp4';
+        downloadBtn.href = 'InsightNovaTech_Wedding_Showcase_Captioned.mp4';
+        btnCap.classList.add('active');
+        btnCln.classList.remove('active');
+      } else {
+        source.src = 'InsightNovaTech_Wedding_Showcase_Clean.mp4';
+        downloadBtn.href = 'InsightNovaTech_Wedding_Showcase_Clean.mp4';
+        btnCln.classList.add('active');
+        btnCap.classList.remove('active');
+      }
+      
+      player.load();
+      player.currentTime = currentTime;
+      if (!isPaused) player.play();
+    }
+
+    // Jump to timeline
+    function jumpToTime(sec) {
+      player.currentTime = sec;
+      player.play();
+      highlightActiveScene(sec);
+    }
+
+    function highlightActiveScene(time) {
+      const rows = document.querySelectorAll('.scene-row');
+      rows.forEach(r => r.classList.remove('active'));
+      if (time < 5.5) rows[0].classList.add('active');
+      else if (time < 15.0) rows[1].classList.add('active');
+      else if (time < 23.5) rows[2].classList.add('active');
+      else if (time < 32.0) rows[3].classList.add('active');
+      else if (time < 40.0) rows[4].classList.add('active');
+      else if (time < 47.0) rows[5].classList.add('active');
+      else rows[6].classList.add('active');
+    }
+
+    player.addEventListener('timeupdate', () => {
+      highlightActiveScene(player.currentTime);
+    });
+
+    function openFullscreen() {
+      if (player.requestFullscreen) {
+        player.requestFullscreen();
+      }
+    }
+  </script>
+</body>
+</html>
