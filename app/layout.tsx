@@ -86,7 +86,7 @@ export const metadata: Metadata = {
       'Join Ngozi and Sorbari for their wedding celebration at Christ Embassy Ogba 1, Lagos, Nigeria. Explore event schedule, dress code palette, gift registry & RSVP for your digital pass.',
     images: [
       {
-        url: '/IMG_6500.jpeg',
+        url: '/og-image.jpg',
         width: 1200,
         height: 630,
         alt: 'Ngozi & Sorbari Wedding Celebration — November 21, 2026',
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
     title: 'Ngozi & Sorbari — Our Wedding Celebration | November 21, 2026',
     description:
       'Join Ngozi and Sorbari for their wedding celebration on Saturday, November 21, 2026 at Christ Embassy Ogba 1, Lagos, Nigeria.',
-    images: ['/IMG_6500.jpeg'],
+    images: ['/og-image.jpg'],
     creator: '@ensorb_wedding',
   },
   robots: {
@@ -174,7 +174,7 @@ export default function RootLayout({
         longitude: '3.3411',
       },
     },
-    image: [`${siteUrl}/IMG_6500.jpeg`, `${siteUrl}/couple/IMG_6500.jpg`, `${siteUrl}/couple/IMG_6500.PNG`, `${siteUrl}/logo.png`],
+    image: [`${siteUrl}/og-image.jpg`, `${siteUrl}/IMG_6500.jpeg`, `${siteUrl}/couple/IMG_6500.jpg`, `${siteUrl}/couple/IMG_6500.PNG`, `${siteUrl}/logo.png`],
     organizer: {
       '@type': 'Person',
       name: 'Ngozi & Sorbari',
@@ -198,7 +198,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${greatVibes.variable} ${montserrat.variable}`}
     >
       <head>
-        <link rel="image_src" href={`${siteUrl}/IMG_6500.jpeg`} />
+        <link rel="image_src" href={`${siteUrl}/og-image.jpg`} />
         <script
           id="welcome-gate-check"
           dangerouslySetInnerHTML={{
