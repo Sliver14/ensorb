@@ -312,7 +312,7 @@ export default function WishlistPage() {
             <span className="eyebrow-spaced">— CELEBRATION &amp; REGISTRY —</span>
 
             <h1 className="wishlist-hero-title">
-              A Little Something
+              A Gift
               <span className="wishlist-script-subtitle">From You to Us</span>
             </h1>
 
@@ -357,7 +357,7 @@ export default function WishlistPage() {
                 <div className="washi-tape-strip" />
                 <div className="polaroid-photo-inner">
                   <img
-                    src="/couple/quote-portrait.jpg"
+                    src="/couple/IMG_4911.jpg.jpeg"
                     alt="Ngozi & Sorbari loving portrait"
                     className="polaroid-img"
                     loading="lazy"

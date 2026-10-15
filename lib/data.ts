@@ -375,7 +375,7 @@ export const galleryPhotos: GalleryPhoto[] = [
     objectPosition: 'center 18%',
   },
   {
-    src: '/couple/quote-portrait.jpg',
+    src: '/couple/IMG_6528.JPG.jpeg',
     alt: 'Sorbari holding Ngozi lovingly with a tender whisper and kiss',
     caption: 'Quiet moments of pure love & devotion',
     objectPosition: 'center 15%',
