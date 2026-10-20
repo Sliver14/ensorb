@@ -551,7 +551,7 @@ export default function WishlistPage() {
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="sort-select-input"
             >
-              <option value="featured">Featured First</option>
+              <option value="featured">Curated Registry</option>
               <option value="progress-desc">Highest Progress</option>
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>

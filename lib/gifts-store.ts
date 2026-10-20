@@ -60,6 +60,8 @@ async function saveLocalContributions(contribs: GiftContribution[]): Promise<voi
 // ----------------------------------------------------------------------------
 
 export async function getAllGifts(): Promise<GiftRecord[]> {
+  const giftOrderMap = new Map(registryGifts.map((g, idx) => [g.id, idx]))
+
   const sql = getDb()
   if (sql) {
     try {
@@ -80,16 +82,24 @@ export async function getAllGifts(): Promise<GiftRecord[]> {
           is_fully_gifted as "isFullyGifted",
           created_at as "createdAt",
           updated_at as "updatedAt"
-        FROM gifts 
-        ORDER BY featured DESC, numeric_price DESC;
+        FROM gifts;
       `
-      return rows as unknown as GiftRecord[]
+      return (rows as unknown as GiftRecord[]).sort((a, b) => {
+        const orderA = giftOrderMap.has(a.id) ? giftOrderMap.get(a.id)! : 999
+        const orderB = giftOrderMap.has(b.id) ? giftOrderMap.get(b.id)! : 999
+        return orderA - orderB
+      })
     } catch (err) {
       console.error('Error fetching gifts from Neon DB:', err)
     }
   }
 
-  return getLocalGifts()
+  const local = await getLocalGifts()
+  return local.sort((a, b) => {
+    const orderA = giftOrderMap.has(a.id) ? giftOrderMap.get(a.id)! : 999
+    const orderB = giftOrderMap.has(b.id) ? giftOrderMap.get(b.id)! : 999
+    return orderA - orderB
+  })
 }
 
 export async function getGiftById(giftId: string): Promise<GiftRecord | null> {

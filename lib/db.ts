@@ -149,7 +149,7 @@ export async function ensureAllTables() {
       );
     `
 
-    // 4. Seed any missing gifts safely (ON CONFLICT DO NOTHING preserves all existing contributions & DB details)
+    // 4. Seed any missing gifts safely (ON CONFLICT DO UPDATE preserves all existing contributions while syncing featured flag)
     for (const gift of registryGifts) {
       await sql`
         INSERT INTO gifts (
@@ -167,7 +167,7 @@ export async function ensureAllTables() {
           ${gift.contributedAmount || 0},
           ${gift.contributorCount || 0},
           ${gift.isFullyGifted || false}
-        ) ON CONFLICT (id) DO NOTHING;
+        ) ON CONFLICT (id) DO UPDATE SET featured = EXCLUDED.featured;
       `
     }
 
